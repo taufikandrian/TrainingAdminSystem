@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router }            from '@angular/router';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
+declare var $:any;
+
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -31,6 +33,16 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.getActiveMenu();
+  }
+
+  ngAfterViewInit() {
+    $('.ui.sidebar')
+    .sidebar({
+      context: $('.bottom.segment'),
+      dimPage: false,
+      closable: false
+    })
+    .sidebar('attach events', '.menu .item.trigger');
   }
 
   getActiveMenu(){

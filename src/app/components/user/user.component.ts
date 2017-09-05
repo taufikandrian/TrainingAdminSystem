@@ -19,14 +19,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    $('.dropdown:not(.custom)').dropdown();
 
-    $('.ui.sidebar')
-      .sidebar({
-        context: $('.bottom.segment'),
-        dimPage: false
-      })
-      .sidebar('attach events', '.menu .item.trigger');
   }
 
 }
