@@ -15,13 +15,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TopmenuComponent } from './components/topmenu/topmenu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    SidebarComponent
+    SidebarComponent,
+    TopmenuComponent
   ],
   imports: [
     BrowserModule,

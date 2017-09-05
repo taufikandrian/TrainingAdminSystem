@@ -5,8 +5,6 @@ import { NgForm } from '@angular/forms';
 declare var $:any;
 declare var swal: any;
 
-import { AuthenticationService } from '../../services/authentication.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -14,7 +12,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private router: Router, private _authService: AuthenticationService) {
+  constructor(private router: Router) {
     if (!localStorage.getItem('currentUser')) {
       this.router.navigate(['/login']);
     }
@@ -28,14 +26,6 @@ export class DashboardComponent implements OnInit {
         context: $('.bottom.segment')
       })
       .sidebar('attach events', '.menu .item.trigger');
-  }
-
-  logout(): void {
-    if(this._authService.logout()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
   }
 
 }
