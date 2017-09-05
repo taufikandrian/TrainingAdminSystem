@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private _authService: AuthenticationService) {
     if (localStorage.getItem('currentUser')) {
       //TODASHBOARD
-      console.log("IF LOCAL STORAGE TODASHBOARD");
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     this._authService.login(form.value.username, form.value.password).subscribe(result => {
       if (result === true) {
           //TODASHBOARD
-          console.log("TODASHBOARD");
+          this.router.navigate(['/dashboard']);
       } else {
         swal({
             title: 'Opps!',
@@ -40,13 +40,5 @@ export class LoginComponent implements OnInit {
       }
       $('.segment.login').removeClass('loading');
     });
-  }
-
-  logout(): void {
-    if(this._authService.logout()) {
-      console.log("LOGOUT SUCCESS");
-    } else {
-      console.log("LOGOUT FAILED");
-    }
   }
 }
