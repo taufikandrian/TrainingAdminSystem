@@ -14,8 +14,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
-import { SidebarComponent } from './components/partials/sidebar/sidebar.component';
-import { TopmenuComponent } from './components/partials/topmenu/topmenu.component';
+import { SidebarComponent } from './components/dashboard/sidebar/sidebar.component';
+import { TopmenuComponent } from './components/dashboard/topmenu/topmenu.component';
 import { PeriodComponent } from './components/period/period.component';
 import { UserComponent } from './components/user/user.component';
 import { EnrollmentComponent } from './components/enrollment/enrollment.component';
