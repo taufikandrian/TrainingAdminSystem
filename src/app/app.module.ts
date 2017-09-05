@@ -14,12 +14,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
