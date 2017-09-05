@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router }            from '@angular/router';
+import { NgForm } from '@angular/forms';
+
+declare var $:any;
+declare var swal: any;
+
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +14,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private _authService: AuthenticationService) {
+    if (localStorage.getItem('currentUser')) {
+      //TODASHBOARD
+      console.log("IF LOCAL STORAGE TODASHBOARD");
+    }
+  }
 
   ngOnInit() {
   }
 
+  login(form: NgForm) {
+    $('.segment.login').addClass('loading');
+    this._authService.login(form.value.username, form.value.password).subscribe(result => {
+      if (result === true) {
+          //TODASHBOARD
+          console.log("TODASHBOARD");
+      } else {
+        swal({
+            title: 'Opps!',
+            text: "Username or password is not match in our Database!",
+            type: 'error',
+            width: 300,
+        });
+      }
+      $('.segment.login').removeClass('loading');
+    });
+  }
+
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    //TO LOGIN
+    console.log("TO LOGIN");
+  }
 }
