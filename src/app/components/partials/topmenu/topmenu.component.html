@@ -13,8 +13,8 @@
     <div class="item">
       <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
       <div class="content ki-left" style="padding-left: 1em">
-        <div class="ui sub header">{{ loggedUser.username }}</div>
-        {{ loggedUser.email }}
+        <div class="ui sub header">{{ loggedUser.user_username }}</div>
+        {{ loggedUser.user_email }}
       </div>
     </div>
     <a (click)="logout()" class="item">

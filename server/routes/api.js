@@ -37,21 +37,28 @@ router.post('/auth', function(req, res) {
 
     data = JSON.parse(data);
     user = data.filter(function(item) {
-      return item.username == req.body.username;
+      return item.user_username == req.body.username;
     });
 
-    if(user.length > 0 && user[0].password == req.body.password) {
+    if(user.length > 0 && user[0].user_password == req.body.password) {
       res.json({
-        "status" : 'success',
-        "user": {
-          'username' : user[0].username,
-          'email' : user[0].email,
+        "status"  : 'success',
+        "code"    : 200,
+        "data"    : {
+          "user"  : user[0],
         }
       });
     } else {
       res.json({
-        "status" : 'failed',
-        "message": "Username or password is not match."
+        "status"  : 'failed',
+        "code"    : 400,
+        "data"    : {
+          "user"  : {
+            "username"  : req.body.username,
+            "password"  : req.body.password,
+          },
+          "message" : "Username and password does not match in our database"
+        }
       });
     }
   });

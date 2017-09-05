@@ -13,13 +13,15 @@ export class AuthenticationService {
   login(username: string, password: string): Observable<boolean> {
     return this.http.post('http://localhost:3000/api/auth', { username: username, password: password })
       .map((response: Response) => {
-        if (response.json().status == 'success') {
-          this.loggedUser = {
-            username: response.json().user.username,
-            email: response.json().user.email
-          }
+        var responseData = response.json();
+        // console.log(response.json().data.user);
+        // return false;
+        console.log(responseData.status);
+        if (responseData.status == 'success') {
+          this.loggedUser = responseData.data.user;
           localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
-          return true;
+          // console.log(localStorage.getItem('currentUser'));
+          return false;
         } else {
           return false;
         }
