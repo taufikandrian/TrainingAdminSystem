@@ -14,14 +14,11 @@ export class AuthenticationService {
     return this.http.post('http://localhost:3000/api/auth', { username: username, password: password })
       .map((response: Response) => {
         var responseData = response.json();
-        // console.log(response.json().data.user);
-        // return false;
-        console.log(responseData.status);
+      
         if (responseData.status == 'success') {
           this.loggedUser = responseData.data.user;
-          localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
-          // console.log(localStorage.getItem('currentUser'));
-          return false;
+          localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));          
+          return true;
         } else {
           return false;
         }
