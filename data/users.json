@@ -1,14 +1,43 @@
 [
   {
-    "name"    : "Ibnu Prayogi",
-    "password": "ibnukipa",
-    "username": "mitrais/ibnukipa",
-    "email"   : "ibnu.prayogi@mitrais.com"
+    "user_fullname" : "Ibnu Prayogi",
+    "user_password" : "ibnukipa",
+    "user_username" : "mitrais/ibnukipa",
+    "user_email"    : "ibnu.prayogi@mitrais.com",
+    "roles"         : [
+      {
+        "roles_id"    : 1,
+        "roles_code"  : "ST",
+        "roles_name"  : "Staff"
+      },
+      {
+        "roles_id"    : 2,
+        "roles_code"  : "TR",
+        "roles_name"  : "Trainer"
+      },
+      {
+        "roles_id"    : 3,
+        "roles_code"  : "MG",
+        "roles_name"  : "Manager"
+      },
+      {
+        "roles_id"    : 4,
+        "roles_code"  : "AD",
+        "roles_name"  : "Administrator"
+      }
+    ]
   },
   {
-    "name"    : "Billy Cho",
-    "password": "billycho",
-    "username": "mitrais/billycho",
-    "email"   : "billycho@mitrais.com"
+    "user_fullname" : "M. Taufik Ardian",
+    "user_password" : "taufikar",
+    "user_username" : "mitrais/taufikar",
+    "user_email"    : "m.taufik.ardian@mitrais.com",
+    "roles"         : [
+      {
+        "roles_id"    : 1,
+        "roles_code"  : "ST",
+        "roles_name"  : "Staff"
+      }
+    ]
   }
 ]
