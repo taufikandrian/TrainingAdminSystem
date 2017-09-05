@@ -1,0 +1,14 @@
+[
+  {
+    "name"    : "Ibnu Prayogi",
+    "password": "ibnukipa",
+    "username": "mitrais/ibnukipa",
+    "email"   : "ibnu.prayogi@mitrais.com"
+  },
+  {
+    "name"    : "Billy Cho",
+    "password": "billycho",
+    "username": "mitrais/billycho",
+    "email"   : "billycho@mitrais.com"
+  }
+]
