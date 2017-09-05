@@ -1,0 +1,34 @@
+<div class="ui inverted segment no-padding borderradiusless">
+  <div class="ui equal width fluid grid" style="height: 100vh">
+      <div class="middle aligned row">
+          <div class="column"></div>
+          <div class="four wide column">
+              <div class="ui attached message borderradiusless">
+                  <h4 class="ui header">
+                      <img class="ui image" src="favicon.ico">
+                      <div class="content">
+                          Training Admin System
+                          <div class="sub header">
+                            Final Project
+                          </div>
+                      </div>
+                  </h4>
+              </div>
+              <form class="ui form attached padded segment login" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                  <div class="field">
+                      <label class="capitalize">Username</label>
+                      <input placeholder="Username" type="text" name="username" ngModel required>
+                  </div>
+                  <div class="field">
+                      <label class="capitalize">Password</label>
+                      <input placeholder="Password" type="password" name="password" ngModel required>
+                  </div>
+                  <div class="ui center aligned">
+                      <button class="ui primary button fluid uppercase ki-text">Login</button>
+                  </div>
+              </form>
+          </div>
+          <div class="column"></div>
+      </div>
+  </div>
+</div>
