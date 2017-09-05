@@ -43,8 +43,10 @@ export class LoginComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    //TO LOGIN
-    console.log("TO LOGIN");
+    if(this._authService.logout()) {
+      console.log("LOGOUT SUCCESS");
+    } else {
+      console.log("LOGOUT FAILED");
+    }
   }
 }

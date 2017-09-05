@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { enableProdMode } from '@angular/core';
+enableProdMode();
 
 import { AppRoutingModule } from './app.routing';
 

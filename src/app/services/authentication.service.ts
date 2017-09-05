@@ -18,11 +18,16 @@ export class AuthenticationService {
             username: response.json().user.username,
             email: response.json().user.email
           }
-          // localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
+          localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
           return true;
         } else {
           return false;
         }
       });
+  }
+
+  logout(): boolean {
+    localStorage.removeItem('currentUser');
+    return true;
   }
 }
