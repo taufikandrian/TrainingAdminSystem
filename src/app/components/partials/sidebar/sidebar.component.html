@@ -1,26 +1,6 @@
-<div class="ui sidebar inverted vertical menu active" style="padding-top: 61px">
-    <a [routerLink]="['/dashboard']" class="item">
-      <i class="home icon"></i>
-      Dashboard
-    </a>
-    <a [routerLink]="['/periods']" class="item">
-      <i class="home icon"></i>
-      Period
-    </a>
-    <a [routerLink]="['/users']" class="item">
-      <i class="block layout icon"></i>
-      User
-    </a>
-    <a [routerLink]="['/enrollments']" class="item">
-      <i class="smile icon"></i>
-      Enrollment
-    </a>
-    <a [routerLink]="['/achievements']" class="item">
-      <i class="calendar icon"></i>
-      Achievement
-    </a>
-    <a [routerLink]="['/trainings']" class="item">
-      <i class="calendar icon"></i>
-      Training Maintenance
+<div class="ui sidebar inverted vertical menu visible" style="padding-top: 61px">
+    <a routerLinkActive="active" [routerLink]="[menuItem.path]" *ngFor="let menuItem of menuItems" class="item {{menuItem.class}}">
+      <i class="{{menuItem.icon}} icon"></i>
+      {{menuItem.title}}
     </a>
   </div>

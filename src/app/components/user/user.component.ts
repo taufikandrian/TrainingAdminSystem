@@ -6,11 +6,11 @@ declare var $:any;
 declare var swal: any;
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   constructor(private router: Router) {
     if (!localStorage.getItem('currentUser')) {

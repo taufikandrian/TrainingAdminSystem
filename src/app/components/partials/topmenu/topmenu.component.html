@@ -1,22 +1,22 @@
 <div class="ui top fixed menu">
-  <!-- <div class="item" style="padding-left: 1.8em; padding-right: 1.8em">
-    <img src="favicon.ico">
-  </div> -->
   <a class="icon item trigger">
     <i class="sidebar large icon"></i>
   </a>
-  <div class="item">
-    <img class="ui mini circular image" src="favicon.ico">
-    <div class="content ki-left" style="padding-left: 1em">
-      <div class="ui sub header">{{ loggedUser.username }}</div>
-      {{ loggedUser.email }}
-    </div>
+  <div class="item" style="padding-left: 2.1em; padding-right: 2em">
+    <img src="favicon.ico">
   </div>
   <div class="menu right">
-    <a [routerLink]="['/dashboard']" class="item">
+    <!-- <a [routerLink]="['/dashboard']" class="item">
       <i class="dashboard large icon"></i>
       Dashboard
-    </a>
+    </a> -->
+    <div class="item">
+      <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+      <div class="content ki-left" style="padding-left: 1em">
+        <div class="ui sub header">{{ loggedUser.username }}</div>
+        {{ loggedUser.email }}
+      </div>
+    </div>
     <a (click)="logout()" class="item">
       <i class="sign out large icon"></i>
       Logout

@@ -16,6 +16,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthenticationService } from './services/authentication.service';
 import { SidebarComponent } from './components/partials/sidebar/sidebar.component';
 import { TopmenuComponent } from './components/partials/topmenu/topmenu.component';
+import { PeriodComponent } from './components/period/period.component';
+import { UserComponent } from './components/user/user.component';
+import { EnrollmentComponent } from './components/enrollment/enrollment.component';
+import { AchievementComponent } from './components/achievement/achievement.component';
+import { TrainingComponent } from './components/training/training.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,12 @@ import { TopmenuComponent } from './components/partials/topmenu/topmenu.componen
     LoginComponent,
     DashboardComponent,
     SidebarComponent,
-    TopmenuComponent
+    TopmenuComponent,
+    PeriodComponent,
+    UserComponent,
+    EnrollmentComponent,
+    AchievementComponent,
+    TrainingComponent
   ],
   imports: [
     BrowserModule,
