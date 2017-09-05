@@ -14,8 +14,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { TopmenuComponent } from './components/topmenu/topmenu.component';
+import { SidebarComponent } from './components/partials/sidebar/sidebar.component';
+import { TopmenuComponent } from './components/partials/topmenu/topmenu.component';
 
 @NgModule({
   declarations: [

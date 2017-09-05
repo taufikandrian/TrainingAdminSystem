@@ -4,7 +4,7 @@ import { Router }            from '@angular/router';
 declare var $:any;
 declare var swal: any;
 
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-topmenu',
