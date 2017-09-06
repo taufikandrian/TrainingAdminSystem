@@ -10,13 +10,17 @@ import { EnrollmentComponent } from './components/enrollment/enrollment.componen
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
 import { RoleComponent } from './components/login/role/role.component';
+import { PeriodListComponent } from './components/period/period-list/period-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'role', component: RoleComponent },
   { path: 'dashboard',  component: DashboardComponent, children: [] },
-  { path: 'periods',  component: PeriodComponent, children: [] },
+  { path: 'periods',  component: PeriodComponent, children: [
+    { path: '', redirectTo: 'list', pathMatch: 'full' },
+    { path: 'list', component: PeriodListComponent },
+  ] },
   { path: 'users',  component: UserComponent, children: [] },
   { path: 'enrollments',  component: EnrollmentComponent, children: [] },
   { path: 'achievements',  component: AchievementComponent, children: [] },

@@ -22,6 +22,7 @@ import { RoleComponent } from './components/login/role/role.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
+import { PeriodListComponent } from './components/period/period-list/period-list.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +35,8 @@ import { AuthenticationService } from './services/authentication.service';
     UserComponent,
     EnrollmentComponent,
     AchievementComponent,
-    TrainingComponent,
-    RoleComponent
+    RoleComponent,
+    PeriodListComponent
   ],
   imports: [
     BrowserModule,

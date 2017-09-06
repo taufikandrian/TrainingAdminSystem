@@ -1,0 +1,47 @@
+<h1 class="ui header left aligned">
+    <div class="content">
+    Period
+    <div class="sub header">
+    Schedule List
+    </div>
+    </div>
+</h1>
+<a class="ui vertical animated button" tabindex="0" style="margin-bottom: 20px">
+  <div class="hidden content">Create New</div>
+  <div class="visible content" style="width:100px">
+      <i class="add user icon"></i>
+  </div>
+</a>
+<table class="ui celled table table-usertable" >
+  <thead>
+    <tr>
+      <th style="text-align: center">Name</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Course</th>
+      <th style="text-align: center">Start Date</th>
+      <th style="text-align: center">End Date</th>
+      <th style="text-align: center">Created By</th>
+      <th style="text-align: center">Updated By</th>
+      <th style="text-align: center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PGCP - Software Testing (Working Level) Batch 2 Q3 2017</td>
+      <td>No</td>
+      <td>1 course</td>
+      <td>08-September-2017</td>
+      <td>08-September-2017</td>
+      <td>Ni Wayan Luh Sukertiasih</td>
+      <td>Ni Wayan Luh Sukertiasih</td>
+      <td style="text-align: center">
+        <div class="ui icon buttons">
+          <a [routerLink]="['/users/edit/12']"><button class="ui button" data-tooltip="Edit Period"><i class="edit icon"></i></button></a>
+          <button class="ui button" data-tooltip="Delete Period"><i class="remove user icon"></i></button>
+          <button class="ui button" data-tooltip="Detail Period"><i class="info icon"></i></button>
+          <button class="ui button" data-tooltip="Add Eligible Participant"><i class="icons"><i class="users icon"></i><i class="corner add icon"></i></i></button>
+        </div>
+    </td>
+    </tr>
+  </tbody>
+</table>
