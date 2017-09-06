@@ -23,6 +23,7 @@ import { AchievementComponent } from './components/achievement/achievement.compo
 import { TrainingComponent } from './components/training/training.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
 import { UserCreateComponent } from './components/user/user-create/user-create.component';
+import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { UserCreateComponent } from './components/user/user-create/user-create.c
     AchievementComponent,
     TrainingComponent,
     UserListComponent,
-    UserCreateComponent
+    UserCreateComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
