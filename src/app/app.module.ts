@@ -21,6 +21,7 @@ import { UserComponent } from './components/user/user.component';
 import { EnrollmentComponent } from './components/enrollment/enrollment.component';
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
+import { UserListComponent } from './components/user/user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TrainingComponent } from './components/training/training.component';
     UserComponent,
     EnrollmentComponent,
     AchievementComponent,
-    TrainingComponent
+    TrainingComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
