@@ -35,6 +35,7 @@ import { PeriodListComponent } from './components/period/period-list/period-list
     UserComponent,
     EnrollmentComponent,
     AchievementComponent,
+    TrainingComponent,
     RoleComponent,
     PeriodListComponent
   ],
