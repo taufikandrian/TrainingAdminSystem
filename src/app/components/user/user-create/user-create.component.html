@@ -1,0 +1,74 @@
+<h1 class="ui header left aligned">
+    <div class="content">
+    User
+    <div class="sub header">
+    User Create
+    </div>
+    </div>
+</h1>
+<form class="ui form">
+    <div class="field">
+        <label>Username</label>
+        <div class="ui labeled input">
+            <div class="ui label">
+              Mitrais/
+            </div>
+            <input type="text" name="user-name" placeholder="Username">
+        </div>
+    </div>
+    <div class="field">
+      <label>First Name</label>
+      <input type="text" name="first-name" placeholder="First Name">
+    </div>
+    <div class="field">
+      <label>Last Name</label>
+      <input type="text" name="last-name" placeholder="Last Name">
+    </div>
+    <div class="field">
+        <label>Email</label>
+        <div class="ui right labeled input">
+            <input type="text" name="email-name" placeholder="Email">
+            <div class="ui dropdown label">
+                <div class="text">.com</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                <div class="item">.com</div>
+                <div class="item">.net</div>
+                <div class="item">.org</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+      <label>Role</label>
+      <div class="ui selection dropdown multiple">
+          <input type="hidden" name="role">
+          <i class="dropdown icon"></i>
+          <div class="default text">Roles</div>
+          <div class="menu">
+            <div class="item" data-value="admin">Admin</div>
+            <div class="item" data-value="trainer">Trainer</div>
+            <div class="item" data-value="manager">Manager</div>
+            <div class="item" data-value="participant">Participant</div>
+          </div>
+      </div>
+    </div>
+    <div class="field">
+        <label>Status</label>
+        <div class="ui selection dropdown">
+            <input type="hidden" name="status">
+            <i class="dropdown icon"></i>
+            <div class="default text">Status</div>
+            <div class="menu">
+              <div class="item" data-value="active">Active</div>
+              <div class="item" data-value="inactive">Inactive</div>
+            </div>
+        </div>
+    </div>
+    <button class="ui primary button">
+        Submit
+    </button>
+    <a [routerLink]="['/users/list']"><button class="ui button">
+        Back
+    </button></a>
+</form>

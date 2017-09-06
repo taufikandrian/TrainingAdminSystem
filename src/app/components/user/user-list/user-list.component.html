@@ -1,0 +1,43 @@
+<h1 class="ui header left aligned">
+  <div class="content">
+  User
+  <div class="sub header">
+  User List
+  </div>
+  </div>
+</h1>
+<a [routerLink]="['/users/create']" class="ui vertical animated button" tabindex="0" style="margin-bottom: 20px">
+    <div class="hidden content">Create New</div>
+    <div class="visible content" style="width:100px">
+        <i class="add user icon"></i>
+    </div>
+</a>
+<table class="ui celled table table-usertable" >
+  <thead>
+    <tr>
+      <th class="five wide" style="text-align: center">Username</th>
+      <th class="five wide" style="text-align: center">Fullname</th>
+      <th class="five wide" style="text-align: center">Email</th>
+      <th class="four wide" style="text-align: center">Role</th>
+      <th class="two wide" style="text-align: center">Status</th>
+      <th class="seven wide" style="text-align: center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>mitrais/Taufikar</td>
+      <td>Mohammad Taufik Andrian</td>
+      <td>taufikandrian18@gmail.com</td>
+      <td>Admin</td>
+      <td>Active</td>
+      <td style="text-align: center">
+        <div class="ui icon buttons">
+          <a [routerLink]="['/users/edit/12']"><button class="ui button" data-tooltip="Edit User"><i class="edit icon"></i></button></a>
+          <button class="ui button" data-tooltip="Delete User"><i class="remove user icon"></i></button>
+          <button class="ui button" data-tooltip="Detail User"><i class="info icon"></i></button>
+          <button class="ui button" data-tooltip="Add Eligible Participant"><i class="icons"><i class="users icon"></i><i class="corner add icon"></i></i></button>
+        </div>
+    </td>
+    </tr>
+  </tbody>
+</table>

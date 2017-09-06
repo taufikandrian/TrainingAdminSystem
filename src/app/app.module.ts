@@ -19,6 +19,9 @@ import { EnrollmentComponent } from './components/enrollment/enrollment.componen
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
 import { RoleComponent } from './components/login/role/role.component';
+import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserCreateComponent } from './components/user/user-create/user-create.component';
+import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
@@ -37,7 +40,10 @@ import { PeriodListComponent } from './components/period/period-list/period-list
     AchievementComponent,
     TrainingComponent,
     RoleComponent,
-    PeriodListComponent
+    UserListComponent,
+    PeriodListComponent,
+    UserCreateComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
