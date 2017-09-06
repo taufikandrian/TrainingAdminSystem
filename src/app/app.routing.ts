@@ -10,6 +10,7 @@ import { EnrollmentComponent } from './components/enrollment/enrollment.componen
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserCreateComponent } from './components/user/user-create/user-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'users',  component: UserComponent, children: [
     { path: '', redirectTo: 'list', pathMatch: 'full' },
     { path: 'list', component: UserListComponent },
+    { path: 'create', component: UserCreateComponent },
   ] },
   { path: 'enrollments',  component: EnrollmentComponent, children: [] },
   { path: 'achievements',  component: AchievementComponent, children: [] },

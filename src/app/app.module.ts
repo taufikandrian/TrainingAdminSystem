@@ -22,6 +22,7 @@ import { EnrollmentComponent } from './components/enrollment/enrollment.componen
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserCreateComponent } from './components/user/user-create/user-create.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { UserListComponent } from './components/user/user-list/user-list.compone
     EnrollmentComponent,
     AchievementComponent,
     TrainingComponent,
-    UserListComponent
+    UserListComponent,
+    UserCreateComponent
   ],
   imports: [
     BrowserModule,

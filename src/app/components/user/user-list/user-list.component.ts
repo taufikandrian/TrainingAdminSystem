@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router }            from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -8,7 +9,7 @@ declare var $:any;
 })
 export class UserListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     $('.table-usertable').DataTable();
