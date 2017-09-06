@@ -39,5 +39,33 @@
         "roles_name"  : "Staff"
       }
     ]
+  },
+  {
+    "user_fullname" : "M. Taufik Andrian",
+    "user_password" : "taufikandrian",
+    "user_username" : "mitrais/taufikandrian",
+    "user_email"    : "m.taufik.andrian@mitrais.com",
+    "roles"         : [
+      {
+        "roles_id"    : 1,
+        "roles_code"  : "ST",
+        "roles_name"  : "Staff"
+      },
+      {
+        "roles_id"    : 2,
+        "roles_code"  : "TR",
+        "roles_name"  : "Trainer"
+      },
+      {
+        "roles_id"    : 3,
+        "roles_code"  : "MG",
+        "roles_name"  : "Manager"
+      },
+      {
+        "roles_id"    : 4,
+        "roles_code"  : "AD",
+        "roles_name"  : "Administrator"
+      }
+    ]
   }
 ]
