@@ -7,4 +7,14 @@ import { Router }    from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {}
+export class AppComponent {
+  constructor(private router: Router) {
+    // if(!localStorage.getItem('currentRoleUser')) {
+    //   this.router.navigate(['/role']);
+    // }
+
+    // if (!localStorage.getItem('currentUser')) {
+    //   this.router.navigate(['/login']);
+    // }
+  }
+}

@@ -13,13 +13,7 @@ declare var swal: any;
 })
 export class PeriodComponent implements OnInit {
 
-  constructor(
-    private router: Router,
-    ) {
-      if (!localStorage.getItem('currentUser')) {
-        this.router.navigate(['/login']);
-      }
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
 

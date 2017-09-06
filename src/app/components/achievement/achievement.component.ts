@@ -12,11 +12,7 @@ declare var swal: any;
 })
 export class AchievementComponent implements OnInit {
 
-  constructor(private router: Router) {
-    if (!localStorage.getItem('currentUser')) {
-      this.router.navigate(['/login']);
-    }
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     $('.dropdown:not(.custom)').dropdown();

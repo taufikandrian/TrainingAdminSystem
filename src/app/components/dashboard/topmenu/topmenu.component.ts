@@ -13,13 +13,13 @@ import { AuthenticationService } from '../../../services/authentication.service'
 })
 export class TopmenuComponent implements OnInit {
   loggedUser;
-
+  loggedRoleUser;
   constructor(private router: Router, private _authService: AuthenticationService) {
     this.loggedUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.loggedRoleUser = JSON.parse(localStorage.getItem('currentRoleUser'))[0];
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   logout(): void {
     if(this._authService.logout()) {

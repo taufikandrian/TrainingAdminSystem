@@ -18,6 +18,7 @@ import { UserComponent } from './components/user/user.component';
 import { EnrollmentComponent } from './components/enrollment/enrollment.component';
 import { AchievementComponent } from './components/achievement/achievement.component';
 import { TrainingComponent } from './components/training/training.component';
+import { RoleComponent } from './components/login/role/role.component';
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
@@ -33,7 +34,8 @@ import { AuthenticationService } from './services/authentication.service';
     UserComponent,
     EnrollmentComponent,
     AchievementComponent,
-    TrainingComponent
+    TrainingComponent,
+    RoleComponent
   ],
   imports: [
     BrowserModule,

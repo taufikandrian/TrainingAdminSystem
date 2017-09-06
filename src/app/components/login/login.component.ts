@@ -15,9 +15,14 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private _authService: AuthenticationService) {
-    if (localStorage.getItem('currentUser')) {
-      //TODASHBOARD
+    console.log(!localStorage.getItem('currentRoleUser'));
+    if(localStorage.getItem('currentUser') && localStorage.getItem('currentRoleUser')) {
       this.router.navigate(['/dashboard']);
+    } else {
+      if(!localStorage.getItem('currentUser'))
+        this.router.navigate(['/login']);
+      else if(localStorage.getItem('currentUser') && !localStorage.getItem('currentRoleUser'))
+        this.router.navigate(['/role']);
     }
   }
 
@@ -28,8 +33,7 @@ export class LoginComponent implements OnInit {
     $('.segment.login').addClass('loading');
     this._authService.login(form.value.username, form.value.password).subscribe(result => {
       if (result === true) {
-          //TODASHBOARD
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/role']);
       } else {
         swal({
             title: 'Opps!',

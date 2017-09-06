@@ -13,13 +13,20 @@
     <div class="item">
       <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
       <div class="content ki-left" style="padding-left: 1em">
-        <div class="ui sub header">{{ loggedUser.user_username }}</div>
-        {{ loggedUser.user_email }}
+        <div class="ui sub header">{{ loggedUser.user_fullname }}</div>
+        Logged as {{ loggedRoleUser.roles_name }}
+        <div [routerLink]="['/role']" class="mini ui compact button">
+          Change
+        </div>
       </div>
     </div>
-    <a (click)="logout()" class="item">
-      <i class="sign out large icon"></i>
-      Logout
-    </a>
+
+
+    <div (click)="logout()" class="item">
+      <div class="mini ui labeled icon red tiny button">
+        <i class="sign out icon"></i>
+        Logout
+      </div>
+    </div>
   </div>
 </div>
