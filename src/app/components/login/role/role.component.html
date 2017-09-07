@@ -7,9 +7,9 @@
                   <h4 class="ui header">
                       <img class="ui image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
                       <div class="content">
-                          {{ loggedUser.user_username }}
+                          {{ currentUser.user_username }}
                           <div class="sub header">
-                            {{ loggedUser.user_email }}
+                            {{ currentUser.user_email }}
                           </div>
                       </div>
                   </h4>
@@ -20,7 +20,7 @@
                       <div class="ui selection dropdown roledropdown">
                         <input type="text" name="choosenRole" ngModel>
                         <i class="dropdown icon"></i>
-                        <div class="default text">Gender</div>
+                        <div class="default text">Available Roles</div>
                         <div class="menu">
                         </div>
                       </div>

@@ -1,6 +1,9 @@
-<div class="ui thin sidebar inverted vertical menu visible" style="padding-top: 61px">
-    <a routerLinkActive="active" [routerLink]="[menuItem.path]" *ngFor="let menuItem of menuItems" class="item {{menuItem.class}}">
-      <i class="{{menuItem.icon}} icon"></i>
-      {{menuItem.title}}
-    </a>
-  </div>
+<div class="ui sidebar inverted overlay vertical menu">
+  <a [routerLink]="[menuItem.path]" *ngFor="let menuItem of menuItems" class="item {{menuItem.class}}">
+    <i class="{{menuItem.icon}} icon"></i>
+    {{menuItem.title}}
+  </a>
+</div>
+<div *ngIf="isVisible" (mouseover)="openSidebar()" class="ui black big launch right attached fixed icon button item trigger" style="position: fixed;top: 4.5em;left: 0px; height: auto;white-space: nowrap;overflow: hidden;z-index: 1">
+  <i class="content icon"></i>
+</div>

@@ -1,9 +1,6 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { Router }            from '@angular/router';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
-
-import { allRoutes, trainerRoutes, managerRoutes, staffRoutes } from '../../../classes/route-info';
-
+import { Component, OnInit, AfterViewChecked, AfterViewInit, ElementRef } from '@angular/core';
+import { SidebarService } from '../../../services/sidebar.service';
+import { MenuService } from '../../../services/menu.service';
 declare var $:any;
 
 @Component({
@@ -11,45 +8,33 @@ declare var $:any;
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
-  menuItems: any[];
+export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit {
+  public menuItems: any[];
+  private isVisible = true;
+  private hiddenSidebarForRoute = ['/role', '/login'];
 
-  constructor(private location: Location) { }
+  constructor(
+    private _sidebarService: SidebarService,
+    private _menuService: MenuService) {
+
+  }
 
   ngOnInit() {
-    let curRole = JSON.parse(localStorage.getItem('currentRoleUser'));
-
-    if(curRole[0].roles_code == "ST")
-      this.menuItems = staffRoutes.filter(menuItem => menuItem);
-    else if(curRole[0].roles_code == "TR")
-      this.menuItems = trainerRoutes.filter(menuItem => menuItem);
-    else if(curRole[0].roles_code == "MG")
-      this.menuItems = managerRoutes.filter(menuItem => menuItem);
-    else if(curRole[0].roles_code == "AD")
-      this.menuItems = allRoutes.filter(menuItem => menuItem);
-
-    this.getActiveMenu();
+    this._menuService.currentRoute$.subscribe(data => {
+      if(this.hiddenSidebarForRoute.indexOf(data) >= 0) {
+        this.isVisible = false;
+      } else {
+        this.menuItems = this._sidebarService.getActiveMenu();
+        this.isVisible = true;
+      }
+    });
   }
 
-  ngAfterViewInit() {
-    $('.ui.sidebar')
-    .sidebar({
-      context: $('.bottom.segment'),
-      dimPage: false,
-      closable: false
-    })
-    .sidebar('attach events', '.menu .item.trigger');
-  }
+  ngAfterViewInit() {}
 
-  getActiveMenu(){
-    var path = this.location.prepareExternalUrl(this.location.path());
-    for(var item = 0; item < this.menuItems.length; item++){
-        if(this.menuItems[item].path == path){
-            this.menuItems[item].class = "active";
-        } else {
-            this.menuItems[item].class = "";
-        }
-    }
-  }
+  ngAfterViewChecked() {}
 
+  openSidebar() {
+    this._sidebarService.toogle();
+  }
 }

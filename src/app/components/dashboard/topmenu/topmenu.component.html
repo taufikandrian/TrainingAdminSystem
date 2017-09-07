@@ -1,29 +1,20 @@
-<div class="ui top fixed menu">
-  <a class="icon item trigger">
-    <i class="sidebar large icon"></i>
-  </a>
-  <div class="item" style="padding-left: 2.1em; padding-right: 2em">
-    <img src="favicon.ico">
+<div class="ui top fixed menu" *ngIf="isVisible && currentUser">
+  <div class="item">
+    <img class="ui small image" [src]="assets.logo">
   </div>
   <div class="menu right">
-    <!-- <a [routerLink]="['/dashboard']" class="item">
-      <i class="dashboard large icon"></i>
-      Dashboard
-    </a> -->
     <div class="item">
       <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
-      <div class="content ki-left" style="padding-left: 1em">
-        <div class="ui sub header">{{ loggedUser.user_fullname }}</div>
-        Logged as {{ loggedRoleUser.roles_name }}
+      <div class="content" style="padding-left: 1em">
+        <div class="ui sub header">{{ currentUser.user_fullname }}</div>
+        Logged as {{ currentRoleUser.roles_name }}
         <div [routerLink]="['/role']" class="mini ui compact button">
           Change
         </div>
       </div>
     </div>
-
-
     <div (click)="logout()" class="item">
-      <div class="mini ui labeled icon red tiny button">
+      <div class="mini ui labeled icon purple tiny button">
         <i class="sign out icon"></i>
         Logout
       </div>

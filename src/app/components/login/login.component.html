@@ -4,14 +4,11 @@
           <div class="column"></div>
           <div class="four wide column">
               <div class="ui attached message borderradiusless">
-                  <h4 class="ui header">
-                      <img class="ui image" src="favicon.ico">
-                      <div class="content">
+                  <h4 class="ui icon header">
+                      <img class="ui large image icon" [src]="assets.logo">
+                      <!-- <div class="content">
                           Training Admin System
-                          <div class="sub header">
-                            Final Project
-                          </div>
-                      </div>
+                      </div> -->
                   </h4>
               </div>
               <form class="ui form attached padded segment login" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
@@ -24,7 +21,7 @@
                       <input placeholder="Password" type="password" name="password" ngModel required>
                   </div>
                   <div class="ui center aligned">
-                      <button class="ui primary button fluid uppercase ki-text">Login</button>
+                      <button class="ui purple button fluid uppercase ki-text">Login</button>
                   </div>
               </form>
           </div>

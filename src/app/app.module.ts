@@ -25,6 +25,11 @@ import { UserEditComponent } from './components/user/user-edit/user-edit.compone
 
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
+import { SidebarService } from './services/sidebar.service';
+import { UserService } from './services/user.service';
+import { AssetService } from './services/asset.service';
+import { JsonService } from './services/json.service';
+import { MenuService } from './services/menu.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 
 @NgModule({
@@ -53,7 +58,12 @@ import { PeriodListComponent } from './components/period/period-list/period-list
     AppRoutingModule
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    SidebarService,
+    AssetService,
+    JsonService,
+    MenuService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

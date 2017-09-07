@@ -6,6 +6,8 @@ declare var $:any;
 declare var swal: any;
 
 import { AuthenticationService } from '../../../services/authentication.service';
+import { MenuService } from '../../../services/menu.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-role',
@@ -13,28 +15,32 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrls: ['./role.component.css']
 })
 export class RoleComponent implements OnInit {
-  loggedUser;
-  loggedRoleUser;
-  currentRole;
-  constructor(private router: Router, private _authService: AuthenticationService) {
-    this.loggedUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.loggedRoleUser = JSON.parse(localStorage.getItem('currentUser')).roles;
-    this.currentRole = JSON.parse(localStorage.getItem('currentRoleUser'));
+  private currentUser;
+  private currentRoleUser;
+
+  constructor(
+    private router: Router,
+    private _authService: AuthenticationService,
+    private _menuService: MenuService,
+    private _userService: UserService ) {
+
+    this.currentUser      = this._userService.getCurrentUser();
+    this.currentRoleUser  = this._userService.getCurrentRoleUser();
+    this._menuService.setCurrentRoute(this.router.url);
   }
 
   ngOnInit() {
 
-    let dropdownValues = this.loggedRoleUser;
+    let dropdownValues = this.currentUser.roles;
 
     dropdownValues.map(function(item, key)  {
       item['name']   = item['roles_name'];
       item['value']   = item['roles_code'];
-
     });
 
     let key = 0 ;
     dropdownValues.forEach(element => {
-      if(this.currentRole && this.currentRole[0].roles_code == element['roles_code'])
+      if(this.currentRoleUser != null && this.currentRoleUser.roles_code == element['roles_code'])
         element['selected'] = true;
       if(key == 0)
         element['selected'] = true;

@@ -6,6 +6,8 @@ declare var $:any;
 declare var swal: any;
 
 import { AuthenticationService } from '../../services/authentication.service';
+import { AssetService } from '../../services/asset.service';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-login',
@@ -13,17 +15,17 @@ import { AuthenticationService } from '../../services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  private assets = {};
 
-  constructor(private router: Router, private _authService: AuthenticationService) {
-    console.log(!localStorage.getItem('currentRoleUser'));
-    if(localStorage.getItem('currentUser') && localStorage.getItem('currentRoleUser')) {
-      this.router.navigate(['/dashboard']);
-    } else {
-      if(!localStorage.getItem('currentUser'))
-        this.router.navigate(['/login']);
-      else if(localStorage.getItem('currentUser') && !localStorage.getItem('currentRoleUser'))
-        this.router.navigate(['/role']);
-    }
+  constructor(
+    private router: Router,
+    private _authService: AuthenticationService,
+    private _assetService: AssetService,
+    private _menuService: MenuService,) {
+
+    this._menuService.setCurrentRoute(this.router.url);
+    this.assets['logo'] = this._assetService.getURL('_logo');
+
   }
 
   ngOnInit() {
