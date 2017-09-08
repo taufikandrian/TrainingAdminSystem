@@ -35,6 +35,7 @@ export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit
   ngAfterViewChecked() {}
 
   openSidebar() {
-    this._sidebarService.toogle();
+    // alert(this._sidebarService.isAnimating);
+    this._sidebarService.toogle(this._sidebarService.getIsAnimation());
   }
 }
