@@ -31,6 +31,7 @@ import { AssetService } from './services/asset.service';
 import { JsonService } from './services/json.service';
 import { MenuService } from './services/menu.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
+import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { PeriodListComponent } from './components/period/period-list/period-list
     UserListComponent,
     PeriodListComponent,
     UserCreateComponent,
-    UserEditComponent
+    UserEditComponent,
+    PeriodCreateComponent
   ],
   imports: [
     BrowserModule,
