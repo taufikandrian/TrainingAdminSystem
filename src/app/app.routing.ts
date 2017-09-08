@@ -14,6 +14,7 @@ import { UserListComponent } from './components/user/user-list/user-list.compone
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 import { UserCreateComponent } from './components/user/user-create/user-create.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
+import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'periods',  component: PeriodComponent, children: [
     { path: '', redirectTo: 'list', pathMatch: 'full' },
     { path: 'list', component: PeriodListComponent },
+    { path: 'create', component: PeriodCreateComponent },
   ] },
   { path: 'users',  component: UserComponent, children: [
     { path: '', redirectTo: 'list', pathMatch: 'full' },

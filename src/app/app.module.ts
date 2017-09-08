@@ -26,6 +26,7 @@ import { UserEditComponent } from './components/user/user-edit/user-edit.compone
 //SERVICES
 import { AuthenticationService } from './services/authentication.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
+import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PeriodListComponent } from './components/period/period-list/period-list
     UserListComponent,
     PeriodListComponent,
     UserCreateComponent,
-    UserEditComponent
+    UserEditComponent,
+    PeriodCreateComponent
   ],
   imports: [
     BrowserModule,
