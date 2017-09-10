@@ -19,10 +19,11 @@ export class EnrollmentComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private _authenticationService: AuthenticationService,
+    private _authService: AuthenticationService,
     private _assetService: AssetService,
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
+      this._authService.check();
       this._menuService.setCurrentRoute(this.router.url);
     }
 

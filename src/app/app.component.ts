@@ -8,13 +8,5 @@ import { Router }    from '@angular/router';
 })
 
 export class AppComponent {
-  constructor(private router: Router) {
-    // if(!localStorage.getItem('currentRoleUser')) {
-    //   this.router.navigate(['/role']);
-    // }
-
-    // if (!localStorage.getItem('currentUser')) {
-    //   this.router.navigate(['/login']);
-    // }
-  }
+  constructor(private router: Router) {}
 }

@@ -11,7 +11,7 @@
                       </div> -->
                   </h4>
               </div>
-              <form class="ui form attached padded segment login" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+              <form class="ui form attached padded segment login" [ngClass]="{'loading': isLoading}" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
                   <div class="field">
                       <label class="capitalize">Username</label>
                       <input placeholder="Username" type="text" name="username" ngModel required>

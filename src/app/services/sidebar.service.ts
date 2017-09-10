@@ -9,8 +9,7 @@ declare var $:any;
 
 @Injectable()
 export class SidebarService {
-  private sidebarSelector = '.ui.sidebar';
-  private isAnimating = false;
+  public sidebarSelector = '.ui.sidebar';
   public menuItems: any[];
   public currentUser;
   public currentRoleUser;
@@ -18,13 +17,12 @@ export class SidebarService {
   private sidebarOptions  = {
     context: $('body'),
     transition: 'overlay',
+    silent: true,
     onHide: function() {
       // alert("beofre hide");
-      this.isAnimating = true;
     },
     onHidden: function() {
       // alert("after hide");
-      this.isAnimating = false;
     }
   };
 
@@ -32,18 +30,17 @@ export class SidebarService {
     private router: Router,
     private _userService: UserService) {}
 
-  toogle(isAnimating): void {
-    console.log(this.isAnimating);
-    if(!isAnimating) {
-      // alert("on mouse hover");
-      $(this.sidebarSelector)
-      .sidebar(this.sidebarOptions)
-      .sidebar('toggle');
-    }
+  getSidebar(): any {
+    return $(this.sidebarSelector)
+            .sidebar(this.sidebarOptions);
   }
 
-  getIsAnimation(): boolean {
-    return this.isAnimating;
+  toogle(): void {
+    if(!$(this.sidebarSelector).hasClass('animating')) {
+      $(this.sidebarSelector)
+        .sidebar(this.sidebarOptions)
+        .sidebar('toggle');
+    }
   }
 
   hide(): void {
@@ -61,8 +58,7 @@ export class SidebarService {
   getActiveMenu(): any[] {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
-    $(this.sidebarSelector)
-    .sidebar(this.sidebarOptions);
+    $(this.sidebarSelector).sidebar(this.sidebarOptions);
     if(this.currentRoleUser.roles_code == "ST")
       this.menuItems = staffRoutes.filter(menuItem => menuItem);
     else if(this.currentRoleUser.roles_code == "TR")

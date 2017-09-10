@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewChecked } from '@angular/core';
 import { Router }            from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 declare var $:any;
 declare var swal: any;
+import { slideInOutAnimation } from '../../../animations';
 
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MenuService } from '../../../services/menu.service';
@@ -12,11 +13,15 @@ import { UserService } from '../../../services/user.service';
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
-  styleUrls: ['./role.component.css']
+  animations: [slideInOutAnimation],
+  styleUrls: ['./role.component.css'],
+  host: { '[@slideInOutAnimation]': '' }
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent implements OnInit, AfterViewChecked {
   private currentUser;
   private currentRoleUser;
+  private isLoading = false;
+  private choosenRoleText = '';
 
   constructor(
     private router: Router,
@@ -26,6 +31,7 @@ export class RoleComponent implements OnInit {
 
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
+
     this._menuService.setCurrentRoute(this.router.url);
   }
 
@@ -40,24 +46,41 @@ export class RoleComponent implements OnInit {
 
     let key = 0 ;
     dropdownValues.forEach(element => {
-      if(this.currentRoleUser != null && this.currentRoleUser.roles_code == element['roles_code'])
+      if(this.currentRoleUser != null && this.currentRoleUser.roles_code == element['roles_code']) {
+        this.choosenRoleText = this.currentRoleUser.roles_name;
         element['selected'] = true;
-      if(key == 0)
+      }
+      else if(key == 0) {
+        this.choosenRoleText = dropdownValues[0].roles_name;
         element['selected'] = true;
+      }
       key++;
     });
+
     $('.ui.roledropdown')
       .dropdown({
-        values: dropdownValues
+        values: dropdownValues,
+        onChange: function(value, text, $selected) {
+          $('select[name="choosenRole"]').attr('value', value);
+        }
       })
     ;
   }
 
+  ngAfterViewChecked() {
+    this.isLoading = false;
+  }
+
+  dropdownChange() {
+    this.choosenRoleText = $('.ui.roledropdown').dropdown('get text');
+  }
+
   setRole(form: NgForm) {
-    $('.segment.setRole').addClass('loading');
-    if(this._authService.setRole($('.ui.roledropdown').dropdown('get value'))){
+    this.isLoading = true;
+    if(this._authService.setRole($('select[name="choosenRole"]').attr('value'))){
       this.router.navigate(['/dashboard']);
     } else {
+      this.isLoading = false;
       swal({
           title: 'Opps!',
           text: "There is an error in our Application!",

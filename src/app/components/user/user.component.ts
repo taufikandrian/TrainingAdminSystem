@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router, NavigationEnd }            from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 declare var $:any;
@@ -16,16 +16,26 @@ import { SidebarService } from '../../services/sidebar.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
+  private activeRoute = '/users';
   constructor(
     private router: Router,
-    private _authenticationService: AuthenticationService,
+    private _authService: AuthenticationService,
     private _assetService: AssetService,
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
+      this._authService.check();
       this._menuService.setCurrentRoute(this.router.url);
-    }
 
+      router.events.subscribe((val) => {
+        if(val instanceof NavigationEnd)
+          this.activeRoute = val.url;
+      })
+  }
+
+  isActiveRoute(routeURL) {
+    return routeURL == this.activeRoute;
+  }
+  
   ngOnInit() {
     this._sidebarService.hide();
   }

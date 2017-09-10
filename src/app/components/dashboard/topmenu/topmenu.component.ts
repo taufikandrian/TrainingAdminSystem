@@ -19,7 +19,6 @@ export class TopmenuComponent implements OnInit {
   private currentUser;
   private currentRoleUser;
   private isVisible = true;
-  private hiddenMenuForRoute = ['/role', '/login'];
 
   constructor(
     private router: Router,
@@ -34,7 +33,7 @@ export class TopmenuComponent implements OnInit {
     this._menuService.currentRoute$.subscribe(data => {
       this.currentUser      = this._userService.getCurrentUser();
       this.currentRoleUser  = this._userService.getCurrentRoleUser();
-      if(this.hiddenMenuForRoute.indexOf(data) >= 0) {
+      if(this._menuService.hiddenSidebarForRoute.indexOf(data) >= 0) {
         this.isVisible = false;
       } else {
         this.isVisible = true;

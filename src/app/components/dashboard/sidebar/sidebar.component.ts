@@ -11,7 +11,6 @@ declare var $:any;
 export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit {
   public menuItems: any[];
   private isVisible = true;
-  private hiddenSidebarForRoute = ['/role', '/login'];
 
   constructor(
     private _sidebarService: SidebarService,
@@ -21,7 +20,7 @@ export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit
 
   ngOnInit() {
     this._menuService.currentRoute$.subscribe(data => {
-      if(this.hiddenSidebarForRoute.indexOf(data) >= 0) {
+      if(this._menuService.hiddenSidebarForRoute.indexOf(data) >= 0) {
         this.isVisible = false;
       } else {
         this.menuItems = this._sidebarService.getActiveMenu();
@@ -35,7 +34,6 @@ export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit
   ngAfterViewChecked() {}
 
   openSidebar() {
-    // alert(this._sidebarService.isAnimating);
-    this._sidebarService.toogle(this._sidebarService.getIsAnimation());
+    this._sidebarService.toogle();
   }
 }

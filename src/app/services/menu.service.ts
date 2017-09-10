@@ -3,6 +3,8 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class MenuService {
   private currentRoute = new Subject<string>();
+  
+  public hiddenSidebarForRoute = ['/role', '/login'];
   public currentRoute$ = this.currentRoute.asObservable();
   constructor() { }
 

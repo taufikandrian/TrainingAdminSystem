@@ -1,6 +1,7 @@
 <!-- CONTENT -->
 <div class="ui container" style="padding-top: 5em">
   <div class="ui basic segment">
+    <app-user-list *ngIf="isActiveRoute('/users')"></app-user-list>
     <router-outlet>
     </router-outlet>
   </div>
