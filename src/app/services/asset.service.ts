@@ -14,6 +14,9 @@ export class AssetService {
       case "_logo":
         choosenUrl = './assets/logo.png';
         break;
+      case "_logo_tas":
+        choosenUrl = './assets/tas_.png';
+        break;
       default:
         choosenUrl = './assets/tas.png';
         break;

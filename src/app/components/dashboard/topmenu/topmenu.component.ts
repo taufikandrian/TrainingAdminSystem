@@ -26,7 +26,7 @@ export class TopmenuComponent implements OnInit {
     private _menuService: MenuService,
     private _assetService: AssetService,
     private _userService: UserService) {
-      this.assets['logo'] = this._assetService.getURL('_logo');
+      this.assets['logo'] = this._assetService.getURL('_logo_tas');
   }
 
   ngOnInit() {
