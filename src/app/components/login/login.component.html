@@ -4,11 +4,8 @@
           <div class="column"></div>
           <div class="four wide column">
               <div class="ui attached message borderradiusless">
-                  <h4 class="ui icon header">
+                  <h4 class="ui header">
                       <img class="ui large image icon" [src]="assets.logo">
-                      <!-- <div class="content">
-                          Training Admin System
-                      </div> -->
                   </h4>
               </div>
               <form class="ui form attached padded segment login" [ngClass]="{'loading': isLoading}" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
