@@ -19,16 +19,17 @@ export class AuthenticationService {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
 
-    this.check();
+    // this.check();
   }
 
   check(): void {
-    if(this.currentUser && this.currentRoleUser) {
-      this.router.navigate(['/dashboard']);
+    if(this._userService.getCurrentUser() && this._userService.getCurrentRoleUser()) {
+      if(this.router.url == '/login')
+        this.router.navigate(['/dashboard']);
     } else {
-      if(!this.currentUser)
+      if(!this._userService.getCurrentUser())
         this.router.navigate(['/login']);
-      else if(this.currentUser && !this.currentRoleUser)
+      else if(this._userService.getCurrentUser() && !this._userService.getCurrentRoleUser())
         this.router.navigate(['/role']);
     }
   }

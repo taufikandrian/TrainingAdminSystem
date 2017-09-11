@@ -27,7 +27,7 @@ const routes: Routes = [
     { path: 'create', component: PeriodCreateComponent },
   ] },
   { path: 'users',  component: UserComponent, children: [
-    { path: '', redirectTo: 'list', pathMatch: 'full' },
+    // { path: '', redirectTo: 'list', pathMatch: 'full' },
     { path: 'list', component: UserListComponent },
     { path: 'create', component: UserCreateComponent },
     { path: 'edit/:id', component: UserEditComponent },

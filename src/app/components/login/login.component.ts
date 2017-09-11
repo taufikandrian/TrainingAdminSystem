@@ -16,14 +16,15 @@ import { MenuService } from '../../services/menu.service';
 })
 export class LoginComponent implements OnInit {
   private assets = {};
-
+  private isLoading = false;
   constructor(
     private router: Router,
     private _authService: AuthenticationService,
     private _assetService: AssetService,
     private _menuService: MenuService,) {
-
+    this._authService.check();
     this._menuService.setCurrentRoute(this.router.url);
+    
     this.assets['logo'] = this._assetService.getURL('_logo');
 
   }
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(form: NgForm) {
-    $('.segment.login').addClass('loading');
+    this.isLoading = true;
     this._authService.login(form.value.username, form.value.password).subscribe(result => {
       if (result === true) {
           this.router.navigate(['/role']);
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
             width: 300,
         });
       }
-      $('.segment.login').removeClass('loading');
+      this.isLoading = false;
     });
   }
 }
