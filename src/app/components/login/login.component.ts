@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     private _menuService: MenuService,) {
     this._authService.check();
     this._menuService.setCurrentRoute(this.router.url);
-    
+
     this.assets['logo'] = this._assetService.getURL('_logo');
 
   }
@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
 
   login(form: NgForm) {
     this.isLoading = true;
-    this._authService.login(form.value.username, form.value.password).subscribe(result => {
+    this._authService.login(form.value.username, form.value.password)
+    .subscribe(result => {
       if (result === true) {
           this.router.navigate(['/role']);
       } else {
@@ -46,6 +47,17 @@ export class LoginComponent implements OnInit {
         });
       }
       this.isLoading = false;
+    },
+    err => {
+      if(!err.ok) {
+        swal({
+          title: 'Opps!',
+          text: "The server is down!",
+          type: 'error',
+          width: 300,
+        });
+        this.isLoading = false;
+      }
     });
   }
 }
