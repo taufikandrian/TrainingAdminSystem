@@ -1,3 +1,40 @@
-<p>
-  period-create works!
-</p>
+<h1 class="ui header left aligned">
+  <div class="content">
+  Period
+  <div class="sub header">
+  Create New
+  </div>
+  </div>
+</h1>
+<form class="ui form">
+  <div class="field">
+    <label>Training Name</label>
+    <input type="text" name="training-name" placeholder="Training Name">
+  </div>
+  <div class="fields">
+      <div class="field">
+          <label>Start Date</label>
+          <input type="date" name="start-date" placeholder="Start Date">
+      </div>
+      <div class="field">
+          <label>End Date</label>
+          <input type="date" name="end-date" placeholder="End Date">
+      </div>
+  </div>
+  <div class="field">
+      <label>Period Type</label>
+      <div class="ui selection dropdown">
+          <input type="hidden" name="type">
+          <i class="dropdown icon"></i>
+          <div class="default text">Type</div>
+          <div class="menu">
+            <div class="item" data-value="active">Fixed</div>
+            <div class="item" data-value="inactive">Periodically</div>
+          </div>
+      </div>
+  </div>
+  <button class="ui primary button" type="submit">Submit</button>
+  <a [routerLink]="['/periods/list']"><button class="ui button">
+      Back
+  </button></a>
+</form>
