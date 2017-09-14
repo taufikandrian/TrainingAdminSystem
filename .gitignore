@@ -9,7 +9,7 @@ target/
 /out-tsc
 
 # java application setting
-/src/main/resources/application.properties
+*.properties
 
 # dependencies
 /node_modules
