@@ -1,13 +1,21 @@
 package com.mitrais.apps.trainingsystem.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "user_tb")
-public class User extends Auditable<String> {
+public class User extends Auditable<String> implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GenericGenerator(name = "generator", strategy = "guid", parameters = {})
 	@GeneratedValue(generator = "generator")
@@ -42,9 +50,6 @@ public class User extends Auditable<String> {
 
     public String getId() {
         return id;
-    }
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFullName() {
@@ -86,11 +91,37 @@ public class User extends Auditable<String> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	@ManyToOne(optional=false) 
+    @JoinColumn(name="division_id",referencedColumnName="division_id")
+    private Division division;
+	public Division getDivision() {
+		return division;
+	}
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                ", name='" + fullName + '\'' +
-//                '}';
-//    }
+	@ManyToOne(optional=false)
+    @JoinColumn(name="grade_id",referencedColumnName="grade_id")
+    private Grade grade;
+	public Grade getGrade() {
+		return grade;
+	}
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="user_role_tb",
+            joinColumns=
+            @JoinColumn(name="user_id", referencedColumnName="user_id"),
+      inverseJoinColumns=
+            @JoinColumn(name="role_id", referencedColumnName="role_id")
+    )
+	private List<Role> roleList;
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+	
+	@Override
+	public String toString() {
+		return "User{" +
+				", name='" + fullName + '\'' +
+				'}';
+	}
 }
