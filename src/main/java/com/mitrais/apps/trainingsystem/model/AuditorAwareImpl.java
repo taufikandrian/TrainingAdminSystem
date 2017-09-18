@@ -1,9 +1,6 @@
 package com.mitrais.apps.trainingsystem.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
-
-import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 	
