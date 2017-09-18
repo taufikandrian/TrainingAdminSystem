@@ -7,4 +7,5 @@ import com.mitrais.apps.trainingsystem.model.User;
 public interface UserRepository extends CrudRepository<User, Integer> {
     User findByFullName(String name);
     User findByAccountName(String accountName);
+    User findByPassword(String password);
 }
