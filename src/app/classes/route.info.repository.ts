@@ -1,4 +1,4 @@
-import { RouteInfo } from './RouteInfo';
+import { RouteInfo } from './route.info';
 
 const routeDashboard    = { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' };
 const routePeriod       = { path: '/periods', title: 'Periods',  icon:'calendar', class: '' };

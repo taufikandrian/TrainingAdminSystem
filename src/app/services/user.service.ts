@@ -39,4 +39,8 @@ export class UserService {
     return this.currentRoleUser;
   }
 
+  // getAllUsers() : User[] {
+
+  // }
+
 }

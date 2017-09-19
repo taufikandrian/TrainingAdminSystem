@@ -35,6 +35,10 @@ public class JsonFormatter {
 		this.jsonFinal.put("confirmed", confirmed);
 	}
 	
+	public void appendToFinalJson(String indexName, Object object) {
+		this.jsonFinal.put(indexName, object);
+	}
+	
 	public void appendToData(String indexName, Object object) {
 		this.jsonData.put(indexName, object);
 	}

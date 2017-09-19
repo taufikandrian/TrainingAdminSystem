@@ -113,6 +113,7 @@ public class User extends Auditable<String> implements Serializable {
 		return grade;
 	}
 	
+	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="user_role_tb",
             joinColumns=

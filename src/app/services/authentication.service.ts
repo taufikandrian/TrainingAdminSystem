@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import { UserService } from './user.service';
-import { Environment } from '../classes/Environment';
+import { Environment } from '../classes/environment';
 
 @Injectable()
 export class AuthenticationService {
@@ -43,7 +43,8 @@ export class AuthenticationService {
         var responseData = response.json();
         if (responseData.status == 'success') {
           localStorage.setItem('currentUser', JSON.stringify(responseData.data.user));
-          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.user.roleList));
+          console.log(responseData.data.roles);
+          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.roles));
         }
         return response;
       });
@@ -54,7 +55,7 @@ export class AuthenticationService {
       .map((response: Response) => {
         var responseData = response.json();
         if(responseData.confirmed === true) {
-          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.user.roleList));
+          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.roles));
         }
         return response;
       });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { allRoutes, trainerRoutes, managerRoutes, staffRoutes } from '../classes/RouteInfoRepository';
+import { allRoutes, trainerRoutes, managerRoutes, staffRoutes } from '../classes/route.info.repository';
 
 import { UserService } from './user.service';
 

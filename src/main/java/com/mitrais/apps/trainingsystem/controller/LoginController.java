@@ -41,6 +41,7 @@ public class LoginController extends BaseController {
 			responseJson.setMessage("Login succsesfully!");
 			
 			responseJson.appendToData("user", tryUser);
+			responseJson.appendToData("roles", tryUser.getRoleList());
 		} else {
 			responseJson.setConfirmed(false);
 			responseJson.setStatus("failed");

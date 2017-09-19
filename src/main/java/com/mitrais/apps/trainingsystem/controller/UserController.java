@@ -35,7 +35,7 @@ public class UserController extends BaseController {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			
-			responseJson.appendToData("user", currentuser);
+			responseJson.appendToData("roles", currentuser.getRoleList());
 		} else {
 			responseJson.setConfirmed(false);
 			responseJson.setStatus("failed");

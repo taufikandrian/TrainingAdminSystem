@@ -21,7 +21,7 @@ export class RoleComponent implements OnInit {
   private currentUser;
   private currentRolesUser;
   private currentRoleUser;
-  private isLoading = true;
+  private isLoading = false;
   private choosenRoleText = '';
 
   constructor(
