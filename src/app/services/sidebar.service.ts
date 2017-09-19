@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { allRoutes, trainerRoutes, managerRoutes, staffRoutes } from '../classes/route-info';
+import { allRoutes, trainerRoutes, managerRoutes, staffRoutes } from '../classes/RouteInfoRepository';
 
 import { UserService } from './user.service';
 
@@ -59,13 +59,13 @@ export class SidebarService {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
     $(this.sidebarSelector).sidebar(this.sidebarOptions);
-    if(this.currentRoleUser.roles_code == "ST")
+    if(this.currentRoleUser.roleCode == "ST")
       this.menuItems = staffRoutes.filter(menuItem => menuItem);
-    else if(this.currentRoleUser.roles_code == "TR")
+    else if(this.currentRoleUser.roleCode == "TR")
       this.menuItems = trainerRoutes.filter(menuItem => menuItem);
-    else if(this.currentRoleUser.roles_code == "MG")
+    else if(this.currentRoleUser.roleCode == "MN")
       this.menuItems = managerRoutes.filter(menuItem => menuItem);
-    else if(this.currentRoleUser.roles_code == "AD")
+    else if(this.currentRoleUser.roleCode == "AD")
       this.menuItems = allRoutes.filter(menuItem => menuItem);
 
     var path = this.router.url;

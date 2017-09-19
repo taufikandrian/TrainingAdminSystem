@@ -8,6 +8,7 @@ declare var swal: any;
 import { AuthenticationService } from '../../services/authentication.service';
 import { AssetService } from '../../services/asset.service';
 import { MenuService } from '../../services/menu.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _authService: AuthenticationService,
     private _assetService: AssetService,
+    private _userService: UserService,
     private _menuService: MenuService,) {
     this._authService.check();
     this._menuService.setCurrentRoute(this.router.url);
@@ -30,20 +32,51 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+      $('.ui.form.login')
+        .form({
+          fields: {
+            username: {
+              identifier: 'username',
+              rules: [{
+                type : 'empty',
+                prompt : 'Please enter your login name'
+              }]
+            },
+            password: {
+              identifier: 'password',
+              rules: [{
+                type : 'empty',
+                prompt : 'Please enter your password'
+              }]
+            }
+          }, onSuccess: (event, fields) => {
+            event.preventDefault();
+            this.login(fields);
+          }, inline: true, on : 'blur'
+      });
   }
 
-  login(form: NgForm) {
+  login(fields) {
     this.isLoading = true;
-    this._authService.login(form.value.username, form.value.password)
+    this._authService.login(fields)
     .subscribe(result => {
-      if (result === true) {
+      if (result.json().confirmed === true) {
           this.router.navigate(['/role']);
       } else {
         swal({
             title: 'Opps!',
-            text: "Username or password is not match in our Database!",
+            html: '<h2 class="ui header">\
+                    <div class="sub header">'+ result.json().message +'</div>\
+                  </h2>',
             type: 'error',
             width: 300,
+            buttonsStyling: false,
+            confirmButtonText: 'Oke!',
+            confirmButtonClass: 'ui button',
+            // title: 'Opps!',
+            // text: result.json().message,
+            // type: 'error',
+            // width: 300,
         });
       }
       this.isLoading = false;

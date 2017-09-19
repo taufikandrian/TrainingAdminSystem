@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.borderradiusless {
+  border-radius: 0 !important;
+}
+
+.swal2-modal {
+  border-radius: 0 !important;
+}

@@ -1,4 +1,4 @@
-import { IRouteInfo } from './iroute-info';
+import { RouteInfo } from './RouteInfo';
 
 const routeDashboard    = { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' };
 const routePeriod       = { path: '/periods', title: 'Periods',  icon:'calendar', class: '' };
@@ -7,7 +7,7 @@ const routeEnrollments  = { path: '/enrollments', title: 'Enrollments',  icon:'e
 const routeAchievement  = { path: '/achievements', title: 'Achievements',  icon:'diamond', class: '' };
 const routeTraining     = { path: '/trainings', title: 'Trainings',  icon:'settings', class: '' };
 
-export const allRoutes: IRouteInfo[] = [
+export const allRoutes: RouteInfo[] = [
   routeDashboard,
   routePeriod,
   routeUser,
@@ -16,7 +16,7 @@ export const allRoutes: IRouteInfo[] = [
   routeTraining
 ];
 
-export const trainerRoutes: IRouteInfo[] = [
+export const trainerRoutes: RouteInfo[] = [
   routeDashboard,
   routePeriod,
   routeEnrollments,
@@ -24,14 +24,14 @@ export const trainerRoutes: IRouteInfo[] = [
   routeTraining
 ];
 
-export const managerRoutes: IRouteInfo[] = [
+export const managerRoutes: RouteInfo[] = [
   routeDashboard,
   routePeriod,
   routeEnrollments,
   routeAchievement,
 ];
 
-export const staffRoutes: IRouteInfo[] = [
+export const staffRoutes: RouteInfo[] = [
   routeDashboard,
   routePeriod,
   routeEnrollments,

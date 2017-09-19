@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this._sidebarService.hide();
   }
 

@@ -7,33 +7,24 @@
                   <h4 class="ui header">
                       <img class="ui image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
                       <div class="content">
-                          {{ currentUser.user_username }}
+                          {{ currentUser.fullName }}
                           <div class="sub header">
-                            {{ currentUser.user_email }}
+                            {{ currentUser.email }}
                           </div>
                       </div>
                   </h4>
               </div>
               <form class="ui form attached padded segment role" [ngClass]="{'loading': isLoading}" #role="ngForm" (ngSubmit)="setRole(role)">
                   <div class="field">
-                      <label class="capitalize">Choose Role</label>
-                      <select name="choosenRole" ngModel (ngModelChange)="dropdownChange()" class="ui dropdown selection roledropdown">
-                      </select>
-                      <!-- <div class="ui selection dropdown roledropdown">
-                        <input type="text" name="choosenRole" (ngModelChange)="dropdownChange()" [(ngModel)]="choosenRole">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Available Roles</div>
-                        <div class="menu">
-                        </div>
-                      </div> -->
+                    <label class="capitalize">Choose Role</label>
+                    <select name="choosenRole" ngModel (ngModelChange)="dropdownChange()" class="ui dropdown search roledropdown"></select>
                   </div>
-                  <!-- <div class="field">
-                      <label class="capitalize">Password</label>
-                      <input placeholder="Password" type="password" name="password" ngModel required>
-                  </div> -->
-                  <div class="ui center aligned">
-                      <button class="ui primary button fluid uppercase ki-text">Sign as {{ choosenRoleText }}</button>
+                  <div class="ui center aligned field">
+                    <button class="ui primary button fluid uppercase ki-text">Sign as {{ choosenRoleText }}</button>
                   </div>
+                  <div class="ui center aligned field">
+                    <div (click)="logout()" class="ui button fluid uppercase ki-text">Sign out</div>
+                </div>
               </form>
           </div>
           <div class="column">

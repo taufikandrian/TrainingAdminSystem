@@ -6,17 +6,14 @@
     <div class="item">
       <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
       <div class="content" style="padding-left: 1em">
-        <div class="ui sub header">{{ currentUser.user_fullname }}</div>
-        Logged as {{ currentRoleUser.roles_name }}
-        <div [routerLink]="['/role']" class="mini ui compact button">
-          Change
+        <div class="ui sub header">{{ currentUser.fullName }}</div>
+        Logged as {{ currentRoleUser.roleName }}
+        <div [routerLink]="['/role']" class="mini ui compact green button">
+          Sign as
         </div>
-      </div>
-    </div>
-    <div (click)="logout()" class="item">
-      <div class="mini ui labeled icon purple tiny button">
-        <i class="sign out icon"></i>
-        Logout
+        <div (click)="logout()" class="mini ui compact red button">
+          Sign out
+        </div>
       </div>
     </div>
   </div>

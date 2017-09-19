@@ -30,7 +30,9 @@ export class TopmenuComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this._menuService.currentRoute$.subscribe(data => {
+
       this.currentUser      = this._userService.getCurrentUser();
       this.currentRoleUser  = this._userService.getCurrentRoleUser();
       if(this._menuService.hiddenSidebarForRoute.indexOf(data) >= 0) {

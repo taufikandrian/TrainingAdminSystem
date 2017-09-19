@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user_tb")
@@ -14,6 +17,9 @@ public class User extends Auditable<String> implements Serializable {
 	/**
 	 * 
 	 */
+	@Transient
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,6 +37,7 @@ public class User extends Auditable<String> implements Serializable {
     @Column(name = "user_account_name")
     private String accountName;
     
+    @JsonIgnore
     @Column(name = "user_password")
     private String password;
     
@@ -41,11 +48,11 @@ public class User extends Auditable<String> implements Serializable {
     }
 
     public User(String name, String email, String accountName, String password, String status) {
-        this.fullName 		= name;
-        this.email 			= email;
-        this.accountName 	= accountName;
-        this.password 		= password;
-        this.status 		= status;
+    	this.setFullName(name);
+    	this.setEmail(email);
+    	this.setAccountName(accountName);
+        this.setPassword(password);
+        this.setStatus(status);
     }
 
     public String getId() {
@@ -81,7 +88,7 @@ public class User extends Auditable<String> implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = passwordEncoder.encode(password);;
 	}
 
 	public String getStatus() {

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router }            from '@angular/router';
-import { Headers, Http, Response } from '@angular/http';
+import { Headers, Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import { UserService } from './user.service';
+import { Environment } from '../classes/Environment';
 
 @Injectable()
 export class AuthenticationService {
@@ -18,42 +19,53 @@ export class AuthenticationService {
     private _userService: UserService) {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
-
-    // this.check();
   }
 
   check(): void {
     if(this._userService.getCurrentUser() && this._userService.getCurrentRoleUser()) {
-      if(this.router.url == '/login')
+      if(this.router.url == '/login') {
         this.router.navigate(['/dashboard']);
+      }
     } else {
-      if(!this._userService.getCurrentUser())
+      if(!this._userService.getCurrentUser()) {
         this.router.navigate(['/login']);
-      else if(this._userService.getCurrentUser() && !this._userService.getCurrentRoleUser())
+      }
+      else if(this._userService.getCurrentUser() && !this._userService.getCurrentRoleUser()) {
         this.router.navigate(['/role']);
+      }
     }
   }
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post('http://localhost:3000/api/auth', { username: username, password: password })
+  login(data): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/auth', data)
       .map((response: Response) => {
+        console.log(response.json());
         var responseData = response.json();
         if (responseData.status == 'success') {
           localStorage.setItem('currentUser', JSON.stringify(responseData.data.user));
-          return true;
-        } else {
-          return false;
+          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.user.roleList));
         }
+        return response;
+      });
+  }
+
+  updateRole(data): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/users/getRole', data)
+      .map((response: Response) => {
+        var responseData = response.json();
+        if(responseData.confirmed === true) {
+          localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.user.roleList));
+        }
+        return response;
       });
   }
 
   setRole(role): boolean {
     if(role) {
-      let userRoles = JSON.parse(localStorage.getItem('currentUser')).roles;
+      let userRoles = this._userService.getCurrentRolesUser();
       let userRole = userRoles.filter(function(roled){
-        return roled.roles_code == role;
+        return roled.roleCode == role;
       });
-
       localStorage.setItem('currentRoleUser', JSON.stringify(userRole[0]));
       return true;
     } else {
@@ -63,6 +75,7 @@ export class AuthenticationService {
 
   logout(): boolean {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentRolesUser');
     localStorage.removeItem('currentRoleUser');
     return true;
   }

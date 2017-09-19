@@ -1,43 +1,54 @@
 package com.mitrais.apps.trainingsystem.controller;
 
 import net.minidev.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
+import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 @RestController
 public class LoginController extends BaseController {
-
+	
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
+	private boolean checkPassword(String originPassword, String encodedPassword) {
+		return this.passwordEncoder.matches(originPassword, encodedPassword);
+	}
+	
 	@Autowired
-	private UserRepository userRepo;
+	UserRepository userRepo;
+	
+	@GetMapping("/")
+	private String apiBase() {
+		return "API Works";
+	}
 	
 	@PostMapping("/auth")
-    public ResponseEntity getAccess(@RequestParam("fuser") String accountName,@RequestParam("fpass") String password){
-		JSONObject json = new JSONObject();
-		JSONObject jsonData = new JSONObject();
-		JSONObject jsonUser = new JSONObject();
-		User cekUserName = new User();
-		//User CekPassword = new User();
-		cekUserName = this.userRepo.findByAccountName(accountName);
-		if(cekUserName != null  && cekUserName.getPassword() != password) {
-			jsonData.put("user", cekUserName);
-			json.put("status", "success");
-			json.put("code", "200");
-			json.put("data", jsonData);
+	public ResponseEntity<JSONObject> getAccess(@RequestBody JSONObject data) {
+		String username = (String) data.get("username");
+		String password = (String) data.get("password");
+		JsonFormatter responseJson = new JsonFormatter();
+		User tryUser = new User();
+		tryUser = this.userRepo.findByAccountName(username);
+		if(tryUser != null && this.checkPassword(password, tryUser.getPassword())) {
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.setMessage("Login succsesfully!");
+			
+			responseJson.appendToData("user", tryUser);
 		} else {
-			jsonUser.put("username", accountName);
-			jsonData.put("message", "Username and password does not match in our database");
-			jsonData.put("user", jsonUser);
-			json.put("status", "failed");
-			json.put("code", "404");
-			json.put("data", jsonData);
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Username and password does not match in our database");
+			
+			responseJson.appendToData("username", username);
 		}
-		return ResponseEntity.ok(json);
+		return ResponseEntity.ok(responseJson.getJson());
 	}
 }

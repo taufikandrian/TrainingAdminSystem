@@ -8,7 +8,7 @@
                       <img class="ui large image icon" [src]="assets.logo">
                   </h4>
               </div>
-              <form class="ui form attached padded segment login" [ngClass]="{'loading': isLoading}" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+              <form class="ui form attached padded segment login" [ngClass]="{'loading': isLoading}" #loginForm="ngForm">
                   <div class="field">
                       <label class="capitalize">Username</label>
                       <input placeholder="Username" type="text" name="username" ngModel required>
@@ -18,7 +18,7 @@
                       <input placeholder="Password" type="password" name="password" ngModel required>
                   </div>
                   <div class="ui center aligned">
-                      <button class="ui purple button fluid uppercase ki-text">Login</button>
+                      <button type="submit" class="ui purple button fluid uppercase ki-text">Login</button>
                   </div>
               </form>
           </div>
