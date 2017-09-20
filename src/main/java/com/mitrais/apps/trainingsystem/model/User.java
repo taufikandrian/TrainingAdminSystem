@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.map.annotate.JsonView;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,7 +30,7 @@ public class User extends Auditable<String> implements Serializable {
     @Column(name = "user_id", columnDefinition="uniqueidentifier")
     private String id;
     
-    @Column(name = "user_full_name", nullable = false)
+    @Column(name = "user_full_name")
     private String fullName;
     
 	@Column(name = "user_email")
@@ -37,7 +39,6 @@ public class User extends Auditable<String> implements Serializable {
     @Column(name = "user_account_name")
     private String accountName;
     
-    @JsonIgnore
     @Column(name = "user_password")
     private String password;
     
@@ -99,13 +100,15 @@ public class User extends Auditable<String> implements Serializable {
 		this.status = status;
 	}
 	
+	@JsonIgnore
 	@ManyToOne(optional=false) 
     @JoinColumn(name="division_id",referencedColumnName="division_id")
     private Division division;
 	public Division getDivision() {
 		return division;
 	}
-
+	
+	@JsonIgnore
 	@ManyToOne(optional=false)
     @JoinColumn(name="grade_id",referencedColumnName="grade_id")
     private Grade grade;
@@ -113,7 +116,7 @@ public class User extends Auditable<String> implements Serializable {
 		return grade;
 	}
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="user_role_tb",
             joinColumns=
