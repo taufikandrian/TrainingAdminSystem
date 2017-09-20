@@ -29,7 +29,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { SidebarService } from './services/sidebar.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
+import { AlertService } from './services/alert.service';
 import { JsonService } from './services/json.service';
+import { DatatableService } from './services/datatable.service';
 import { MenuService } from './services/menu.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
@@ -51,7 +53,7 @@ import { PeriodCreateComponent } from './components/period/period-create/period-
     PeriodListComponent,
     UserCreateComponent,
     UserEditComponent,
-    PeriodCreateComponent
+    PeriodCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,9 @@ import { PeriodCreateComponent } from './components/period/period-create/period-
     AssetService,
     JsonService,
     MenuService,
-    UserService
+    UserService,
+    DatatableService,
+    AlertService,
   ],
   bootstrap: [AppComponent]
 })

@@ -33,13 +33,12 @@ export class RoleComponent implements OnInit {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRolesUser = this._userService.getCurrentRolesUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
-
     this._authService.check();
-    this._menuService.setCurrentRoute(this.router.url);
+
   }
 
   ngOnInit() {
-
+    this._menuService.setCurrentRoute(this.router.url);
     this._authService.updateRole({userID: this._userService.getUserID()})
     .subscribe(result => {
       if (result.json().confirmed === true) {

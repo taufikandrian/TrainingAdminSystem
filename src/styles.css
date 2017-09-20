@@ -6,3 +6,11 @@
 .swal2-modal {
   border-radius: 0 !important;
 }
+
+/* table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.dataTable tbody td.selected {
+  color: red;
+} */
+
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+  background-color: rgba(0, 194, 243, 0.11);
+}

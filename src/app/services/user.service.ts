@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Http, Response, RequestOptions } from '@angular/http';
 
 import { JsonService } from './json.service';
+
+import { User } from '../classes/user';
+import { Environment } from '../classes/environment';
 
 @Injectable()
 export class UserService {
@@ -8,7 +13,8 @@ export class UserService {
   private currentRolesUser;
   private currentRoleUser;
 
-  constructor(private jsonService: JsonService) {
+  constructor(private jsonService: JsonService,
+              private http: Http,) {
 
     this.updateUser();
   }
@@ -39,8 +45,16 @@ export class UserService {
     return this.currentRoleUser;
   }
 
-  // getAllUsers() : User[] {
+  getAllUsers() : Observable<User[]> {
+    return this.http.get(Environment.apiUrl+'/users/all')
+    .map((response: Response) => {
+      var responseData = response.json();
 
-  // }
+      if(responseData.confirmed === true) {
+        let user = [{id: 'asdf', fullName: 'adsf', accountName: "asdf", email: "asdfa"}]
+        return user;
+      }
+    });
+  }
 
 }

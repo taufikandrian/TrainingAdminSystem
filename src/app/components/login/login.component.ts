@@ -25,35 +25,34 @@ export class LoginComponent implements OnInit {
     private _userService: UserService,
     private _menuService: MenuService,) {
     this._authService.check();
-    this._menuService.setCurrentRoute(this.router.url);
-
     this.assets['logo'] = this._assetService.getURL('_logo');
 
   }
 
   ngOnInit() {
-      $('.ui.form.login')
-        .form({
-          fields: {
-            username: {
-              identifier: 'username',
-              rules: [{
-                type : 'empty',
-                prompt : 'Please enter your login name'
-              }]
-            },
-            password: {
-              identifier: 'password',
-              rules: [{
-                type : 'empty',
-                prompt : 'Please enter your password'
-              }]
-            }
-          }, onSuccess: (event, fields) => {
-            event.preventDefault();
-            this.login(fields);
-          }, inline: true, on : 'blur'
-      });
+    this._menuService.setCurrentRoute(this.router.url);
+    $('.ui.form.login')
+      .form({
+        fields: {
+          username: {
+            identifier: 'username',
+            rules: [{
+              type : 'empty',
+              prompt : 'Please enter your login name'
+            }]
+          },
+          password: {
+            identifier: 'password',
+            rules: [{
+              type : 'empty',
+              prompt : 'Please enter your password'
+            }]
+          }
+        }, onSuccess: (event, fields) => {
+          event.preventDefault();
+          this.login(fields);
+        }, inline: true, on : 'blur'
+    });
   }
 
   login(fields) {

@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import { UserService } from './user.service';
+import { SidebarService } from './sidebar.service';
+import { AlertService } from './alert.service';
 import { Environment } from '../classes/environment';
 
 @Injectable()
@@ -16,6 +18,8 @@ export class AuthenticationService {
   constructor(
     private http:Http,
     private router: Router,
+    private _sidebarService: SidebarService,
+    private _alertService: AlertService,
     private _userService: UserService) {
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRoleUser  = this._userService.getCurrentRoleUser();
@@ -23,6 +27,18 @@ export class AuthenticationService {
 
   check(): void {
     if(this._userService.getCurrentUser() && this._userService.getCurrentRoleUser()) {
+      let passes = false;
+      this._sidebarService.getActiveMenu().forEach(element => {
+        if(this.router.url.match(element.path))
+          passes = true;
+      });
+      if(this.router.url == '/role')
+        passes = true;
+      if(!passes) {
+        this._alertService.showError("oon");
+        this.router.navigate(['/dashboard']);
+      }
+
       if(this.router.url == '/login') {
         this.router.navigate(['/dashboard']);
       }
@@ -39,11 +55,9 @@ export class AuthenticationService {
   login(data): Observable<Response> {
     return this.http.post(Environment.apiUrl+'/auth', data)
       .map((response: Response) => {
-        console.log(response.json());
         var responseData = response.json();
         if (responseData.status == 'success') {
           localStorage.setItem('currentUser', JSON.stringify(responseData.data.user));
-          console.log(responseData.data.roles);
           localStorage.setItem('currentRolesUser', JSON.stringify(responseData.data.roles));
         }
         return response;

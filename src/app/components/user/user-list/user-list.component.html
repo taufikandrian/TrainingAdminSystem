@@ -12,29 +12,44 @@
         <i class="add user icon"></i>
     </div>
 </a>
-<table class="ui celled table table-usertable" >
-  <thead>
-    <tr>
-      <th class="five wide" style="text-align: center">Username</th>
-      <th class="five wide" style="text-align: center">Fullname</th>
-      <th class="five wide" style="text-align: center">Email</th>
-      <th class="four wide" style="text-align: center">Role</th>
-      <th class="two wide" style="text-align: center">Status</th>
-      <th class="seven wide" style="text-align: center">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>mitrais/Taufikar</td>
-      <td>Mohammad Taufik Andrian</td>
-      <td>taufikandrian18@gmail.com</td>
-      <td>Admin</td>
-      <td>Active</td>
-      <td style="text-align: center">
-        <div class="ui icon buttons">
-          <a [routerLink]="['/users/edit/12']"><button class="ui button" data-tooltip="Edit User"><i class="edit icon"></i></button></a>
-        </div>
-    </td>
-    </tr>
-  </tbody>
-</table>
+<div class="dimmable">
+  <div class="ui inverted dimmer">
+      <div class="ui loader"></div>
+  </div>
+  <table class="ui celled table table-usertable" >
+    <thead>
+      <tr>
+        <th class="five wide" style="text-align: center">Username</th>
+        <th class="five wide" style="text-align: center">Fullname</th>
+        <th class="five wide" style="text-align: center">Email</th>
+        <!-- <th class="four wide" style="text-align: center">Role</th> -->
+        <th class="two wide" style="text-align: center">Status</th>
+        <th class="seven wide" style="text-align: center">Action</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th class="five wide" style="text-align: center">Username</th>
+        <th class="five wide" style="text-align: center">Fullname</th>
+        <th class="five wide" style="text-align: center">Email</th>
+        <!-- <th class="four wide" style="text-align: center">Role</th> -->
+        <th class="two wide" style="text-align: center">Status</th>
+        <th class="seven wide disabled" style="text-align: center">Action</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <!-- <tr>
+        <td>mitrais/Taufikar</td>
+        <td>Mohammad Taufik Andrian</td>
+        <td>taufikandrian18@gmail.com</td>
+        <td>Admin</td>
+        <td>Active</td>
+        <td style="text-align: center">
+          <div class="ui icon buttons">
+            <a [routerLink]="['/users/edit/12']"><button class="ui button" data-tooltip="Edit User"><i class="edit icon"></i></button></a>
+          </div>
+      </td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>

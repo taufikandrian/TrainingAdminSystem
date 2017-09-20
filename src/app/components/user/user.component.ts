@@ -24,20 +24,19 @@ export class UserComponent implements OnInit {
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
       this._authService.check();
-      this._menuService.setCurrentRoute(this.router.url);
+  }
 
-      router.events.subscribe((val) => {
-        if(val instanceof NavigationEnd)
-          this.activeRoute = val.url;
-      })
+  ngOnInit() {
+    this.router.events.subscribe((val) => {
+      if(val instanceof NavigationEnd)
+        this.activeRoute = val.url;
+    })
+    this._menuService.setCurrentRoute(this.router.url);
+    this._sidebarService.hide();
   }
 
   isActiveRoute(routeURL) {
     return routeURL == this.activeRoute;
-  }
-  
-  ngOnInit() {
-    this._sidebarService.hide();
   }
 
 }

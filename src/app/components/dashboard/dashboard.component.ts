@@ -24,11 +24,10 @@ export class DashboardComponent implements OnInit {
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
       this._authService.check();
-      this._menuService.setCurrentRoute(this.router.url);
   }
 
   ngOnInit() {
-
+    this._menuService.setCurrentRoute(this.router.url);
     this._sidebarService.hide();
   }
 
