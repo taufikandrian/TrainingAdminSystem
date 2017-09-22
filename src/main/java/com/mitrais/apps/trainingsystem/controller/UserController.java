@@ -2,7 +2,11 @@ package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +22,13 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@RequestMapping("/users/all")
-    public List<User> getAll() {
-		return (List<User>) this.userRepo.findAll();
+	//Datatables for display all users
+	@PostMapping("/users/dt/all")
+	public DataTablesOutput<User> getUsers(@Valid @RequestBody DataTablesInput input) {
+		return userRepo.findAll(input);
 	}
 	
+	//Dropdown of Role User
 	@PostMapping("/users/getRole")
     public ResponseEntity<JSONObject> getAllRole(@RequestBody JSONObject data) {
 		JsonFormatter responseJson = new JsonFormatter();
