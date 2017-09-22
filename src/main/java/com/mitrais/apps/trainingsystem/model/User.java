@@ -5,12 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.codehaus.jackson.map.annotate.JsonView;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user_tb")
@@ -21,6 +17,15 @@ public class User extends Auditable<String> implements Serializable {
 	 */
 	@Transient
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
+	@Transient
+	public String division_id;
+	
+	@Transient
+	public String grade_id;
+	
+	@Transient
+	public List<String> roles;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -100,20 +105,26 @@ public class User extends Auditable<String> implements Serializable {
 		this.status = status;
 	}
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@ManyToOne(optional=false) 
     @JoinColumn(name="division_id",referencedColumnName="division_id")
     private Division division;
 	public Division getDivision() {
 		return division;
 	}
+	public void setDivision(Division division){
+		this.division = division;
+	}
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@ManyToOne(optional=false)
     @JoinColumn(name="grade_id",referencedColumnName="grade_id")
     private Grade grade;
 	public Grade getGrade() {
 		return grade;
+	}
+	public void setGrade(Grade grade){
+		this.grade = grade;
 	}
 	
 //	@JsonIgnore
@@ -127,6 +138,9 @@ public class User extends Auditable<String> implements Serializable {
 	private List<Role> roleList;
 	public List<Role> getRoleList() {
 		return roleList;
+	}
+	public void setRoleList(List<Role> role){
+		this.roleList = role;
 	}
 	
 	@Override
