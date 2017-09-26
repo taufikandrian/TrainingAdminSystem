@@ -26,7 +26,7 @@ import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 @RestController
-public class PeriodController extends BaseController {
+public class PeriodController extends BaseController<Training> {
 	
 	@Autowired
 	private TrainingRepository trainRepo;
@@ -40,7 +40,7 @@ public class PeriodController extends BaseController {
 	
 	@PostMapping("/training/dt/all")
 	public DataTablesOutput<Training> getTrains(@Valid @RequestBody DataTablesInput input) {
-		return trainRepo.findAll(input);
+		return trainRepo.findAll(input,notInactive());
 	}
 	
 	@PostMapping("/training/getEligibleUser")

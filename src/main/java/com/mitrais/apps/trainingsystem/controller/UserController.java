@@ -22,7 +22,7 @@ import com.mitrais.apps.trainingsystem.repository.UserRepository;
 import net.minidev.json.JSONObject;
 
 @RestController
-public class UserController extends BaseController {
+public class UserController extends BaseController<User> {
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -39,7 +39,7 @@ public class UserController extends BaseController {
 	//Datatables for display all users
 	@PostMapping("/users/dt/all")
 	public DataTablesOutput<User> getUsers(@Valid @RequestBody DataTablesInput input) {
-		return userRepo.findAll(input);
+		return userRepo.findAll(input,notDeleted());
 	}
 	
 	//Dropdown of Role User
@@ -103,7 +103,7 @@ public class UserController extends BaseController {
 			for(int i = 0; i < userID.size();i++){
 				User currentuser = this.userRepo.findById(userID.get(i).toLowerCase());
 				if(currentuser != null) {
-					currentuser.setStatus("deleted");
+					currentuser.setStatus("Deleted");
 					userRepo.save(currentuser);
 					//responseJson.appendToData("User_Deleted", currentuser);
 					userTmp.add(currentuser);

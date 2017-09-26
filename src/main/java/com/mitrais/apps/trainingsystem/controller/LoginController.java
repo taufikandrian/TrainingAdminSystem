@@ -11,7 +11,7 @@ import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 @RestController
-public class LoginController extends BaseController {
+public class LoginController extends BaseController<User> {
 	
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
