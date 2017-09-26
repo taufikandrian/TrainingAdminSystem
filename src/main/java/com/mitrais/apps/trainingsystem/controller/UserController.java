@@ -146,7 +146,7 @@ public class UserController extends BaseController {
 	}
 	
 	//post data for update feature
-	@PostMapping("/users/delete/{accountName}")
+	@PostMapping("/users/update/{accountName}")
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody User user,@PathVariable String accountName){
 		JsonFormatter responseJson = new JsonFormatter();
 		User userTmp = userRepo.findByAccountName(accountName);

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "training_tb")
 public class Training extends Auditable<String> implements Serializable {
@@ -68,19 +70,17 @@ public class Training extends Auditable<String> implements Serializable {
 	public void setTrainingDescription(String trainingDescription) {
 		this.trainingDescription = trainingDescription;
 	}
-	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingStartDate() {
 		return trainingStartDate;
 	}
-	
 	public void setTrainingStartDate(Date trainingStartDate) {
 		this.trainingStartDate = trainingStartDate;
 	}
-	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingEndDate() {
 		return trainingEndDate;
 	}
-	
 	public void setTrainingEndDate(Date trainingEndDate) {
 		this.trainingEndDate = trainingEndDate;
 	}
@@ -102,13 +102,17 @@ public class Training extends Auditable<String> implements Serializable {
 	}
     
 	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name="user_tb",
+    @JoinTable(name="eligible_user_tb",
             joinColumns=
             @JoinColumn(name="training_id", referencedColumnName="training_id"),
       inverseJoinColumns=
             @JoinColumn(name="user_id", referencedColumnName="user_id")
     )
 	private List<User> eligibleList;
+	public void setEligibleList(List<User> eligibleList) {
+		this.eligibleList = eligibleList;
+	}
+
 	public List<User> getEligibleList() {
 		return eligibleList;
 	}

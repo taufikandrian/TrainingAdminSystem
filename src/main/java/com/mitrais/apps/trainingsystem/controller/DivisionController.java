@@ -2,10 +2,14 @@ package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.List;
 
+import net.minidev.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Division;
 import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 
@@ -16,7 +20,22 @@ public class DivisionController extends BaseController {
 	private DivisionRepository divisionRepo;
 	
 	@RequestMapping("/division/all")
-    public List<Division> getAll() {
-		return (List<Division>) this.divisionRepo.findAll();
+    public ResponseEntity<JSONObject> getAll() {
+		JsonFormatter responseJson = new JsonFormatter();
+		List<Division> divList = (List<Division>) divisionRepo.findAll();
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_Division", divList);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Division Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
 	}
 }
