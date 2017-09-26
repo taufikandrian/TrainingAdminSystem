@@ -70,5 +70,4 @@ public class JobFamily implements Serializable{
 	public String getId() {
 		return id;
 	}
-
 }

@@ -23,6 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "training_course_tb")
 public class TrainingCourse extends Auditable<String> implements Serializable {
 
+	private CourseClassroom classroom;
 	/**
 	 * 
 	 */
@@ -178,20 +179,12 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 //	public User getTrainingCourseBackupTrainer() {
 //		return trainingCourseBackupTrainer;
 //	}
-//	@ManyToOne(optional=false)
-//	@JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
-//	private CourseClassroom classroom;
-//	public CourseClassroom getClassroom() {
-//		return classroom;
-//	}
 	
-//	//@JsonIgnore
-//	@ManyToOne(optional=false)
-//    @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
-//    private CourseClassroom classroom;
-//	public CourseClassroom getClassroom() {
-//		return classroom;
-//	}
+	@ManyToOne(optional=false)
+	@JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
+	public CourseClassroom getClassroom() {
+		return classroom;
+	}
 	
 //	@ManyToOne(optional=false)
 //	@JoinColumn(name="training_id",referencedColumnName="training_id")

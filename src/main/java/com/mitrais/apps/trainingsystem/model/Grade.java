@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -14,6 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "grade_tb")
 public class Grade implements Serializable{
 
+    private JobFamily jobFamily;
 	/**
 	 * 
 	 */
@@ -33,6 +36,13 @@ public class Grade implements Serializable{
 	@Column(name = "grade_description", nullable = false)
     private String gradeDescription;
 	
+	@Column(name = "job_family_id", nullable = false)
+    private String gradeJobFamilyId;
+	
+	public String getGradeJobFamilyId() {
+		return gradeJobFamilyId;
+	}
+
 	public String getGradeCode() {
 		return gradeCode;
 	}
@@ -61,13 +71,20 @@ public class Grade implements Serializable{
 		
 	}
 	
-	public Grade(String gradeCode,String gradeName,String gradeDescription){
+	public Grade(String gradeCode,String gradeName,String gradeDescription,String gradeJobFamilyId){
 		this.gradeCode = gradeCode;
 		this.gradeName = gradeName;
 		this.gradeDescription = gradeDescription;
+		this.gradeJobFamilyId = gradeJobFamilyId;
 	}
 	
 	public String getId() {
 		return id;
+	}
+	
+	@ManyToOne(optional=false)
+    @JoinColumn(name="job_family_id",referencedColumnName="job_family_id")
+	public JobFamily getjobFamily() {
+		return jobFamily;
 	}
 }
