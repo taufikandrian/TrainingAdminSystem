@@ -30,10 +30,10 @@ public class CourseClassroom implements Serializable {
 	@Column(name = "course_classroom_name")
     private String courseClassroomName;
 	
-	@Column(name = "course_classroom_description", nullable = false)
+	@Column(name = "course_classroom_description")
     private String courseClassroomDescription;
 	
-	@Column(name = "course_classroom_capacity", nullable = false)
+	@Column(name = "course_classroom_capacity")
     private Integer courseClassroomCapacity;
 
 	public String getCourseClassroomCode() {

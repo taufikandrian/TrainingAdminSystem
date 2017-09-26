@@ -76,6 +76,7 @@ public class UserController extends BaseController<User> {
 			for(int i = 0; i < user.roles.size();i++){
 				listRole.add(rolesRepo.findByRoleCode(user.roles.get(i)));
 			}
+			user.setStatus("Active");
 			user.setDivision(divRepo.findByDivisionCode(user.division_id));
 			user.setGrade(gradeRepo.findByGradeCode(user.grade_id));
 			user.setRoleList(listRole);

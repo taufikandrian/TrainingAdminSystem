@@ -1,6 +1,7 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "training_course_tb")
 public class TrainingCourse extends Auditable<String> implements Serializable {
 
-	private CourseClassroom classroom;
 	/**
 	 * 
 	 */
@@ -180,11 +180,12 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 //		return trainingCourseBackupTrainer;
 //	}
 	
-	@ManyToOne(optional=false)
-	@JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
-	public CourseClassroom getClassroom() {
-		return classroom;
-	}
+//	@ManyToOne(optional=false)
+//    @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
+//	private CourseClassroom classroom;
+//	public CourseClassroom getClassroom() {
+//		return classroom;
+//	}
 	
 //	@ManyToOne(optional=false)
 //	@JoinColumn(name="training_id",referencedColumnName="training_id")
