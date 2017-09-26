@@ -14,7 +14,7 @@ import com.mitrais.apps.trainingsystem.model.Division;
 import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 
 @RestController
-public class DivisionController extends BaseController {
+public class DivisionController extends BaseController<Division> {
 
 	@Autowired
 	private DivisionRepository divisionRepo;
