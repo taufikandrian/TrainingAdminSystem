@@ -1,11 +1,16 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -70,4 +75,30 @@ public class JobFamily implements Serializable{
 	public String getId() {
 		return id;
 	}
+	
+	@OneToMany
+	@JoinColumn(name = "job_family_id")
+	private List<Grade> grades = new ArrayList<>();
+	
+	@OneToMany
+	@JoinColumn(name = "job_family_id")
+	private List<Division> divisions = new ArrayList<>();
+	
+	public List<Grade> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(List<Grade> grades) {
+		this.grades = grades;
+	}
+
+	public List<Division> getDivisions() {
+		return divisions;
+	}
+
+	public void setDivisions(List<Division> divisions) {
+		this.divisions = divisions;
+	}
+
+	
 }

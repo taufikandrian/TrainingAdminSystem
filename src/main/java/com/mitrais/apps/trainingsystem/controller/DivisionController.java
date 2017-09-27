@@ -6,6 +6,8 @@ import net.minidev.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +21,8 @@ public class DivisionController extends BaseController<Division> {
 	@Autowired
 	private DivisionRepository divisionRepo;
 	
-	@RequestMapping("/division/all")
-    public ResponseEntity<JSONObject> getAll() {
+	@GetMapping("/division/all/{jobFamCode}")
+    public ResponseEntity<JSONObject> getAll(@PathVariable String jobFamCode) {
 		JsonFormatter responseJson = new JsonFormatter();
 		List<Division> divList = (List<Division>) divisionRepo.findAll();
 		try{

@@ -12,10 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
+import com.mitrais.apps.trainingsystem.model.Grade;
+import com.mitrais.apps.trainingsystem.model.JobFamily;
 import com.mitrais.apps.trainingsystem.model.Role;
 import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 import com.mitrais.apps.trainingsystem.repository.GradeRepository;
+import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 import com.mitrais.apps.trainingsystem.repository.RoleRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
@@ -35,6 +38,9 @@ public class UserController extends BaseController<User> {
 	
 	@Autowired
 	private RoleRepository rolesRepo;
+	
+	@Autowired
+	private JobFamilyRepository jobfamRepo;
 	
 	//Datatables for display all users
 	@PostMapping("/users/dt/all")
@@ -169,5 +175,45 @@ public class UserController extends BaseController<User> {
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 
+	}
+	
+	@GetMapping("/jobfam/all")
+    public ResponseEntity<JSONObject> getAllJobFam() {
+		JsonFormatter responseJson = new JsonFormatter();
+		List<JobFamily> gradeList = (List<JobFamily>) jobfamRepo.findAll();
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_JobFam", gradeList);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Job Family Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	@GetMapping("/role/all")
+    public ResponseEntity<JSONObject> getAllRole() {
+		JsonFormatter responseJson = new JsonFormatter();
+		List<Role> gradeList = (List<Role>) rolesRepo.findAll();
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_Role", gradeList);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Role Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
 	}
 }

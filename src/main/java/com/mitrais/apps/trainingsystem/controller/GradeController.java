@@ -6,12 +6,16 @@ import net.minidev.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Grade;
+import com.mitrais.apps.trainingsystem.model.JobFamily;
 import com.mitrais.apps.trainingsystem.repository.GradeRepository;
+import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 
 @RestController
 public class GradeController extends BaseController<Grade> {
@@ -19,15 +23,19 @@ public class GradeController extends BaseController<Grade> {
 	@Autowired
 	private GradeRepository gradeRepo;
 	
-	@RequestMapping("/grade/all")
-    public ResponseEntity<JSONObject> getAll() {
+	@Autowired
+	private JobFamilyRepository jobFamRepo;
+	
+	@GetMapping("/grade/all/{jobFamCode}")
+    public ResponseEntity<JSONObject> getAllGrade(@PathVariable String jobFamCode) {
+		
 		JsonFormatter responseJson = new JsonFormatter();
-		List<Grade> gradeList = (List<Grade>) gradeRepo.findAll();
+		JobFamily curJobFam = jobFamRepo.findByFamilyCode(jobFamCode);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Get_Grade", gradeList);
+			responseJson.appendToData("Get_Grade", curJobFam);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

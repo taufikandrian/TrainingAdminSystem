@@ -16,7 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "grade_tb")
 public class Grade implements Serializable{
 
-    private JobFamily jobFamily;
 	/**
 	 * 
 	 */
@@ -36,12 +35,12 @@ public class Grade implements Serializable{
 	@Column(name = "grade_description", nullable = false)
     private String gradeDescription;
 	
-	@Column(name = "job_family_id", nullable = false)
-    private String gradeJobFamilyId;
+//	@Column(name = "job_family_id", nullable = false)
+//    private String gradeJobFamilyId;
 	
-	public String getGradeJobFamilyId() {
-		return gradeJobFamilyId;
-	}
+//	public String getGradeJobFamilyId() {
+//		return gradeJobFamilyId;
+//	}
 
 	public String getGradeCode() {
 		return gradeCode;
@@ -75,7 +74,7 @@ public class Grade implements Serializable{
 		this.gradeCode = gradeCode;
 		this.gradeName = gradeName;
 		this.gradeDescription = gradeDescription;
-		this.gradeJobFamilyId = gradeJobFamilyId;
+//		this.gradeJobFamilyId = gradeJobFamilyId;
 	}
 	
 	public String getId() {
@@ -84,7 +83,13 @@ public class Grade implements Serializable{
 	
 	@ManyToOne(optional=false)
     @JoinColumn(name="job_family_id",referencedColumnName="job_family_id")
-	public JobFamily getjobFamily() {
+	private JobFamily jobFamily;
+
+	public JobFamily getJobFamily() {
 		return jobFamily;
+	}
+
+	public void setJobFamily(JobFamily jobFamily) {
+		this.jobFamily = jobFamily;
 	}
 }
