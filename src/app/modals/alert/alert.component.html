@@ -1,0 +1,27 @@
+<div class="ui mini modal loading" id="alert-modal">
+  <div *ngIf="headerType == 'lan'" class="ui large {{ colorHeader }} header">
+    <i class="{{ iconHeader }} icon"></i>
+    <div class="content">
+      {{ header }}
+      <div class="sub header" [innerHtml]="subheader"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="headerType == 'pot'" class="ui large icon center aligned {{ colorHeader }} header">
+      <i class="{{ iconHeader }} icon"></i>
+      <div class="content">
+          {{ header }}
+        <div class="sub header" [innerHtml]="subheader"></div>
+      </div>
+    </div>
+    <div class="description no-padding">
+      <p class="text-center" style="font-size: 1.5em" [innerHtml]="message"></p>
+    </div>
+  </div>
+  <div class="actions {{ positionBtn }}">
+    <div class="ui {{ fluidBtn }} {{ sizeBtn }} buttons">
+      <div *ngIf="okBtn" class="ui {{ okBtnColor }} ok button">{{okBtnText}}</div>
+      <div *ngIf="denyBtn" class="ui {{ denyBtnColor }} cancel button">{{denyBtnText}}</div>
+    </div>
+  </div>
+</div>

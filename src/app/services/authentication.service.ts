@@ -35,7 +35,7 @@ export class AuthenticationService {
       if(this.router.url == '/role')
         passes = true;
       if(!passes) {
-        this._alertService.showError("oon");
+        // this._alertService.showError("oon");
         this.router.navigate(['/dashboard']);
       }
 
@@ -93,5 +93,9 @@ export class AuthenticationService {
     localStorage.removeItem('currentRolesUser');
     localStorage.removeItem('currentRoleUser');
     return true;
+  }
+
+  serverDown(): void {
+
   }
 }

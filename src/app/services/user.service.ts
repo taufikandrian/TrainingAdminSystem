@@ -45,15 +45,57 @@ export class UserService {
     return this.currentRoleUser;
   }
 
-  getAllUsers() : Observable<User[]> {
-    return this.http.get(Environment.apiUrl+'/users/all')
-    .map((response: Response) => {
-      var responseData = response.json();
+  // getAllUsers() : Observable<User[]> {
+  //   return this.http.get(Environment.apiUrl+'/users/all')
+  //   .map((response: Response) => {
+  //     var responseData = response.json();
 
-      if(responseData.confirmed === true) {
-        let user = [{id: 'asdf', fullName: 'adsf', accountName: "asdf", email: "asdfa"}]
-        return user;
-      }
+  //     if(responseData.confirmed === true) {
+  //       let user = [{id: 'asdf', fullName: 'adsf', accountName: "asdf", email: "asdfa"}]
+  //       return user;
+  //     }
+  //   });
+  // }
+
+  getDivisi(idJF): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/division/all/'+idJF)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  getGrade(idJF): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/grade/all/'+idJF)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  getJobFam(): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/jobfam/all')
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  getRole(): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/role/all')
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  delete(data): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/users/delete', data)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  create(data): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/users/create', data)
+    .map((response: Response) => {
+      return response;
     });
   }
 

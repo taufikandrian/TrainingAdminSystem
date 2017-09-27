@@ -3,9 +3,63 @@
   border-radius: 0 !important;
 }
 
-.swal2-modal {
-  border-radius: 0 !important;
+.no-padding {
+  padding: 0 !important;
 }
+
+.no-padding-top {
+  padding-top: 0 !important;
+}
+
+.no-padding-bottom {
+  padding-bottom: 0 !important;
+}
+
+.no-padding-left {
+  padding-left: 0 !important;
+}
+
+.no-padding-right {
+  padding-right: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-margin-top {
+  margin-top: 0 !important;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
+
+.no-margin-left {
+  margin-left: 0 !important;
+}
+
+.no-margin-right {
+  margin-right: 0 !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+/* .dataTables_filter { display: none !important; } */
+
+/* .swal2-modal {
+  border-radius: 0 !important;
+} */
 
 /* table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.dataTable tbody td.selected {
   color: red;
@@ -13,4 +67,10 @@
 
 table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
   background-color: rgba(0, 194, 243, 0.11);
+}
+
+.field label {
+  color: rgba(0, 0, 0, .5);
+  font-weight: 400 !important;
+  font-style: italic;
 }

@@ -15,6 +15,13 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./topmenu.component.css']
 })
 export class TopmenuComponent implements OnInit {
+  header = {
+    icon  : 'dashboard',
+    main  : 'Header',
+    sub   : 'Subheader',
+    size  : 'large'
+  }
+
   private assets = {};
   private currentUser;
   private currentRoleUser;
@@ -30,16 +37,21 @@ export class TopmenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._menuService.currentHeader$.subscribe(dataHeader => {
+      this.header = dataHeader
+    });
 
     this._menuService.currentRoute$.subscribe(data => {
 
       this.currentUser      = this._userService.getCurrentUser();
       this.currentRoleUser  = this._userService.getCurrentRoleUser();
-      if(this._menuService.hiddenSidebarForRoute.indexOf(data) >= 0) {
+      if(this._menuService.hiddenSidebarForRoute.indexOf(data[0]) >= 0) {
         this.isVisible = false;
       } else {
         this.isVisible = true;
       }
+      if(!data[1])
+        this.isVisible = false;
     });
   }
 

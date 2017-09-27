@@ -1,4 +1,4 @@
-<div class="ui inverted segment no-padding borderradiusless">
+<div class="ui inverted segment borderradiusless">
   <div class="ui equal width fluid grid" style="height: 100vh">
       <div class="middle aligned row">
           <div class="column"></div>
@@ -17,7 +17,7 @@
               <form class="ui form attached padded segment role" [ngClass]="{'loading': isLoading}" #role="ngForm" (ngSubmit)="setRole(role)">
                   <div class="field">
                     <label class="capitalize">Choose Role</label>
-                    <select name="choosenRole" ngModel (ngModelChange)="dropdownChange()" class="ui dropdown search roledropdown"></select>
+                    <select name="choosenRole" class="ui dropdown search roledropdown"></select>
                   </div>
                   <div class="ui center aligned field">
                     <button class="ui primary button fluid uppercase ki-text">Sign as {{ choosenRoleText }}</button>

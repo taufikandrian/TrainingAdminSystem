@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd }            from '@angular/router';
+import { Router, NavigationEnd, NavigationStart }            from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 declare var $:any;
@@ -23,16 +23,17 @@ export class UserComponent implements OnInit {
     private _assetService: AssetService,
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
+      this.activeRoute = this.router.url
       this._authService.check();
   }
 
   ngOnInit() {
     this.router.events.subscribe((val) => {
-      if(val instanceof NavigationEnd)
+      if(val instanceof NavigationStart) {
         this.activeRoute = val.url;
+      }
     })
     this._menuService.setCurrentRoute(this.router.url);
-    this._sidebarService.hide();
   }
 
   isActiveRoute(routeURL) {

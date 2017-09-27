@@ -9,6 +9,7 @@ import { slideInOutAnimation } from '../../../animations';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MenuService } from '../../../services/menu.service';
 import { UserService } from '../../../services/user.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-role',
@@ -23,12 +24,14 @@ export class RoleComponent implements OnInit {
   private currentRoleUser;
   private isLoading = false;
   private choosenRoleText = '';
+  private choosenRoleValue = '';
 
   constructor(
     private router: Router,
     private _authService: AuthenticationService,
     private _menuService: MenuService,
-    private _userService: UserService ) {
+    private _userService: UserService,
+    private _alertService: AlertService, ) {
 
     this.currentUser      = this._userService.getCurrentUser();
     this.currentRolesUser = this._userService.getCurrentRolesUser();
@@ -65,76 +68,83 @@ export class RoleComponent implements OnInit {
         $('.ui.roledropdown')
           .dropdown({
             values: dropdownValues,
-            onChange: function(value, text, $selected) {
-              $('select[name="choosenRole"]').attr('value', value);
+            onChange: (value, text, $selected) => {
+              this.choosenRoleText = text;
+              this.choosenRoleValue = value;
             }
           })
         ;
       } else {
-        swal({
-            title: 'Opps!',
-            html: '<h2 class="ui header">\
-                    <div class="sub header">'+ result.json().message +'</div>\
-                  </h2>',
-            type: 'error',
-            width: 300,
-            buttonsStyling: false,
-            confirmButtonText: 'Oke!',
-            confirmButtonClass: 'ui button',
-        }).then( () => {
-          if(this._authService.logout()) {
-            this.router.navigate(['/login']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
-          // alert("oke");
-          // swal(
-          //   'Deleted!',
-          //   'Your file has been deleted.',
-          //   'success'
-          // )
-        }, function (dismiss) {
-          // alert("dismiss");
-          // if (dismiss === 'cancel') {
-          //   swal(
-          //     'Cancelled',
-          //     'Your imaginary file is safe :)',
-          //     'error'
-          //   )
-          // }
+        this._alertService.setAlert({
+          closable: true,
+          header : {
+            // pot lan
+            type: 'lan',
+            color: 'red',
+            icon: 'warning sign',
+            text: 'Opps!',
+            subheader: 'Sorry, something get an error'
+          },
+          message: result.json().message,
+          button : {
+            size: '',
+            position: 'center',
+            fluid: true,
+            fluidNumber: 'two',
+            ok : {display: true,text: 'Ok',color: ''},
+            deny : {display : false,text: 'Cancel',color: ''}
+          },
+          onApprove : ($element) => {
+            this.logout();
+          },
+          onDeny: ($element) => {}
         });
       }
       this.isLoading = false;
     },
     err => {
       if(!err.ok) {
-        swal({
-          title: 'Opps!',
-          text: "The server is down!",
-          type: 'error',
-          width: 300,
+        this._alertService.setAlert({
+          closable: true,
+          header : {
+            // pot lan
+            type: 'lan',
+            color: 'red',
+            icon: 'warning sign',
+            text: 'Opps!',
+            subheader: 'Sorry, something get an error'
+          },
+          message: 'Sorry, our server is offline',
+          button : {
+            size: '',
+            position: 'center',
+            fluid: true,
+            fluidNumber: 'two',
+            ok : {display: true,text: 'Ok',color: ''},
+            deny : {display : false,text: 'Cancel',color: ''}
+          },
+          onApprove : ($element) => {
+            this.logout();
+          },
+          onDeny: ($element) => {}
         });
         this.isLoading = false;
       }
     });
   }
 
-  dropdownChange() {
-    this.choosenRoleText = $('.ui.roledropdown').dropdown('get text');
-  }
-
   setRole(form: NgForm) {
     this.isLoading = true;
-    if(this._authService.setRole($('select[name="choosenRole"]').attr('value'))){
+    if(this._authService.setRole(this.choosenRoleValue)){
       this.router.navigate(['/dashboard']);
     } else {
-      this.isLoading = false;
       swal({
           title: 'Opps!',
           text: "There is an error in our Application!",
           type: 'error',
           width: 300,
       });
+      this.isLoading = false;
     }
   }
 

@@ -15,6 +15,7 @@ import { PeriodListComponent } from './components/period/period-list/period-list
 import { UserCreateComponent } from './components/user/user-create/user-create.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,6 +36,8 @@ const routes: Routes = [
   { path: 'enrollments',  component: EnrollmentComponent, children: [] },
   { path: 'achievements',  component: AchievementComponent, children: [] },
   { path: 'trainings',  component: TrainingComponent, children: [] },
+  { path: 'trainings',  component: TrainingComponent, children: [] },
+  {path: '**', component: NotfoundComponent, data : { displayMenu: false }},
 ];
 
 @NgModule({

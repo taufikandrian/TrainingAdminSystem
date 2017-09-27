@@ -35,6 +35,9 @@ import { DatatableService } from './services/datatable.service';
 import { MenuService } from './services/menu.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
+import { AlertComponent } from './modals/alert/alert.component';
+import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrumb.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { PeriodCreateComponent } from './components/period/period-create/period-
     UserCreateComponent,
     UserEditComponent,
     PeriodCreateComponent,
+    AlertComponent,
+    BreadcrumbComponent,
+    NotfoundComponent,
   ],
   imports: [
     BrowserModule,

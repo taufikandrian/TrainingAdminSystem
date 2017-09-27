@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { AssetService } from '../../services/asset.service';
 import { MenuService } from '../../services/menu.service';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -23,10 +24,10 @@ export class LoginComponent implements OnInit {
     private _authService: AuthenticationService,
     private _assetService: AssetService,
     private _userService: UserService,
+    private _alertService: AlertService,
     private _menuService: MenuService,) {
     this._authService.check();
     this.assets['logo'] = this._assetService.getURL('_logo');
-
   }
 
   ngOnInit() {
@@ -62,31 +63,55 @@ export class LoginComponent implements OnInit {
       if (result.json().confirmed === true) {
           this.router.navigate(['/role']);
       } else {
-        swal({
-            title: 'Opps!',
-            html: '<h2 class="ui header">\
-                    <div class="sub header">'+ result.json().message +'</div>\
-                  </h2>',
-            type: 'error',
-            width: 300,
-            buttonsStyling: false,
-            confirmButtonText: 'Oke!',
-            confirmButtonClass: 'ui button',
-            // title: 'Opps!',
-            // text: result.json().message,
-            // type: 'error',
-            // width: 300,
+        this._alertService.setAlert({
+          closable: true,
+          header : {
+            // pot lan
+            type: 'lan',
+            color: 'red',
+            icon: 'warning sign',
+            text: 'Opps!',
+            subheader: 'Sorry, something get an error'
+          },
+          message: result.json().message,
+          button : {
+            size: '',
+            position: 'center',
+            fluid: true,
+            fluidNumber: 'two',
+            ok : {display: true,text: 'Ok',color: ''},
+            deny : {display : false,text: 'Cancel',color: ''}
+          },
+          onApprove : ($element) => {},
+          onDeny: ($element) => {}
+
         });
       }
       this.isLoading = false;
     },
     err => {
       if(!err.ok) {
-        swal({
-          title: 'Opps!',
-          text: "The server is down!",
-          type: 'error',
-          width: 300,
+        this._alertService.setAlert({
+          closable: false,
+          header : {
+            // pot lan
+            type: 'pot',
+            color: 'red',
+            icon: 'heartbeat',
+            text: 'Opps!',
+            subheader: 'Sorry, something get an error'
+          },
+          message: "Error in our Back-End",
+          button : {
+            size: 'small',
+            position: 'center',
+            fluid: true,
+            fluidNumber: 'two',
+            ok : {display: true,text: 'Ok',color: ''},
+            deny : {display : false,text: 'Cancel',color: ''}
+          },
+          onApprove : ($element) => {},
+          onDeny: ($element) => {}
         });
         this.isLoading = false;
       }

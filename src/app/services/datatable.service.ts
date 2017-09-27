@@ -29,7 +29,7 @@ export class DatatableService {
     this.dtHeight = value;
   }
 
-  build(): any {
+  build(setCheckAllrow): any {
     // crear seach box
     $(this.tableName+' tfoot th').each( function () {
       var title = $(this).text();
@@ -53,41 +53,79 @@ export class DatatableService {
         deferRender : true,
         processing  : true,
         serverSide  : true,
-        dom: '<"ui segment"l> <tr> <"ui segment center aligned"p>',
+        // dom: '<"toolbar">frtip',
+        dom: '<"ui clearing basic segment no-padding"\
+                <"ui left floated segment basic no-margin no-padding" <"tb-toolbar">>\
+                <"ui right floated segment basic no-margin no-padding"l>\
+              >\
+              <tr>\
+              <"ui clearing basic segment no-padding"\
+                <"ui left floated segment basic no-margin no-padding"p>\
+                <"ui right floated segment basic no-margin no-padding"p>\
+              >',
         ajax: this.ajaxSetup,
         orderMulti: false,
         columns: this.columns,
+
+        select: {
+          style:    'multi',
+          // info: false,
+          selector: 'td:first-child .checkbox'
+        },
+        order: [[ 1, 'asc' ]],
         createdRow: function( row, data, dataIndex ) {
           $(row).attr('id', data.id);
         },
-        rowCallback: function( row, data ) {
-          if ( $.inArray(data.id, selected) !== -1 ) {
-              $(row).addClass('selected');
-          }
+        drawCallback: function(settings, json) {
+          this.api().rows( function ( idx, data, node ) {
+            if ( $.inArray(data.id, selected) !== -1 ) {
+              return true;
+            }
+          }).select();
+
         }
     });
 
-    $(this.tableName+' tbody').on('click', 'tr', function () {
-      var id = this.id;
-      var index = $.inArray(id, selected);
-
-      if ( index === -1 ) {
-          selected.push( id );
-      } else {
-          selected.splice( index, 1 );
+    table.on( 'select', ( e, dt, type, indexes ) => {
+      if ( type === 'row' ) {
+        var data = table.rows( indexes ).data().pluck( 'id' );
+        for(let i = 0 ; i < data.length ; i++) {
+          var id = data[i];
+          $('tr[id='+id+']').find('.checkbox').checkbox('check');
+          var index = $.inArray(id, selected);
+          if ( index === -1 ) {
+              selected.push( id );
+          }
+        }
       }
+    }).on('deselect', (e, dt, type, indexes) => {
+      setCheckAllrow(false);
+      var data = table.rows( indexes ).data().pluck( 'id' );
 
-      $(this).toggleClass('selected');
+      for(let i = 0 ; i < data.length ; i++) {
+        var id = data[i];
+        $('tr[id='+id+']').find('.checkbox').checkbox('uncheck');
+        var index = $.inArray(id, selected);
+        if ( index === -1 ) {
+          selected.push( id );
+        } else {
+          selected.splice( index, 1 );
+        }
+      }
     });
 
     // create search fungsi
-    table.columns().every( function () {
+    table.column().every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change', function () {
         if ( that.search() !== this.value ) {
           that.search( this.value ).draw();
         }
       });
+    });
+
+    $('input[name="searchkey"]').on( 'keyup change', function () {
+      table.search( this.value ).draw();
     });
 
     return table;
