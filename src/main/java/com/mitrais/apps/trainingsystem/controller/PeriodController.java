@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
-import com.mitrais.apps.trainingsystem.model.EligibleUser;
+//import com.mitrais.apps.trainingsystem.model.EligibleUser;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.User;
-import com.mitrais.apps.trainingsystem.repository.EligibleUserRepository;
+//import com.mitrais.apps.trainingsystem.repository.EligibleUserRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
@@ -31,8 +31,8 @@ public class PeriodController extends BaseController<Training> {
 	@Autowired
 	private TrainingRepository trainRepo;
 	
-	@Autowired
-	private EligibleUserRepository eligibleUserRepo;
+	//@Autowired
+	//private EligibleUserRepository eligibleUserRepo;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -43,20 +43,24 @@ public class PeriodController extends BaseController<Training> {
 		return trainRepo.findAll(input,notInactive());
 	}
 	
+	
 	@PostMapping("/training/getEligibleUser")
 	public ResponseEntity<JSONObject> getEligibleUser(@RequestBody JSONObject data) {
 		JsonFormatter responseJson = new JsonFormatter();
-		List<User> userEligible = new ArrayList<User>();
+		//List<User> userEligible = new ArrayList<User>();
 		try{
 			String trainingID = (String) data.get("trainingID");
-			List<EligibleUser> currentuser = this.eligibleUserRepo.findByTrainingTrainID(trainingID.toLowerCase());
-			for(int i = 0; i < currentuser.size();i++){
-				userEligible.add(userRepo.findById(currentuser.get(i).getTrainingUserID()));
-			}
+			//List<EligibleUser> currentuser = this.eligibleUserRepo.findByTraining_id(trainingID.toLowerCase());
+			Training trainCoba = trainRepo.findById(trainingID.toLowerCase());
+			List<User> userEligible = trainCoba.getEligibleList();
+			System.out.println(trainCoba.getEligibleList());
+//			for(int i = 0; i < currentuser.size();i++){
+//				userEligible.add(currentuser.get(i).getUser());
+//			}
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("user", userEligible);
+			responseJson.appendToData("Training", userEligible);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
