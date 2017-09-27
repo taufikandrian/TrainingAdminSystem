@@ -19,16 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "./assets/semantic/semantic.min.css",
-        "./assets/datatable/datatables.min.css",
-        "./assets/sweetalert/sweetalert2.min.css",
         "styles.css"
       ],
       "scripts": [
-        "./assets/js/jquery.min.js",
-        "./assets/datatable/datatables.min.js",
-        "./assets/semantic/semantic.min.js",
-        "./assets/sweetalert/sweetalert2.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

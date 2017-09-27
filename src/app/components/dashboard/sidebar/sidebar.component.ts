@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewChecked, AfterViewInit, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute }            from '@angular/router';
 import { SidebarService } from '../../../services/sidebar.service';
 import { MenuService } from '../../../services/menu.service';
 declare var $:any;
@@ -14,19 +15,21 @@ export class SidebarComponent implements OnInit, AfterViewChecked, AfterViewInit
 
   constructor(
     private _sidebarService: SidebarService,
+    private router: ActivatedRoute,
     private _menuService: MenuService) {
       this._menuService.currentRoute$.subscribe(data => {
-        if(this._menuService.hiddenSidebarForRoute.indexOf(data) >= 0) {
+        if(this._menuService.hiddenSidebarForRoute.indexOf(data[0]) >= 0) {
           this.isVisible = false;
         } else {
           this.menuItems = this._sidebarService.getActiveMenu();
           this.isVisible = true;
         }
+        if(!data[1])
+          this.isVisible = false;
       });
   }
 
   ngOnInit() {
-
   }
 
   ngAfterViewInit() {}

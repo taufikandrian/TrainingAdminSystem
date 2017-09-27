@@ -2,19 +2,29 @@
   <div class="item">
     <img class="ui mini image" [src]="assets.logo">
   </div>
+  <div class="item">
+      <div class="ui {{header.size}} header">
+        <i class="{{header.icon}} disabled icon"></i>
+        <div class="content">
+            {{header.main}}
+          <div class="sub header">{{header.sub}}</div>
+        </div>
+      </div>
+  </div>
   <div class="menu right">
     <div class="item">
       <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
       <div class="content" style="padding-left: 1em">
         <div class="ui sub header">{{ currentUser.fullName }}</div>
         Logged as {{ currentRoleUser.roleName }}
-        <div [routerLink]="['/role']" class="mini ui compact blue button">
-          Sign as
-        </div>
-        <div (click)="logout()" class="mini ui compact red button">
-          Sign out
-        </div>
       </div>
+    </div>
+    <div class="item">
+        <div class="ui buttons">
+          <div [routerLink]="['/role']" class="ui purple button">Sign as</div>
+          <div class="or"></div>
+          <div (click)="logout()" class="ui button">Sign out</div>
+        </div>
     </div>
   </div>
 </div>
