@@ -10,10 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "job_family_tb")
@@ -78,10 +81,12 @@ public class JobFamily implements Serializable{
 	
 	@OneToMany
 	@JoinColumn(name = "job_family_id")
+	@JsonIgnore
 	private List<Grade> grades = new ArrayList<>();
 	
 	@OneToMany
 	@JoinColumn(name = "job_family_id")
+	@JsonIgnore
 	private List<Division> divisions = new ArrayList<>();
 	
 	public List<Grade> getGrades() {

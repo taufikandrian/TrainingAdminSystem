@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Division;
+import com.mitrais.apps.trainingsystem.model.JobFamily;
 import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
+import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 
 @RestController
 public class DivisionController extends BaseController<Division> {
@@ -21,15 +23,18 @@ public class DivisionController extends BaseController<Division> {
 	@Autowired
 	private DivisionRepository divisionRepo;
 	
+	@Autowired
+	private JobFamilyRepository jobFamRepo;
+	
 	@GetMapping("/division/all/{jobFamCode}")
     public ResponseEntity<JSONObject> getAll(@PathVariable String jobFamCode) {
 		JsonFormatter responseJson = new JsonFormatter();
-		List<Division> divList = (List<Division>) divisionRepo.findAll();
+		JobFamily curJobFam = jobFamRepo.findByFamilyCode(jobFamCode);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Get_Division", divList);
+			responseJson.appendToData("Get_Division", curJobFam.getDivisions());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

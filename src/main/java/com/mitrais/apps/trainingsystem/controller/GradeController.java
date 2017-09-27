@@ -35,7 +35,7 @@ public class GradeController extends BaseController<Grade> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Get_Grade", curJobFam);
+			responseJson.appendToData("Get_Grade", curJobFam.getGrades());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
