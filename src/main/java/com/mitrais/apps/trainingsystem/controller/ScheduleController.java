@@ -1,10 +1,11 @@
 package com.mitrais.apps.trainingsystem.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +22,8 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 	private ScheduleRepository schRepo;
 	
 	@PostMapping("/schedule/dt/all/{trainingId}")
-	public DataTablesOutput<TrainingCourse> getTrainsCourse(@Valid @RequestBody DataTablesInput input,@PathVariable String trainingId) {
+	public List<TrainingCourse> getTrainsCourse(@Valid @RequestBody DataTablesInput input,@PathVariable String trainingId) {
 		System.out.println(trainingId);
-		return schRepo.findAll(input,trainCourseTraining(trainingId));
+		return (List<TrainingCourse>) schRepo.findAll();
 	}
 }

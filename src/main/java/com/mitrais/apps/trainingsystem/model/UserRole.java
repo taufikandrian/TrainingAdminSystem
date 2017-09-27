@@ -26,7 +26,7 @@ public class UserRole extends Auditable<String> implements Serializable{
 	@Id
 	@GenericGenerator(name = "generator", strategy = "guid", parameters = {})
 	@GeneratedValue(generator = "generator")
-    @Column(name = "user_role_tb", columnDefinition="uniqueidentifier")
+    @Column(name = "user_role_id", columnDefinition="uniqueidentifier")
     private String id;
 	
 	@Column(name = "user_role_status", nullable = false)

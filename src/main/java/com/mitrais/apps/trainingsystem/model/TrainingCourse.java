@@ -20,6 +20,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "training_course_tb")
 public class TrainingCourse extends Auditable<String> implements Serializable {
@@ -51,21 +53,6 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     
     @Column(name = "training_course_status")
     private String trainingCourseStatus;
-    
-    @Column(name = "training_id")
-    private String trainingId;
-
-	@Column(name = "course_classroom_id")
-    private String courseClassroomId;
-    
-    @Column(name = "course_name_id")
-    private String courseNameId;
-    
-    @Column(name = "training_course_trainer_id")
-    private String trainingCourseTrainerId;
-    
-    @Column(name = "training_course_backup_trainer_id")
-    private String trainingCourseBackupTrainerId;
     
 	public String getTrainingCourseName() {
 		return trainingCourseName;
@@ -115,82 +102,52 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.trainingCourseStatus = trainingCourseStatus;
 	}
 	
-    public String getTrainingId() {
-		return trainingId;
-	}
-
-	public String getCourseClassroomId() {
-		return courseClassroomId;
-	}
-
-	public String getCourseNameId() {
-		return courseNameId;
-	}
-
-	public String getTrainingCourseTrainerId() {
-		return trainingCourseTrainerId;
-	}
-
-	public String getTrainingCourseBackupTrainerId() {
-		return trainingCourseBackupTrainerId;
-	}
-	
 	public TrainingCourse(){
     	
     }
 	
-	public TrainingCourse(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus,String trainingCourseTrainerId,String trainingCourseBackupTrainerId,String courseClassroomId,String trainingId){
+	public TrainingCourse(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus){
     	this.trainingCourseName = trainingCourseName;
     	this.trainingCourseDescription = trainingCourseDescription;
     	this.trainingCourseStartDate = trainingCourseStartDate;
     	this.trainingCourseEndDate = trainingCourseEndDate;
     	this.trainingCourseCapacity = trainingCourseCapacity;
     	this.trainingCourseStatus = trainingCourseStatus;
-    	this.trainingCourseTrainerId = trainingCourseTrainerId;
-    	this.trainingCourseBackupTrainerId = trainingCourseBackupTrainerId;
-    	this.courseClassroomId = courseClassroomId;
-    	this.trainingId = trainingId;
     }
 
 	public String getId() {
 		return id;
 	}
     
-//	@ManyToMany(fetch=FetchType.EAGER)
-//    @JoinTable(name="user_tb",
-//            joinColumns=
-//            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
-//      inverseJoinColumns=
-//            @JoinColumn(name="user_id", referencedColumnName="user_id")
-//    )
-//	private User trainingCourseTrainer;
-//    public User getTrainingCourseTrainer() {
-//		return this.trainingCourseTrainer;
-//	}
-//	
-//	@ManyToMany(fetch=FetchType.EAGER)
-//    @JoinTable(name="user_tb",
-//            joinColumns=
-//            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
-//      inverseJoinColumns=
-//            @JoinColumn(name="user_id", referencedColumnName="user_id")
-//    )
-//	private User trainingCourseBackupTrainer;
-//	public User getTrainingCourseBackupTrainer() {
-//		return trainingCourseBackupTrainer;
-//	}
+	@ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="trainer_tb",
+            joinColumns=
+            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
+      inverseJoinColumns=
+            @JoinColumn(name="user_id", referencedColumnName="user_id")
+    )
+	private List<User> trainingCourseTrainer;
+    public void setTrainingCourseTrainer(List<User> trainingCourseTrainer) {
+		this.trainingCourseTrainer = trainingCourseTrainer;
+	}
+
+	public List<User> getTrainingCourseTrainer() {
+		return this.trainingCourseTrainer;
+	}
 	
-//	@ManyToOne(optional=false)
-//    @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
-//	private CourseClassroom classroom;
-//	public CourseClassroom getClassroom() {
-//		return classroom;
-//	}
+	@ManyToOne(optional=false)
+    @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
+	//@JsonIgnore
+	private CourseClassroom classroom;
+	public CourseClassroom getClassroom() {
+		return classroom;
+	}
 	
-//	@ManyToOne(optional=false)
-//	@JoinColumn(name="training_id",referencedColumnName="training_id")
-//	private Training training;
-//	public Training getTraining() {
-//		return training;
-//	}
+	@ManyToOne(optional=false)
+	@JoinColumn(name="training_id",referencedColumnName="training_id")
+	//@JsonIgnore
+	private Training training;
+	public Training getTraining() {
+		return training;
+	}
 }

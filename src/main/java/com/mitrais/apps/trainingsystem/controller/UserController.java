@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
-import com.mitrais.apps.trainingsystem.model.Grade;
 import com.mitrais.apps.trainingsystem.model.JobFamily;
 import com.mitrais.apps.trainingsystem.model.Role;
 import com.mitrais.apps.trainingsystem.model.User;
