@@ -13,6 +13,7 @@ import { RoleComponent } from './components/login/role/role.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 import { UserCreateComponent } from './components/user/user-create/user-create.component';
+import { UserDetailComponent } from './components/user/user-detail/user-detail.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
@@ -31,6 +32,7 @@ const routes: Routes = [
     // { path: '', redirectTo: 'list', pathMatch: 'full' },
     // { path: 'list', component: UserListComponent },
     { path: 'create', component: UserCreateComponent },
+    { path: 'detail/:id', component: UserDetailComponent },
     { path: 'edit/:id', component: UserEditComponent },
   ] },
   { path: 'enrollments',  component: EnrollmentComponent, children: [] },

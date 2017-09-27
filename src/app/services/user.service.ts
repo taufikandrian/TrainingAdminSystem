@@ -85,6 +85,13 @@ export class UserService {
     });
   }
 
+  detail(data): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/users/update/'+data)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
   delete(data): Observable<Response> {
     return this.http.post(Environment.apiUrl+'/users/delete', data)
     .map((response: Response) => {

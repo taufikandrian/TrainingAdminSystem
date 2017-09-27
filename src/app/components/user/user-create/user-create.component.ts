@@ -31,7 +31,8 @@ export class UserCreateComponent implements OnInit {
       icon  : 'users',
       main  : 'User Create',
       sub   : 'Create new user',
-      size  : 'large'
+      size  : 'large',
+      visible: true,
     });
     this._menuService.setCurrentRoute(this.router.url);
 

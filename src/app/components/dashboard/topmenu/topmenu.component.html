@@ -2,7 +2,7 @@
   <div class="item">
     <img class="ui mini image" [src]="assets.logo">
   </div>
-  <div class="item">
+  <div class="item" *ngIf="header?.visible">
       <div class="ui {{header.size}} header">
         <i class="{{header.icon}} disabled icon"></i>
         <div class="content">

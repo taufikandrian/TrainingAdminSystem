@@ -33,7 +33,8 @@ export class UserListComponent implements OnInit {
       icon  : 'users',
       main  : 'User List',
       sub   : 'List all users in Database',
-      size  : 'large'
+      size  : 'large',
+      visible: true,
     });
     let _userDTClass = '.table-usertable';
     // crear seach box
@@ -102,7 +103,7 @@ export class UserListComponent implements OnInit {
           render : (data, type, row) => {
             return `<div class="ui icon mini buttons">\
                       <button data-usrobj='${JSON.stringify(row)}' class="ui purple button editbtn"><i class="edit icon"></i></button>\
-                      <button data-usrobj="${JSON.stringify(row)}" class="ui button infobtn"><i class="info icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(row)}' class="ui button infobtn"><i class="info icon"></i></button>\
                       <button data-usrobj='${JSON.stringify(row)}' class="ui button trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
@@ -124,7 +125,7 @@ export class UserListComponent implements OnInit {
         }
     });
     var that = this;
-
+    this.userDT = _userDT;
     //Edit
     $(document).on('click', '.editbtn', function() {
       let usrObj = $(this).data('usrobj');
@@ -134,7 +135,7 @@ export class UserListComponent implements OnInit {
     //Detail
     $(document).on('click', '.infobtn', function() {
       let usrObj = $(this).data('usrobj');
-      that.router.navigate(['/users/edit', usrObj.id]);
+      that.router.navigate(['/users/detail', usrObj.accountName]);
     });
 
     //Delete
@@ -201,7 +202,8 @@ export class UserListComponent implements OnInit {
     });
 
     // create search fungsi
-    _userDT.column().every( function () {
+
+    _userDT.columns().every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change', function () {
         if ( that.search() !== this.value ) {
@@ -213,9 +215,6 @@ export class UserListComponent implements OnInit {
     // $('input[name="searchkey"]').on( 'keyup change', function () {
     //   _userDT.search( this.value ).draw();
     // });
-
-
-    this.userDT = _userDT;
     // $('div.tb-toolbar').html('<div class="ui tiny buttons">\
     //                             <button class="ui button" onclick="my_unique_class_name.tes("adfa")">\
     //                               <i class="icon add user"></i>\

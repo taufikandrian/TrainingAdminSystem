@@ -38,6 +38,7 @@ import { PeriodCreateComponent } from './components/period/period-create/period-
 import { AlertComponent } from './modals/alert/alert.component';
 import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrumb.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { UserDetailComponent } from './components/user/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
     AlertComponent,
     BreadcrumbComponent,
     NotfoundComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,
