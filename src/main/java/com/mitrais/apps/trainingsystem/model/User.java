@@ -127,7 +127,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.grade = grade;
 	}
 	
-//	@JsonIgnore
+	//@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="user_role_tb",
             joinColumns=
@@ -143,10 +143,10 @@ public class User extends Auditable<String> implements Serializable {
 		this.roleList = role;
 	}
 	
-	@Override
-	public String toString() {
-		return "User{" +
-				", name='" + fullName + '\'' +
-				'}';
-	}
+//	@Override
+//	public String toString() {
+//		return "User{" +
+//				", name='" + fullName + '\'' +
+//				'}';
+//	}
 }

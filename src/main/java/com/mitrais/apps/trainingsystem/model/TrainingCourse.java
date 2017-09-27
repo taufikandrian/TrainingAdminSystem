@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -119,21 +120,21 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		return id;
 	}
     
-	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name="trainer_tb",
-            joinColumns=
-            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
-      inverseJoinColumns=
-            @JoinColumn(name="user_id", referencedColumnName="user_id")
-    )
-	private List<User> trainingCourseTrainer;
-    public void setTrainingCourseTrainer(List<User> trainingCourseTrainer) {
-		this.trainingCourseTrainer = trainingCourseTrainer;
-	}
-
-	public List<User> getTrainingCourseTrainer() {
-		return this.trainingCourseTrainer;
-	}
+//	@ManyToMany(fetch=FetchType.EAGER)
+//    @JoinTable(name="trainer_tb",
+//            joinColumns=
+//            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
+//      inverseJoinColumns=
+//            @JoinColumn(name="user_id", referencedColumnName="user_id")
+//    )
+//	private Set<User> trainingCourseTrainer;
+//    public void setTrainingCourseTrainer(Set<User> trainingCourseTrainer) {
+//		this.trainingCourseTrainer = trainingCourseTrainer;
+//	}
+//
+//	public Set<User> getTrainingCourseTrainer() {
+//		return this.trainingCourseTrainer;
+//	}
 	
 	@ManyToOne(optional=false)
     @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")

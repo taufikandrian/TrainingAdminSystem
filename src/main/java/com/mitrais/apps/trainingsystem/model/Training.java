@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "training_tb")
+
 public class Training extends Auditable<String> implements Serializable {
 
 	/**
@@ -100,14 +102,10 @@ public class Training extends Auditable<String> implements Serializable {
 	public String getId() {
 		return id;
 	}
-    
-	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name="eligible_user_tb",
-            joinColumns=
-            @JoinColumn(name="training_id", referencedColumnName="training_id"),
-      inverseJoinColumns=
-            @JoinColumn(name="user_id", referencedColumnName="user_id")
-    )
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="eligible_user_tb", joinColumns={@JoinColumn(name="training_id", referencedColumnName="training_id")},
+	inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")})
 	private List<User> eligibleList;
 	public void setEligibleList(List<User> eligibleList) {
 		this.eligibleList = eligibleList;
