@@ -6,8 +6,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,11 +45,31 @@ public class UserController extends BaseController<User> {
 	@Autowired
 	private JobFamilyRepository jobfamRepo;
 	
-	//Datatables for display all users
-	@PostMapping("/users/dt/all")
-	public DataTablesOutput<User> getUsers(@Valid @RequestBody DataTablesInput input) {
-		return userRepo.findAll(input,notDeleted());
-	}
+	// Datatables training Users
+	@PostMapping(value="/users/dt/all")
+    public ResponseEntity<JSONObject> getPeriodList(@Valid @RequestBody DataTablesInput input) {
+           JSONObject response = new JSONObject();
+           
+           //SORT
+           List<Sort.Order> orders = new ArrayList<>();
+           List<Column> columns = input.getColumns();
+           for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+                  String c = columns.get(item.getColumn()).getData();
+                  if(item.getDir().equals("asc"))
+                        orders.add(new Sort.Order(Direction.ASC, c));
+                  else
+                        orders.add(new Sort.Order(Direction.DESC, c));
+           }
+          
+           Sort s = new Sort(orders);
+           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(),s);
+           Page<User> data = userRepo.findAll(DataTable(columns), page);
+           response.put("draw", input.getDraw());
+           response.put("recordsTotal", userRepo.findAll(notDeleted()).size());
+           response.put("recordsFiltered", data.getTotalElements());
+           response.put("data", data.getContent());
+           return ResponseEntity.ok(response);
+    }
 	
 	//Dropdown of Role User
 	@PostMapping("/users/getRole")
@@ -98,6 +122,26 @@ public class UserController extends BaseController<User> {
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
+	@GetMapping("/users/checkUsername/{newAccountName}")
+	public ResponseEntity<JSONObject> checkUsername(@PathVariable String newAccountName){
+		JsonFormatter responseJson = new JsonFormatter();
+		User userTmp = userRepo.findByAccountName(newAccountName);
+		if(userTmp == null){
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.setMessage("Username is available");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		else {
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Username with " + newAccountName + " is already exist");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
 	//DELETE USER FEATURE
 	@PostMapping("/users/delete")
 	public ResponseEntity<JSONObject> deleteData(@RequestBody JSONObject user){

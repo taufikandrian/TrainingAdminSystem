@@ -8,8 +8,12 @@ import javax.validation.Valid;
 import net.minidev.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
-//import com.mitrais.apps.trainingsystem.model.EligibleUser;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.User;
-//import com.mitrais.apps.trainingsystem.repository.EligibleUserRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
-import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 @RestController
 public class PeriodController extends BaseController<Training> {
@@ -31,36 +32,45 @@ public class PeriodController extends BaseController<Training> {
 	@Autowired
 	private TrainingRepository trainRepo;
 	
-	//@Autowired
-	//private EligibleUserRepository eligibleUserRepo;
+	// Datatables training	
+	@PostMapping(value="/training/dt/all")
+    public ResponseEntity<JSONObject> getTrains(@Valid @RequestBody DataTablesInput input) {
+           JSONObject response = new JSONObject();
+           
+           //SORT
+           List<Sort.Order> orders = new ArrayList<>();
+           List<Column> columns = input.getColumns();
+           for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+                  String c = columns.get(item.getColumn()).getData();
+                  if(item.getDir().equals("asc"))
+                        orders.add(new Sort.Order(Direction.ASC, c));
+                  else
+                        orders.add(new Sort.Order(Direction.DESC, c));
+           }
+          
+           Sort s = new Sort(orders);
+           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(),s);
+           Page<Training> data = trainRepo.findAll(DataTable(columns), page);
+           response.put("draw", input.getDraw());
+           response.put("recordsTotal", trainRepo.findAll(notDeleted()).size());
+           response.put("recordsFiltered", data.getTotalElements());
+           response.put("data", data.getContent());
+           return ResponseEntity.ok(response);
+    }
 	
-	@Autowired
-	private UserRepository userRepo;
-	
-	
-	@PostMapping("/training/dt/all")
-	public DataTablesOutput<Training> getTrains(@Valid @RequestBody DataTablesInput input) {
-		return trainRepo.findAll(input,notInactive());
-	}
-	
-	
+	// get eligible participant from IDTraining
 	@PostMapping("/training/getEligibleUser")
 	public ResponseEntity<JSONObject> getEligibleUser(@RequestBody JSONObject data) {
 		JsonFormatter responseJson = new JsonFormatter();
-		//List<User> userEligible = new ArrayList<User>();
 		try{
 			String trainingID = (String) data.get("trainingID");
-			//List<EligibleUser> currentuser = this.eligibleUserRepo.findByTraining_id(trainingID.toLowerCase());
 			Training trainCoba = trainRepo.findById(trainingID.toLowerCase());
 			List<User> userEligible = trainCoba.getEligibleList();
-			System.out.println(trainCoba.getEligibleList());
-//			for(int i = 0; i < currentuser.size();i++){
-//				userEligible.add(currentuser.get(i).getUser());
-//			}
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Training", userEligible);
+			responseJson.appendToData("Training", trainCoba);
+			responseJson.appendToData("UserEligible", userEligible);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -69,12 +79,11 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setCode("200");
 			responseJson.setMessage("Eligible User Cannot be Displayed");
 			responseJson.appendToData("EligibleUser", ex.getMessage());
-			//responseJson.setMessage("Roles not found for user ID <strong>#" + userID + "</strong>");
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
 	
-	//create training feature
+	// create training feature
 	@PostMapping("/training/create")
 	public ResponseEntity<JSONObject> add(@RequestBody Training training){
 		JsonFormatter responseJson = new JsonFormatter();
@@ -107,20 +116,12 @@ public class PeriodController extends BaseController<Training> {
 		JsonFormatter responseJson = new JsonFormatter();
 		try{
 			List<Training> trainTmp = new ArrayList<Training>();
-//			List<User> usrEligible = new ArrayList<User>(); //(eligibleList feature show)
 			@SuppressWarnings("unchecked")
 			List<String> trainingID = (List<String>) training.get("trainingID");
 			for(int i = 0; i < trainingID.size();i++){
 				Training currenttraining = this.trainRepo.findById(trainingID.get(i).toLowerCase());
-//				List<EligibleUser> userEligible = eligibleUserRepo.findByTrainingTrainID(trainingID.get(i).toLowerCase()); //(eligibleList feature show)
-//				System.out.println(userEligible); //(eligibleList feature show)
-//				for(int j = 0; j < userEligible.size(); j++){ //(eligibleList feature show)
-//					User eligibleUsr = userRepo.findById(userEligible.get(j).getTrainingUserID()); //(eligibleList feature show)
-//					usrEligible.add(eligibleUsr); //(eligibleList feature show)
-//				} //(eligibleList feature show)
 				if(currenttraining != null) {
 					currenttraining.setTrainingStatus("Inactive");
-//					currenttraining.setEligibleList(usrEligible); //(eligibleList feature show)
 					trainRepo.save(currenttraining);
 					trainTmp.add(currenttraining);
 				}

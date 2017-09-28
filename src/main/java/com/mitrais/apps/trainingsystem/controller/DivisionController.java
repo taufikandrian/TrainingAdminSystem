@@ -11,14 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Division;
 import com.mitrais.apps.trainingsystem.model.JobFamily;
-import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 
 @RestController
 public class DivisionController extends BaseController<Division> {
-
-	@Autowired
-	private DivisionRepository divisionRepo;
 	
 	@Autowired
 	private JobFamilyRepository jobFamRepo;

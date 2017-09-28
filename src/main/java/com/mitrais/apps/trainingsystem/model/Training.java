@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +37,7 @@ public class Training extends Auditable<String> implements Serializable {
     private String trainingName;
     
 	@Column(name = "training_status")
-    private String trainingStatus;
+    private String status;
     
     @Column(name = "training_description")
     private String trainingDescription;
@@ -58,11 +57,11 @@ public class Training extends Auditable<String> implements Serializable {
 	}
 	
 	public String getTrainingStatus() {
-		return trainingStatus;
+		return status;
 	}
 	
 	public void setTrainingStatus(String trainingStatus) {
-		this.trainingStatus = trainingStatus;
+		this.status = trainingStatus;
 	}
 	
 	public String getTrainingDescription() {
@@ -93,7 +92,7 @@ public class Training extends Auditable<String> implements Serializable {
 	
     public Training(String trainingName,String trainingStatus,String trainingDescription,Date trainingStartDate,Date trainingEndDate) {
     	this.trainingName = trainingName;
-    	this.trainingStatus = trainingStatus;
+    	this.status = trainingStatus;
     	this.trainingDescription = trainingDescription;
     	this.trainingStartDate = trainingStartDate;
     	this.trainingEndDate = trainingEndDate;

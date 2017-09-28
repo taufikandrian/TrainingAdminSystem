@@ -11,14 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Grade;
 import com.mitrais.apps.trainingsystem.model.JobFamily;
-import com.mitrais.apps.trainingsystem.repository.GradeRepository;
 import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 
 @RestController
 public class GradeController extends BaseController<Grade> {
-
-	@Autowired
-	private GradeRepository gradeRepo;
 	
 	@Autowired
 	private JobFamilyRepository jobFamRepo;
