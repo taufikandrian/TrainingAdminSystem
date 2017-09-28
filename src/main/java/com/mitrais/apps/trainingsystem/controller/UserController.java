@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.Search;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +50,10 @@ public class UserController extends BaseController<User> {
 	@PostMapping(value="/users/dt/all")
     public ResponseEntity<JSONObject> getPeriodList(@Valid @RequestBody DataTablesInput input) {
            JSONObject response = new JSONObject();
+           List<Column> columns = input.getColumns();
            
            //SORT
            List<Sort.Order> orders = new ArrayList<>();
-           List<Column> columns = input.getColumns();
            for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
                   String c = columns.get(item.getColumn()).getData();
                   if(item.getDir().equals("asc"))
@@ -60,9 +61,21 @@ public class UserController extends BaseController<User> {
                   else
                         orders.add(new Sort.Order(Direction.DESC, c));
            }
+           Search s = new Search();
+           Column c = new Column();
+           
+           //WHERE status
+           s.setValue("Deleted");
+           c.setData("status");c.setSearch(s);
+           
+           //JOIN
+//           s.setValue("AD");
+//           c.setData("join.roleList.roleCode");c.setSearch(s);
+           
+           columns.add(c);
           
-           Sort s = new Sort(orders);
-           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(),s);
+           Sort sort = new Sort(orders);
+           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(), sort);
            Page<User> data = userRepo.findAll(DataTable(columns), page);
            response.put("draw", input.getDraw());
            response.put("recordsTotal", userRepo.findAll(notDeleted()).size());
