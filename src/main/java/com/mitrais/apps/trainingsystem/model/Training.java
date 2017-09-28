@@ -104,8 +104,12 @@ public class Training extends Auditable<String> implements Serializable {
 	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name="eligible_user_tb", joinColumns={@JoinColumn(name="training_id", referencedColumnName="training_id")},
-	inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")})
+	@JoinTable(name="eligible_user_tb",
+	    joinColumns=
+	    @JoinColumn(name="training_id", referencedColumnName="training_id"),
+	inverseJoinColumns=
+	    @JoinColumn(name="user_id", referencedColumnName="user_id")
+	)
 	private List<User> eligibleList;
 	public void setEligibleList(List<User> eligibleList) {
 		this.eligibleList = eligibleList;
