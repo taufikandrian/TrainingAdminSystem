@@ -85,6 +85,13 @@ export class UserService {
     });
   }
 
+  checkUsername(username): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/users/checkUsername/'+username)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
   detail(data): Observable<Response> {
     return this.http.get(Environment.apiUrl+'/users/update/'+data)
     .map((response: Response) => {
