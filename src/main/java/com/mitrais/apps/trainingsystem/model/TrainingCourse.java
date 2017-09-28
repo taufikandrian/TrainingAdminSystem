@@ -2,13 +2,11 @@ package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -44,7 +42,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     private Integer trainingCourseCapacity;
     
     @Column(name = "training_course_status")
-    private String trainingCourseStatus;
+    private String status;
     
 	public String getTrainingCourseName() {
 		return trainingCourseName;
@@ -87,11 +85,11 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	}
 
 	public String getTrainingCourseStatus() {
-		return trainingCourseStatus;
+		return status;
 	}
 
 	public void setTrainingCourseStatus(String trainingCourseStatus) {
-		this.trainingCourseStatus = trainingCourseStatus;
+		this.status = trainingCourseStatus;
 	}
 	
 	public TrainingCourse(){
@@ -104,7 +102,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     	this.trainingCourseStartDate = trainingCourseStartDate;
     	this.trainingCourseEndDate = trainingCourseEndDate;
     	this.trainingCourseCapacity = trainingCourseCapacity;
-    	this.trainingCourseStatus = trainingCourseStatus;
+    	this.status = trainingCourseStatus;
     }
 
 	public String getId() {
@@ -142,4 +140,5 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public Training getTraining() {
 		return training;
 	}
+	
 }

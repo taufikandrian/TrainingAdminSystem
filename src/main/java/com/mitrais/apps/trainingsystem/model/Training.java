@@ -2,8 +2,11 @@ package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -116,5 +120,12 @@ public class Training extends Auditable<String> implements Serializable {
 
 	public List<User> getEligibleList() {
 		return eligibleList;
+	}
+	
+	 @OneToMany(cascade = {CascadeType.PERSIST})
+	 private Set<TrainingCourse> trainingCourse = new HashSet<TrainingCourse>();
+
+	public Set<TrainingCourse> getTrainingCourse() {
+		return trainingCourse;
 	}
 }
