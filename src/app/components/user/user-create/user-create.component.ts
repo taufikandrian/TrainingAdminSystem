@@ -174,6 +174,21 @@ export class UserCreateComponent implements OnInit {
   }
 
   initForm() {
+    // $.fn.form.settings.rules.checkUsername = (value) => {
+    //   let returnType = false;
+    //   this._userService.checkUsername(value)
+    //   .subscribe(result => {
+    //     alert("json")
+    //     returnType = true
+    //   }, err => {
+    //     returnType = false
+    //   });
+
+    //   setTimeout(() => {
+    //     alert("done")
+    //     return returnType
+    //   }, 2000);
+    // };
     $('.ui.form.usercreate')
     .form({
       fields: {
@@ -236,39 +251,73 @@ export class UserCreateComponent implements OnInit {
       }, onSuccess: (event, fields) => {
 
         event.preventDefault();
-        this._userService.create(fields).subscribe(response => {
-          if (response.json().confirmed === true) {
-            let usrObj = response.json().data.User_Created;
-            this._alertService.setAlert({
-              closable: false,
-              header : {
-                // pot lan
-                type: 'pot',
-                color: 'purple',
-                icon: 'user add',
-                text: 'User Created',
-                subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
-              },
-              message: "",
-              button : {
-                size: '',
-                position: 'center',
-                fluid: true,
-                fluidNumber: 'two',
-                ok : {display: true,text: 'Ok!',color: 'purple'},
-                deny : {display : false,text: 'Cancel',color: ''}
-              },
-              onApprove : ($element) => {
-                this.router.navigate(['/users']);
-              },
-              onDeny: ($element) => {}
-
+          this._userService.checkUsername(fields.accountName)
+          .subscribe(response => {
+            if(response.json().confirmed === true) {
+              this._userService.create(fields).subscribe(response => {
+              if (response.json().confirmed === true) {
+                let usrObj = response.json().data.User_Created;
+                this._alertService.setAlert({
+                  closable: false,
+                  header : {
+                    // pot lan
+                    type: 'pot',
+                    color: 'purple',
+                    icon: 'user add',
+                    text: 'User Created',
+                    subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
+                  },
+                  message: "",
+                  button : {
+                    size: '',
+                    position: 'center',
+                    fluid: true,
+                    fluidNumber: 'two',
+                    ok : {display: true,text: 'Ok!',color: 'purple'},
+                    deny : {display : false,text: 'Cancel',color: ''}
+                  },
+                  onApprove : ($element) => {
+                    this.router.navigate(['/users']);
+                  },
+                  onDeny: ($element) => {}
+                });
+              } else {
+                this._alertService.buildAlertError(response.json().message);
+              }
             });
-          } else {
+            } else {
+              this._alertService.setAlert({
+                closable: false,
+                header : {
+                  // pot lan
+                  type: 'pot',
+                  color: 'red',
+                  icon: 'warning sign',
+                  text: 'Username already exis',
+                  subheader: 'User with name ' + fields.accountName + ' is already <strong>exist</strong>)'
+                },
+                message: "",
+                button : {
+                  size: '',
+                  position: 'center',
+                  fluid: true,
+                  fluidNumber: 'two',
+                  ok : {display: true,text: 'Ok!',color: ''},
+                  deny : {display : false,text: 'Cancel',color: ''}
+                },
+                onApprove : ($element) => {
 
-            this._alertService.buildAlertError(response.json().message);
-          }
-        });
+                },
+                onDeny: ($element) => {}
+
+              });
+            }
+          }, err => {
+            if(!err.ok) {
+              this._alertService.buildAlertError('Sorry, our server is offline');
+              this.isLoading = false;
+            }
+          });
       }, inline: true, on : 'blur'
   });
   }
