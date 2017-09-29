@@ -34,6 +34,7 @@ import { MessageService } from './services/message.service';
 import { JsonService } from './services/json.service';
 import { DatatableService } from './services/datatable.service';
 import { MenuService } from './services/menu.service';
+import { PeriodService } from './services/period.service';
 import { PeriodListComponent } from './components/period/period-list/period-list.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 import { AlertComponent } from './modals/alert/alert.component';
@@ -83,7 +84,8 @@ import { MessageComponent } from './messages/message/message.component';
     UserService,
     DatatableService,
     AlertService,
-    MessageService
+    MessageService,
+    PeriodService,
   ],
   bootstrap: [AppComponent]
 })

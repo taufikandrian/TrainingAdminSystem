@@ -28,7 +28,7 @@
     <div class="equal width fields">
       <div class="field">
         <label class="capitalize">Job Family</label>
-        <select name="jobfam_id" class="ui dropdown search selection jobfamdropdown">
+        <select name="jobfam_id" class="ui dropdown search jobfamdropdown">
           <option value="">Select Job Family</option>
           <option *ngFor="let item of jobfamdropdown" value="{{item.value}}">{{item.name}}</option>
         </select>
@@ -47,6 +47,20 @@
           <option *ngFor="let item of gradedropdown" value="{{item.value}}">{{item.name}}</option>
         </select>
       </div>
+      <!-- <div class="field ui calendar" id="start-date-add-period">
+        <label>Start Date</label>
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" name="startDate" placeholder="Start Date">
+        </div>
+      </div>
+      <div class="field ui calendar" id="end-date-add-period">
+        <label>End Date</label>
+          <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <input type="text" name="endDate" placeholder="End Date">
+        </div>
+      </div> -->
     </div>
     <div class="equal width fields">
         <div class="field">

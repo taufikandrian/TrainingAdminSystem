@@ -24,13 +24,9 @@ const routes: Routes = [
   { path: 'role', component: RoleComponent },
   { path: 'dashboard',  component: DashboardComponent, children: [] },
   { path: 'periods',  component: PeriodComponent, children: [
-    // { path: '', redirectTo: 'list', pathMatch: 'full' },
-    // { path: 'list', component: PeriodListComponent },
     { path: 'create', component: PeriodCreateComponent },
   ] },
   { path: 'users',  component: UserComponent, children: [
-    // { path: '', redirectTo: 'list', pathMatch: 'full' },
-    // { path: 'list', component: UserListComponent },
     { path: 'create', component: UserCreateComponent },
     { path: 'detail/:id', component: UserDetailComponent },
     { path: 'edit/:id', component: UserEditComponent },

@@ -78,7 +78,6 @@ export class UserListComponent implements OnInit {
             return JSON.stringify(d);
           }
         },
-        orderMulti: false,
         columns: [{
           data: 'anothercolumn',orderable : false,searchable : false,
           render : (data, type, row) => {

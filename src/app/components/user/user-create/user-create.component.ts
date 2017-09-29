@@ -38,6 +38,39 @@ export class UserCreateComponent implements OnInit {
 
     this.initDropdown();
     this.initForm();
+    this.initDate();
+  }
+
+  initDate() {
+    // $('#start-date-add-period').calendar({
+    //   type: 'time',
+    //   ampm: false,
+      // endCalendar: $('#end-date-add-period'),
+      // formatter: {
+      //   date: function (date, settings) {
+      //     if (!date) return '';
+      //     var day = date.getDate();
+      //     var month = date.getMonth() + 1;
+      //     var year = date.getFullYear();
+      //     return year + '-' + month + '-' + day;
+      //   }
+      // }
+    // });
+
+    // $('#start-date-add-period').calendar({
+    //   type: 'date',
+    //   endCalendar: $('#end-date-add-period'),
+    //   formatter: {
+    //     date: function (date, settings) {
+    //       if (!date) return '';
+
+    //       var day = date.getDate();
+    //       var month = date.getMonth() + 1;
+    //       var year = date.getFullYear();
+    //       return year + '-' + month + '-' + day;
+    //     }
+    //   }
+    // });
   }
 
   initDropdown() {
@@ -234,75 +267,77 @@ export class UserCreateComponent implements OnInit {
           }]
         }
       }, onSuccess: (event, fields) => {
+        alert(fields.startDate)
+        // fields.createdBy = this._userService.getCurrentUserName();
+        // fields.lastModifiedBy = this._userService.getCurrentUserName();
+        // event.preventDefault();
+        //   this._userService.checkUsername(fields.accountName)
+        //   .subscribe(response => {
+        //     if(response.json().confirmed === true) {
+        //       this._userService.create(fields).subscribe(response => {
+        //       if (response.json().confirmed === true) {
+        //         let usrObj = response.json().data.User_Created;
+        //         this._alertService.setAlert({
+        //           closable: false,
+        //           header : {
+        //             // pot lan
+        //             type: 'pot',
+        //             color: 'purple',
+        //             icon: 'user add',
+        //             text: 'User Created',
+        //             subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
+        //           },
+        //           message: "",
+        //           button : {
+        //             size: '',
+        //             position: 'center',
+        //             fluid: true,
+        //             fluidNumber: 'two',
+        //             ok : {display: true,text: 'Ok!',color: 'purple'},
+        //             deny : {display : false,text: 'Cancel',color: ''}
+        //           },
+        //           onApprove : ($element) => {
+        //             this.router.navigate(['/users']);
+        //           },
+        //           onDeny: ($element) => {}
+        //         });
+        //       } else {
+        //         this._alertService.buildAlertError(response.json().data.UserFailedCreate);
+        //       }
+        //     });
+        //     } else {
+        //       this._alertService.setAlert({
+        //         closable: false,
+        //         header : {
+        //           // pot lan
+        //           type: 'pot',
+        //           color: 'red',
+        //           icon: 'warning sign',
+        //           text: 'Username already exis',
+        //           subheader: 'User with name ' + fields.accountName + ' is already <strong>exist</strong>)'
+        //         },
+        //         message: "",
+        //         button : {
+        //           size: '',
+        //           position: 'center',
+        //           fluid: true,
+        //           fluidNumber: 'two',
+        //           ok : {display: true,text: 'Ok!',color: ''},
+        //           deny : {display : false,text: 'Cancel',color: ''}
+        //         },
+        //         onApprove : ($element) => {
 
-        event.preventDefault();
-          this._userService.checkUsername(fields.accountName)
-          .subscribe(response => {
-            if(response.json().confirmed === true) {
-              this._userService.create(fields).subscribe(response => {
-              if (response.json().confirmed === true) {
-                let usrObj = response.json().data.User_Created;
-                this._alertService.setAlert({
-                  closable: false,
-                  header : {
-                    // pot lan
-                    type: 'pot',
-                    color: 'purple',
-                    icon: 'user add',
-                    text: 'User Created',
-                    subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
-                  },
-                  message: "",
-                  button : {
-                    size: '',
-                    position: 'center',
-                    fluid: true,
-                    fluidNumber: 'two',
-                    ok : {display: true,text: 'Ok!',color: 'purple'},
-                    deny : {display : false,text: 'Cancel',color: ''}
-                  },
-                  onApprove : ($element) => {
-                    this.router.navigate(['/users']);
-                  },
-                  onDeny: ($element) => {}
-                });
-              } else {
-                this._alertService.buildAlertError(response.json().message);
-              }
-            });
-            } else {
-              this._alertService.setAlert({
-                closable: false,
-                header : {
-                  // pot lan
-                  type: 'pot',
-                  color: 'red',
-                  icon: 'warning sign',
-                  text: 'Username already exis',
-                  subheader: 'User with name ' + fields.accountName + ' is already <strong>exist</strong>)'
-                },
-                message: "",
-                button : {
-                  size: '',
-                  position: 'center',
-                  fluid: true,
-                  fluidNumber: 'two',
-                  ok : {display: true,text: 'Ok!',color: ''},
-                  deny : {display : false,text: 'Cancel',color: ''}
-                },
-                onApprove : ($element) => {
+        //         },
+        //         onDeny: ($element) => {}
 
-                },
-                onDeny: ($element) => {}
-
-              });
-            }
-          }, err => {
-            if(!err.ok) {
-              this._alertService.buildAlertError('Sorry, our server is offline');
-              this.isLoading = false;
-            }
-          });
+        //       });
+        //     }
+        //   }, err => {
+        //     if(!err.ok) {
+        //       this._alertService.buildAlertError('Sorry, our server is offline');
+        //       this.isLoading = false;
+        //     }
+        //   });
       }, inline: true, on : 'blur'
   });
   }
