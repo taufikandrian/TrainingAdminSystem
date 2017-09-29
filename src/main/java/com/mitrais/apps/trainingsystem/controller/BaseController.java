@@ -50,22 +50,23 @@ public abstract class BaseController<U> {
              
              //SEARCH
              for (Column item : columns) {
-            	 	String search = item.getSearch().getValue();
-            	 	
-            	 	if(item.getData() == "status") {
+        	 	String search = item.getSearch().getValue();
+        	 	
+        	 	if(!search.equals("")) {
+        	 		String data= item.getData();
+        	 		
+        	 		if(item.getData() == "status") {
             	 		where.add(builder.notEqual(root.get(item.getData()), search));
             	 	} else if (item.getData().contains(".")) {
-            	 		String dataToSplit = item.getData();
-            	 		String[] splitedCol = dataToSplit.split("\\.");
-            	 		
+            	 		String[] splitedCol = data.split("\\.");
             	 		if(splitedCol.length > 2)
             	 			where.add(builder.equal(root.join(splitedCol[1]).get(splitedCol[2]), search));
             	 		else
             	 			where.add(builder.like(root.join(splitedCol[0]).get(splitedCol[1]), "%"+search+"%"));
             	 		
-            	 	} else if(!search.equals("")) {
-                    	where.add(builder.like(root.get(item.getData()), "%"+search+"%"));
-                    }
+            	 	} else
+            	 		where.add(builder.like(root.get(item.getData()), "%"+search+"%"));
+                }
                           
              }
              return builder.and(where.toArray(new Predicate[0]));

@@ -75,7 +75,8 @@ public class UserController extends BaseController<User> {
            columns.add(c);
           
            Sort sort = new Sort(orders);
-           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(), sort);
+           Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+           PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
            Page<User> data = userRepo.findAll(DataTable(columns), page);
            response.put("draw", input.getDraw());
            response.put("recordsTotal", userRepo.findAll(notDeleted()).size());
