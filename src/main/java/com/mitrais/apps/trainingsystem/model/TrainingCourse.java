@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -155,9 +156,9 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.classroom = classroom;
 	}
 	
+	@JsonBackReference
 	@ManyToOne(optional=false)
 	@JoinColumn(name="training_id",referencedColumnName="training_id")
-	//@JsonIgnore
 	private Training training;
 	public Training getTraining() {
 		return training;

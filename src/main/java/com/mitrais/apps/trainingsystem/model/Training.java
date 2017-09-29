@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,10 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "training_tb")
@@ -118,20 +123,30 @@ public class Training extends Auditable<String> implements Serializable {
 		return eligibleList;
 	}
 	
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name="training_course_tb",
-	    joinColumns=
-	    @JoinColumn(name="training_id", referencedColumnName="training_id"),
-	inverseJoinColumns=
-	    @JoinColumn(name="course_name_id", referencedColumnName="course_name_id")
-	)
-	private Set<CourseName> trainingCourses = new HashSet<>();
-	public Set<CourseName> getTrainingCourses() {
+	@JsonManagedReference
+	@OneToMany(mappedBy="training", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<TrainingCourse> trainingCourses;
+	public Set<TrainingCourse> getTrainingCourses() {
 		return trainingCourses;
 	}
 
-	public void setTrainingCourses(Set<CourseName> trainingCourses) {
-		this.trainingCourses = trainingCourses;
+	public void setTrainingCoursess(Set<TrainingCourse> trainingCoursess) {
+		this.trainingCourses = trainingCoursess;
 	}
+
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name="training_course_tb",
+//	    joinColumns=
+//	    @JoinColumn(name="training_id", referencedColumnName="training_id"),
+//	inverseJoinColumns=
+//	    @JoinColumn(name="course_name_id", referencedColumnName="course_name_id")
+//	)
+//	private Set<CourseName> trainingCourses = new HashSet<>();
+//	public Set<CourseName> getTrainingCourses() {
+//		return trainingCourses;
+//	}
+//
+//	public void setTrainingCourses(Set<CourseName> trainingCourses) {
+//		this.trainingCourses = trainingCourses;
+//	}
 }
