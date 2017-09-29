@@ -213,8 +213,13 @@ public class UserController extends BaseController<User> {
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody User user,@PathVariable String accountName){
 		JsonFormatter responseJson = new JsonFormatter();
 		User userTmp = userRepo.findByAccountName(accountName);
+		List<Role> listRole = new ArrayList<Role>();
 		try{
+			for(int i = 0; i < user.roles.size();i++){
+				listRole.add(rolesRepo.findByRoleCode(user.roles.get(i)));
+			}
 			userTmp.setStatus(user.getStatus());
+			userTmp.setRoleList(listRole);
 			userRepo.save(userTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
