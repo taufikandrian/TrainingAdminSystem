@@ -1,8 +1,8 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,26 +80,26 @@ public class JobFamily implements Serializable{
 	@OneToMany
 	@JoinColumn(name = "job_family_id")
 	@JsonIgnore
-	private List<Grade> grades = new ArrayList<>();
+	private Set<Grade> grades = new HashSet<>();
 	
 	@OneToMany
 	@JoinColumn(name = "job_family_id")
 	@JsonIgnore
-	private List<Division> divisions = new ArrayList<>();
+	private Set<Division> divisions = new HashSet<>();
 	
-	public List<Grade> getGrades() {
+	public Set<Grade> getGrades() {
 		return grades;
 	}
 
-	public void setGrades(List<Grade> grades) {
+	public void setGrades(Set<Grade> grades) {
 		this.grades = grades;
 	}
 
-	public List<Division> getDivisions() {
+	public Set<Division> getDivisions() {
 		return divisions;
 	}
 
-	public void setDivisions(List<Division> divisions) {
+	public void setDivisions(Set<Division> divisions) {
 		this.divisions = divisions;
 	}
 

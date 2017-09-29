@@ -2,6 +2,7 @@ package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -135,11 +136,11 @@ public class User extends Auditable<String> implements Serializable {
       inverseJoinColumns=
             @JoinColumn(name="role_id", referencedColumnName="role_id")
     )
-	private List<Role> roleList;
-	public List<Role> getRoleList() {
+	private Set<Role> roleList;
+	public Set<Role> getRoleList() {
 		return roleList;
 	}
-	public void setRoleList(List<Role> role){
+	public void setRoleList(Set<Role> role){
 		this.roleList = role;
 	}
 	
