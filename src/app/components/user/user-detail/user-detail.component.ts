@@ -14,6 +14,7 @@ export class UserDetailComponent implements OnInit {
   private isLoading = true;
   private curUser: User;
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private _userService: UserService,
               private _menuService: MenuService,
               private _sidebarService: SidebarService,) { }
@@ -27,11 +28,11 @@ export class UserDetailComponent implements OnInit {
       size  : 'large',
       visible: false,
     });
+    this._menuService.setCurrentRoute(this.router.url);
     this.route.params.subscribe(params => {
       this._userService.detail(params['id']).subscribe(response => {
         let user : User;
         user = response.json().data.Get_User;
-
         this.curUser = user;
 
         this.isLoading = false

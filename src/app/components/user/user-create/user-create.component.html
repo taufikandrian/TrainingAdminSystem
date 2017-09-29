@@ -1,5 +1,5 @@
-<div class="ui purple segment text container">
-  <form class="ui form usercreate" [ngClass]="{'loading': isLoading}">
+<div class="ui purple attached segment text container">
+  <form id="usercreate" class="ui form usercreate" [ngClass]="{'loading': isLoading}">
     <div class="equal width fields">
       <div class="field">
           <label>Account Name</label>
@@ -57,12 +57,14 @@
           </select>
         </div>
     </div>
-    <button class="ui purple button">
+  </form>
+</div>
+<div class="ui bottom attached segment text container">
+    <button class="ui purple button" form="usercreate">
       <i class="icon save"></i>
       Submit
     </button>
     <button class="ui button" [routerLink]="['/users']">
       Back
     </button>
-  </form>
 </div>

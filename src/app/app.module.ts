@@ -30,6 +30,7 @@ import { SidebarService } from './services/sidebar.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
 import { AlertService } from './services/alert.service';
+import { MessageService } from './services/message.service';
 import { JsonService } from './services/json.service';
 import { DatatableService } from './services/datatable.service';
 import { MenuService } from './services/menu.service';
@@ -39,6 +40,7 @@ import { AlertComponent } from './modals/alert/alert.component';
 import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrumb.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { UserDetailComponent } from './components/user/user-detail/user-detail.component';
+import { MessageComponent } from './messages/message/message.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { UserDetailComponent } from './components/user/user-detail/user-detail.c
     BreadcrumbComponent,
     NotfoundComponent,
     UserDetailComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ import { UserDetailComponent } from './components/user/user-detail/user-detail.c
     UserService,
     DatatableService,
     AlertService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

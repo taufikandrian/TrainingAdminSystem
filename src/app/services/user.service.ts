@@ -113,4 +113,10 @@ export class UserService {
     });
   }
 
+  update(data, username): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/users/update/'+username, data)
+    .map((response: Response) => {
+      return response;
+    });
+  }
 }

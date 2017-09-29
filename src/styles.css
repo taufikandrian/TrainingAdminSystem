@@ -74,3 +74,11 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
   font-weight: 400 !important;
   font-style: italic;
 }
+
+.ui.header>.icons {
+  display: table-cell;
+  opacity: 1;
+  font-size: 1.5em;
+  padding-top: 0;
+  vertical-align: middle;
+}
