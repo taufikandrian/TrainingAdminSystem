@@ -91,20 +91,44 @@ export class UserListComponent implements OnInit {
           render: function (data, type, row) {
             return '<strong>mitrais\\' + data + '</strong>' || ''; }
         }, {
-          data: 'fullName'
+          data: 'fullName',
+          render: (data, type, row) => {
+            return data + "<br><i>" + row.email + "<i>"
+          }
         }, {
-          data: 'email'
+          data: 'roleList',
+          orderable : false,
+          searchable : false,
+          render: (data, type, row) => {
+            let dataToReturn = '';
+            let key = 0;
+            row.roleList.forEach(element => {
+
+              if(key == row.roleList.length-1 && element.roleName != undefined)
+                dataToReturn += element.roleName
+              else if(element.roleName != undefined)
+                dataToReturn += element.roleName + ', '
+
+              key++
+            });
+
+            return dataToReturn
+          }
         }, {
-          data: 'status'
+          data: 'grade.gradeName',
+          render: function (data, type, row) {
+            return row.division.jobFamily.familyCode + ' - ' + row.division.divisionCode + ' <br><b>'+row.grade.gradeName+'</b>' }
+        }, {
+          data: 'status',
         }, {
           data: 'anothercolumn',
           orderable : false,
           searchable : false,
           render : (data, type, row) => {
             return `<div class="ui icon mini buttons">\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui purple button editbtn"><i class="edit icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button infobtn"><i class="info icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button trashbtn"><i class="trash icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(row)}' class="ui purple button ul-editbtn"><i class="edit icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-infobtn"><i class="info icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
         },],
@@ -127,19 +151,19 @@ export class UserListComponent implements OnInit {
     var that = this;
     this.userDT = _userDT;
     //Edit
-    $(document).on('click', '.editbtn', function() {
+    $(document).on('click', '.ul-editbtn', function() {
       let usrObj = $(this).data('usrobj');
-      that.router.navigate(['/users/edit', usrObj.id]);
+      that.router.navigate(['/users/edit', usrObj.accountName]);
     });
 
     //Detail
-    $(document).on('click', '.infobtn', function() {
+    $(document).on('click', '.ul-infobtn', function() {
       let usrObj = $(this).data('usrobj');
       that.router.navigate(['/users/detail', usrObj.accountName]);
     });
 
     //Delete
-    $(document).on('click', '.trashbtn', function() {
+    $(document).on('click', '.ul-trashbtn', function() {
       let usrObj = $(this).data('usrobj');
       that._alertService.setAlert({
         closable: false,

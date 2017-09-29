@@ -20,15 +20,15 @@ export class UserCreateComponent implements OnInit {
   private gradedropdown: any[];
   private divisiondropdown: any[];
   private roledropdown: any[];
-  constructor(private _userService: UserService,
-              private router: Router,
+  constructor(private router: Router,
+              private _userService: UserService,
               private _menuService: MenuService,
               private _alertService: AlertService,) { }
 
   ngOnInit() {
 
     this._menuService.setCurrentHeader({
-      icon  : 'users',
+      icon  : 'user',
       main  : 'User Create',
       sub   : 'Create new user',
       size  : 'large',
@@ -174,21 +174,6 @@ export class UserCreateComponent implements OnInit {
   }
 
   initForm() {
-    // $.fn.form.settings.rules.checkUsername = (value) => {
-    //   let returnType = false;
-    //   this._userService.checkUsername(value)
-    //   .subscribe(result => {
-    //     alert("json")
-    //     returnType = true
-    //   }, err => {
-    //     returnType = false
-    //   });
-
-    //   setTimeout(() => {
-    //     alert("done")
-    //     return returnType
-    //   }, 2000);
-    // };
     $('.ui.form.usercreate')
     .form({
       fields: {
