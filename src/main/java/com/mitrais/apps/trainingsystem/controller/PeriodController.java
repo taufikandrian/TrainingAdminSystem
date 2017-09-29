@@ -92,7 +92,7 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			training.setTrainingName(training.getTrainingName());
-			training.setTrainingStatus(training.getTrainingStatus());
+			training.setStatus(training.getStatus());
 			training.setTrainingDescription(training.getTrainingDescription());
 			training.setTrainingStartDate(training.getTrainingStartDate());
 			training.setTrainingEndDate(training.getTrainingEndDate());
@@ -121,7 +121,7 @@ public class PeriodController extends BaseController<Training> {
 			for(int i = 0; i < trainingID.size();i++){
 				Training currenttraining = this.trainRepo.findById(trainingID.get(i).toLowerCase());
 				if(currenttraining != null) {
-					currenttraining.setTrainingStatus("Inactive");
+					currenttraining.setStatus("Inactive");
 					trainRepo.save(currenttraining);
 					trainTmp.add(currenttraining);
 				}
@@ -162,6 +162,27 @@ public class PeriodController extends BaseController<Training> {
 		}
 	}
 	
+	//get data detail training
+	@GetMapping("/training/TrainingDetail/{id}")
+	public ResponseEntity<JSONObject> getDetailTraining(@PathVariable String id){
+		JsonFormatter responseJson = new JsonFormatter();
+		Training trainTmp = trainRepo.findById(id);
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_Training", trainTmp);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Updated Training Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
 	//post data for update feature
 	@PostMapping("/training/update/{id}")
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody Training training,@PathVariable String id){
@@ -169,7 +190,7 @@ public class PeriodController extends BaseController<Training> {
 		Training trainTmp = trainRepo.findById(id);
 		try{
 			trainTmp.setTrainingName(training.getTrainingName());
-			trainTmp.setTrainingStatus(training.getTrainingStatus());
+			trainTmp.setStatus(training.getStatus());
 			trainTmp.setTrainingDescription(training.getTrainingDescription());
 			trainRepo.save(trainTmp);
 			responseJson.setConfirmed(true);

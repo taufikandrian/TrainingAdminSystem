@@ -9,13 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "training_course_tb")
 public class TrainingCourse extends Auditable<String> implements Serializable {
 
+	@Transient
+	public String classroom_id;
+	
+	@Transient
+	public String courseName_id;
 	/**
 	 * 
 	 */
@@ -59,7 +67,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public void setTrainingCourseDescription(String trainingCourseDescription) {
 		this.trainingCourseDescription = trainingCourseDescription;
 	}
-
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingCourseStartDate() {
 		return trainingCourseStartDate;
 	}
@@ -67,7 +75,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public void setTrainingCourseStartDate(Date trainingCourseStartDate) {
 		this.trainingCourseStartDate = trainingCourseStartDate;
 	}
-
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingCourseEndDate() {
 		return trainingCourseEndDate;
 	}
@@ -84,11 +92,11 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.trainingCourseCapacity = trainingCourseCapacity;
 	}
 
-	public String getTrainingCourseStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setTrainingCourseStatus(String trainingCourseStatus) {
+	public void setStatus(String trainingCourseStatus) {
 		this.status = trainingCourseStatus;
 	}
 	
@@ -126,11 +134,25 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 //	}
 	
 	@ManyToOne(optional=false)
+    @JoinColumn(name="course_name_id",referencedColumnName="course_name_id")
+	//@JsonIgnore
+	private CourseName courseName;
+	public CourseName getCourseName() {
+		return courseName;
+	}
+	public void setCourseName(CourseName courseName) {
+		this.courseName = courseName;
+	}
+	
+	@ManyToOne(optional=false)
     @JoinColumn(name="course_classroom_id",referencedColumnName="course_classroom_id")
 	//@JsonIgnore
 	private CourseClassroom classroom;
 	public CourseClassroom getClassroom() {
 		return classroom;
+	}
+	public void setClassroom(CourseClassroom classroom) {
+		this.classroom = classroom;
 	}
 	
 	@ManyToOne(optional=false)
@@ -139,6 +161,9 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	private Training training;
 	public Training getTraining() {
 		return training;
+	}
+	public void setTraining(Training training) {
+		this.training = training;
 	}
 	
 }

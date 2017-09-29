@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 
 public interface ScheduleRepository extends JpaRepository<TrainingCourse, String>, JpaSpecificationExecutor<TrainingCourse> {
-	TrainingCourse findByTrainingId(String trainingId);
+	TrainingCourse findById(String id);
 }

@@ -16,8 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "course_name_tb")
 public class CourseName implements Serializable {
 
-	private CourseType courseType;
-
 	/**
 	 * 
 	 */
@@ -74,8 +72,14 @@ public class CourseName implements Serializable {
 	public String getId() {
 		return id;
 	}
+	
 	@ManyToOne(optional=false)
     @JoinColumn(name="course_type_id",referencedColumnName="course_type_id")
+	private CourseType courseType;
+	public void setCourseType(CourseType courseType) {
+		this.courseType = courseType;
+	}
+
 	public CourseType getCourseType() {
 		return courseType;
 	}

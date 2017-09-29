@@ -35,6 +35,17 @@ public class CourseClassroom implements Serializable {
 	
 	@Column(name = "course_classroom_capacity")
     private Integer courseClassroomCapacity;
+	
+	@Column(name = "course_classroom_location")
+    private String courseClassroomLocation;
+
+	public String getCourseClassroomLocation() {
+		return courseClassroomLocation;
+	}
+
+	public void setCourseClassroomLocation(String courseClassroomLocation) {
+		this.courseClassroomLocation = courseClassroomLocation;
+	}
 
 	public String getCourseClassroomCode() {
 		return courseClassroomCode;
@@ -72,11 +83,12 @@ public class CourseClassroom implements Serializable {
 		
 	}
 	
-	public CourseClassroom(String courseClassroomCode,String courseClassroomName,String courseClassroomDescription,Integer courseClassroomCapacity){
+	public CourseClassroom(String courseClassroomCode,String courseClassroomName,String courseClassroomDescription,Integer courseClassroomCapacity,String courseClassroomLocation){
 		this.courseClassroomCode = courseClassroomCode;
 		this.courseClassroomName = courseClassroomName;
 		this.courseClassroomDescription = courseClassroomDescription;
 		this.courseClassroomCapacity = courseClassroomCapacity;
+		this.courseClassroomLocation = courseClassroomLocation;
 	}
 	
 	public String getId() {
