@@ -2,6 +2,7 @@ package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Training;
+import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 import com.mitrais.apps.trainingsystem.model.User;
+import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 
 @RestController
@@ -32,6 +35,14 @@ public class PeriodController extends BaseController<Training> {
 	@Autowired
 	private TrainingRepository trainRepo;
 	
+	@Autowired
+	private ScheduleRepository trainRepoC;
+	
+	@GetMapping(value="/training/tes/re")
+	public Training getCoures() {
+		Training train = trainRepo.findById("b3a1c776-d852-4a01-836d-789c4179d895"); 
+		return train;
+	}
 	// Datatables training	
 	@PostMapping(value="/training/dt/all")
     public ResponseEntity<JSONObject> getTrains(@Valid @RequestBody DataTablesInput input) {
@@ -48,8 +59,9 @@ public class PeriodController extends BaseController<Training> {
                         orders.add(new Sort.Order(Direction.DESC, c));
            }
           
-           Sort s = new Sort(orders);
-           PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(),s);
+           Sort sort = new Sort(orders);
+           Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+           PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
            Page<Training> data = trainRepo.findAll(DataTable(columns), page);
            response.put("draw", input.getDraw());
            response.put("recordsTotal", trainRepo.findAll(notDeleted()).size());
@@ -65,7 +77,7 @@ public class PeriodController extends BaseController<Training> {
 		try{
 			String trainingID = (String) data.get("trainingID");
 			Training trainCoba = trainRepo.findById(trainingID.toLowerCase());
-			List<User> userEligible = trainCoba.getEligibleList();
+			Set<User> userEligible = trainCoba.getEligibleList();
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
