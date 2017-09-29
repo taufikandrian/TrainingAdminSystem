@@ -48,6 +48,10 @@ public class UserController extends BaseController<User> {
 	@Autowired
 	private JobFamilyRepository jobfamRepo;
 	
+	@GetMapping(value="/tes/tes")
+	public User getusertes() {
+		return userRepo.findById("d23ba945-c606-4a39-aa1e-bff96502b366");
+	}
 	// Datatables training Users
 	@PostMapping(value="/users/dt/all")
     public ResponseEntity<JSONObject> getPeriodList(@Valid @RequestBody DataTablesInput input) {
@@ -117,7 +121,7 @@ public class UserController extends BaseController<User> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			Set<Role> listRole = new HashSet<Role>();
+			Set<Role> listRole = new HashSet<>();
 			for(int i = 0; i < user.roles.size();i++){
 				listRole.add(rolesRepo.findByRoleCode(user.roles.get(i)));
 			}
@@ -125,16 +129,17 @@ public class UserController extends BaseController<User> {
 			user.setDivision(divRepo.findByDivisionCode(user.division_id));
 			user.setGrade(gradeRepo.findByGradeCode(user.grade_id));
 			user.setRoleList(listRole);
-			responseJson.appendToData("User_Created", user);
 			userRepo.save(user);
+			responseJson.appendToData("User_Created", user);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
+			
 			responseJson.setConfirmed(false);
 			responseJson.setStatus("failed");
 			responseJson.setCode("200");
 			responseJson.setMessage("Created Data Cannot be Completed");
-			responseJson.appendToData("UserFailedCreate", ex.getMessage());
+			responseJson.appendToData("UserFailedCreate", ex);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
