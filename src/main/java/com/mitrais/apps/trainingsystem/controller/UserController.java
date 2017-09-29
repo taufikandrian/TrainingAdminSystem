@@ -1,7 +1,9 @@
 package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -115,7 +117,7 @@ public class UserController extends BaseController<User> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			List<Role> listRole = new ArrayList<Role>();
+			Set<Role> listRole = new HashSet<Role>();
 			for(int i = 0; i < user.roles.size();i++){
 				listRole.add(rolesRepo.findByRoleCode(user.roles.get(i)));
 			}
@@ -214,7 +216,7 @@ public class UserController extends BaseController<User> {
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody User user,@PathVariable String accountName){
 		JsonFormatter responseJson = new JsonFormatter();
 		User userTmp = userRepo.findByAccountName(accountName);
-		List<Role> listRole = new ArrayList<Role>();
+		Set<Role> listRole = new HashSet<Role>();
 		try{
 			for(int i = 0; i < user.roles.size();i++){
 				listRole.add(rolesRepo.findByRoleCode(user.roles.get(i)));
