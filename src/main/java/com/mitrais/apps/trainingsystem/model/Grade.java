@@ -1,19 +1,28 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "grade_tb")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Grade implements Serializable{
 
 	/**
@@ -34,13 +43,6 @@ public class Grade implements Serializable{
 	
 	@Column(name = "grade_description", nullable = false)
     private String gradeDescription;
-	
-//	@Column(name = "job_family_id", nullable = false)
-//    private String gradeJobFamilyId;
-	
-//	public String getGradeJobFamilyId() {
-//		return gradeJobFamilyId;
-//	}
 
 	public String getGradeCode() {
 		return gradeCode;
@@ -74,22 +76,29 @@ public class Grade implements Serializable{
 		this.gradeCode = gradeCode;
 		this.gradeName = gradeName;
 		this.gradeDescription = gradeDescription;
-//		this.gradeJobFamilyId = gradeJobFamilyId;
 	}
 	
 	public String getId() {
 		return id;
 	}
 	
-	@ManyToOne(optional=false)
+	@JsonIgnore
+	@OneToMany(mappedBy="grade", fetch = FetchType.LAZY)
+	private Set<User> users = new HashSet<>();
+	public Set<User> getUsers() {
+		return users;
+	}
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+	
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="job_family_id",referencedColumnName="job_family_id")
 	private JobFamily jobFamily;
-
-	public JobFamily getJobFamily() {
-		return jobFamily;
-	}
-
 	public void setJobFamily(JobFamily jobFamily) {
 		this.jobFamily = jobFamily;
+	}
+	public JobFamily getJobFamily() {
+		return jobFamily;
 	}
 }
