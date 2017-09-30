@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "division_tb")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Division implements Serializable {
 
 	/**
@@ -82,15 +82,15 @@ public class Division implements Serializable {
 		return id;
 	}
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="division", fetch = FetchType.LAZY)
-	private Set<User> users = new HashSet<>();
-	public Set<User> getUsers() {
-		return users;
-	}
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+//	@JsonIgnore
+//	@OneToMany(mappedBy="division", fetch = FetchType.LAZY)
+//	private Set<User> users = new HashSet<>();
+//	public Set<User> getUsers() {
+//		return users;
+//	}
+//	public void setUsers(Set<User> users) {
+//		this.users = users;
+//	}
 	
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="job_family_id",referencedColumnName="job_family_id")

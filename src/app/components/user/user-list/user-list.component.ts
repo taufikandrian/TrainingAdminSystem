@@ -116,7 +116,7 @@ export class UserListComponent implements OnInit {
         }, {
           data: 'grade.gradeName',
           render: function (data, type, row) {
-            return row.division.jobFamily.familyCode + ' - ' + row.division.divisionCode + ' <br><b>'+row.grade.gradeName+'</b>' }
+            return '<b>'+row.grade.gradeName+'</b><br>' +  row.division.jobFamily.familyCode + ' - ' + row.division.divisionCode }
         }, {
           data: 'status',
         }, {

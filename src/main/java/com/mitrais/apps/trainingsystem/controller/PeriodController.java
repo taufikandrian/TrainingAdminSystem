@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Training;
-import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 import com.mitrais.apps.trainingsystem.model.User;
-import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 
 @RestController
@@ -35,14 +33,6 @@ public class PeriodController extends BaseController<Training> {
 	@Autowired
 	private TrainingRepository trainRepo;
 	
-	@Autowired
-	private ScheduleRepository trainRepoC;
-	
-	@GetMapping(value="/training/tes/re")
-	public Training getCoures() {
-		Training train = trainRepo.findById("b3a1c776-d852-4a01-836d-789c4179d895"); 
-		return train;
-	}
 	// Datatables training	
 	@PostMapping(value="/training/dt/all")
     public ResponseEntity<JSONObject> getTrains(@Valid @RequestBody DataTablesInput input) {

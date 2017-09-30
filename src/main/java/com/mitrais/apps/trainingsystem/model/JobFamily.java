@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "job_family_tb")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class JobFamily implements Serializable{
 
 	/**
@@ -89,7 +89,7 @@ public class JobFamily implements Serializable{
 	public void setDivisions(Set<Division> divisions) {
 		this.divisions = divisions;
 	}
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy="jobFamily", fetch = FetchType.LAZY)
 	private Set<Grade> grades = new HashSet<>();

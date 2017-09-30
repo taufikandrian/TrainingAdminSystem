@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "user_tb")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Auditable<String> implements Serializable {
 	
 	/**
@@ -110,7 +110,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.status = status;
 	}
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="division_id",referencedColumnName="division_id")
     private Division division;
 	public Division getDivision() {
@@ -120,7 +120,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.division = division;
 	}
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="grade_id",referencedColumnName="grade_id")
     private Grade grade;
 	public Grade getGrade() {
@@ -145,11 +145,4 @@ public class User extends Auditable<String> implements Serializable {
 	public void setRoleList(Set<Role> role){
 		this.roleList = role;
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "User{" +
-//				", name='" + fullName + '\'' +
-//				'}';
-//	}
 }
