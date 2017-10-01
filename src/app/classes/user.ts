@@ -29,5 +29,7 @@ export interface User {
       roleName: String;
     }
   ],
-  status: String
+  status: String;
+  replacementLevel: String;
+  gender: String;
 }

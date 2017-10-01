@@ -26,6 +26,7 @@ export class TopmenuComponent implements OnInit {
   private currentUser;
   private currentRoleUser;
   private isVisible = true;
+  private breadcrumbs: any;
 
   constructor(
     private router: Router,
@@ -39,6 +40,10 @@ export class TopmenuComponent implements OnInit {
   ngOnInit() {
     this._menuService.currentHeader$.subscribe(dataHeader => {
       this.header = dataHeader
+    });
+
+    this._menuService.currentBread$.subscribe(dataBreads => {
+      this.breadcrumbs = dataBreads
     });
 
     this._menuService.currentRoute$.subscribe(data => {

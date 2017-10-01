@@ -1,53 +1,54 @@
-<div class="ui purple borderradiusless segment">
-  <!-- <a class="ui purple left ribbon label">Specs</a> -->
-  <!-- <a [routerLink]="['/users/create']" class="ui vertical purple animated button" tabindex="0" style="margin-bottom: 20px">
+<div class="ui violet borderradiusless segment">
+    <!-- <a class="ui purple left ribbon label">Specs</a> -->
+    <!-- <a [routerLink]="['/users/create']" class="ui vertical purple animated button" tabindex="0" style="margin-bottom: 20px">
       <div class="hidden content">Create New</div>
       <div class="visible content" style="width:100px">
           <i class="add user icon"></i>
       </div>
   </a> -->
-  <button class="ui purple button" [routerLink]="['/users/create']">
+    <button class="ui violet button" [routerLink]="['/users/create']">
     <i class="icon add user" ></i>
     Create New User
   </button>
-  <!-- <div class="ui icon input">
+    <!-- <div class="ui icon input">
       <input type="text" name="searchkey" placeholder="Search key...">
       <i class="search icon"></i>
     </div> -->
-  <div class="ui divider"></div>
-  <div class="dimmable">
-    <div class="ui inverted dimmer">
-        <div class="ui loader"></div>
-    </div>
-    <table class="ui celled table table-usertable" >
-      <thead>
-        <tr>
-          <th><div class="ui fitted checkbox checkallrow">
-              <input type="checkbox" (change)="checkAll()"/>
-              <label></label>
-            </div>
-          </th>
-          <th class="four wide" style="text-align: center">Username</th>
-          <th class="four wide" style="text-align: center">Fullname</th>
-          <th class="four wide" style="text-align: center">Roles</th>
-          <th class="three wide" style="text-align: center">Stream</th>
-          <th class="two wide" style="text-align: center">Status</th>
-          <th class="seven wide" style="text-align: center">Action</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th class="disabled"></th>
-          <th class="four wide" style="text-align: center">Username</th>
-          <th class="four wide" style="text-align: center">Fullname</th>
-          <th class="four wide disabled" style="text-align: center">Roles</th>
-          <th class="three wide" style="text-align: center">Stream</th>
-          <th class="two wide" style="text-align: center">Status</th>
-          <th class="seven wide disabled" style="text-align: center">Action</th>
-        </tr>
-      </tfoot>
-      <tbody>
-        <!-- <tr>
+    <div class="ui divider"></div>
+    <div class="dimmable">
+        <div class="ui inverted dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <table class="ui celled table table-usertable">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="ui fitted checkbox checkallrow">
+                            <input type="checkbox" (change)="checkAll()" />
+                            <label></label>
+                        </div>
+                    </th>
+                    <th class="four wide" style="text-align: center">Username</th>
+                    <th class="four wide" style="text-align: center">Fullname</th>
+                    <th class="four wide" style="text-align: center">Roles</th>
+                    <th class="three wide" style="text-align: center">Stream</th>
+                    <th class="two wide" style="text-align: center">Status</th>
+                    <th class="seven wide" style="text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th class="disabled"></th>
+                    <th class="four wide" style="text-align: center">Username</th>
+                    <th class="four wide" style="text-align: center">Fullname</th>
+                    <th class="four wide disabled" style="text-align: center">Roles</th>
+                    <th class="three wide" style="text-align: center">Stream</th>
+                    <th class="two wide" style="text-align: center">Status</th>
+                    <th class="seven wide disabled" style="text-align: center">Action</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                <!-- <tr>
           <td>mitrais/Taufikar</td>
           <td>Mohammad Taufik Andrian</td>
           <td>taufikandrian18@gmail.com</td>
@@ -59,7 +60,7 @@
             </div>
         </td>
         </tr> -->
-      </tbody>
-    </table>
-  </div>
+            </tbody>
+        </table>
+    </div>
 </div>

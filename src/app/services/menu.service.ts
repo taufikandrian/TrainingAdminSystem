@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { MessageService } from './message.service';
+
 @Injectable()
 export class MenuService {
   private currentRoute = new Subject<any>();
@@ -12,9 +14,10 @@ export class MenuService {
   public currentBread$ = this.currentBread.asObservable();
 
   public hiddenSidebarForRoute = ['/role', '/login'];
-  constructor() { }
+  constructor(private _messageService: MessageService) { }
 
   setCurrentRoute(dataRoute: string, bool = true){
+    this._messageService.setMessage(null);
     this.currentRoute.next([dataRoute, bool]);
   }
 

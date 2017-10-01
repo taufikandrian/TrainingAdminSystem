@@ -1,34 +1,37 @@
-<div class="ui top fixed menu" *ngIf="isVisible && currentUser">
-  <div class="item">
-    <img class="ui mini image" [src]="assets.logo">
-  </div>
-  <div class="item" *ngIf="header?.visible">
-      <div class="ui {{header.size}} header">
-        <!-- <i class="big icons">
-          <i class="puzzle icon"></i>
-          <i class="corner add icon"></i>
-        </i> -->
-        <i class="{{header.icon}} disabled icon"></i>
-        <div class="content">
-            {{header.main}}
-          <div class="sub header">{{header.sub}}</div>
+<div class="ui top fixed borderless menu" *ngIf="isVisible && currentUser">
+    <div class="ui container">
+        <div class="item" *ngIf="header?.visible" style="border-left: 1px solid rgba(0,0,0,.1)">
+            <div class="ui {{header.size}} header">
+                <i class="{{header.icon}} disabled icon"></i>
+                <div class="content">
+                    {{header.main}}
+                    <div class="sub header" [innerHTML]="header.sub"></div>
+                </div>
+            </div>
         </div>
-      </div>
-  </div>
-  <div class="menu right">
-    <div class="item">
-      <img class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
-      <div class="content" style="padding-left: 1em">
-        <div class="ui sub header">{{ currentUser.fullName }}</div>
-        Logged as {{ currentRoleUser.roleName }}
-      </div>
-    </div>
-    <div class="item">
-        <div class="ui buttons">
-          <div [routerLink]="['/role']" class="ui purple button">Sign as</div>
-          <div class="or"></div>
-          <div (click)="logout()" class="ui button">Sign out</div>
+        <div class="menu right">
+            <div class="item">
+                <img *ngIf="currentUser.gender == 'Male'" class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+                <img *ngIf="currentUser.gender == 'Female'" class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/helen.jpg">
+                <div class="content" style="padding-left: 1em">
+                    <div class="ui sub header">{{ currentUser.fullName }}</div>
+                    Sign as {{ currentRoleUser.roleName }}
+                </div>
+            </div>
+            <div class="item" style="border-right: 1px solid rgba(0,0,0,.1)">
+                <div class="ui buttons">
+                    <div [routerLink]="['/role']" class="ui violet button">Sign as</div>
+                    <div class="or"></div>
+                    <div (click)="logout()" class="ui button">Sign out</div>
+                </div>
+            </div>
         </div>
     </div>
-  </div>
 </div>
+<div class="ui container borderradiusless segment" style="margin-top: 6em; margin-bottom: 1em" *ngIf="breadcrumbs">
+    <div class="ui breadcrumb">
+        <a class="section" *ngFor="let bread of breadcrumbs.before" [routerLink]="bread.route"><i class="{{bread.icon}} icon"></i>{{bread.name}}<i class="right chevron icon divider"></i></a>
+        <div class="active section"><i class="{{breadcrumbs.active.icon}} icon"></i>{{breadcrumbs.active.name}}</div>
+    </div>
+</div>
+<app-message class="ui container"></app-message>

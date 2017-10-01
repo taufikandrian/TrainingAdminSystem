@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { AlertService } from '../../../services/alert.service';
 import { MenuService } from '../../../services/menu.service';
+import { MessageService } from '../../../services/message.service';
 
 declare var $:any;
 declare var swal: any;
@@ -23,22 +24,29 @@ export class UserCreateComponent implements OnInit {
   constructor(private router: Router,
               private _userService: UserService,
               private _menuService: MenuService,
+              private _messageService: MessageService,
               private _alertService: AlertService,) { }
 
   ngOnInit() {
-
-    this._menuService.setCurrentHeader({
-      icon  : 'user',
-      main  : 'User Create',
-      sub   : 'Create new user',
-      size  : 'large',
-      visible: true,
-    });
-    this._menuService.setCurrentRoute(this.router.url);
-
+    this.initTopMenu();
     this.initDropdown();
     this.initForm();
     this.initDate();
+  }
+
+  initTopMenu() {
+    this._menuService.setCurrentRoute(this.router.url);
+    this._menuService.setCurrentHeader({
+      icon  : 'user add',
+      main  : 'Create User',
+      sub   : 'Create new user for Training Admin System',
+      size  : 'large',
+      visible: true,
+    });
+    this._menuService.setCurrentBread({ before : [
+      {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+      {icon  : 'users', name  : 'Users', route: '/users'},
+    ], active: {icon  : 'user add', name  : 'Create user'}, });
   }
 
   initDate() {
@@ -74,6 +82,7 @@ export class UserCreateComponent implements OnInit {
   }
 
   initDropdown() {
+    $('.ui.genderdropdown').dropdown();
     //JOBFAM
     this._userService.getJobFam()
     .subscribe(result => {
@@ -259,6 +268,20 @@ export class UserCreateComponent implements OnInit {
             prompt : 'Please enter {name}'
           }]
         },
+        replacementLevel: {
+          identifier: 'replacementLevel',
+          rules: [{
+            type : 'empty',
+            prompt : 'Please enter {name}'
+          }]
+        },
+        gender: {
+          identifier: 'gender',
+          rules: [{
+            type : 'empty',
+            prompt : 'Please enter {name}'
+          }]
+        },
         roles: {
           identifier: 'roles',
           rules: [{
@@ -267,77 +290,79 @@ export class UserCreateComponent implements OnInit {
           }]
         }
       }, onSuccess: (event, fields) => {
-        alert(fields.startDate)
-        // fields.createdBy = this._userService.getCurrentUserName();
-        // fields.lastModifiedBy = this._userService.getCurrentUserName();
-        // event.preventDefault();
-        //   this._userService.checkUsername(fields.accountName)
-        //   .subscribe(response => {
-        //     if(response.json().confirmed === true) {
-        //       this._userService.create(fields).subscribe(response => {
-        //       if (response.json().confirmed === true) {
-        //         let usrObj = response.json().data.User_Created;
-        //         this._alertService.setAlert({
-        //           closable: false,
-        //           header : {
-        //             // pot lan
-        //             type: 'pot',
-        //             color: 'purple',
-        //             icon: 'user add',
-        //             text: 'User Created',
-        //             subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
-        //           },
-        //           message: "",
-        //           button : {
-        //             size: '',
-        //             position: 'center',
-        //             fluid: true,
-        //             fluidNumber: 'two',
-        //             ok : {display: true,text: 'Ok!',color: 'purple'},
-        //             deny : {display : false,text: 'Cancel',color: ''}
-        //           },
-        //           onApprove : ($element) => {
-        //             this.router.navigate(['/users']);
-        //           },
-        //           onDeny: ($element) => {}
-        //         });
-        //       } else {
-        //         this._alertService.buildAlertError(response.json().data.UserFailedCreate);
-        //       }
-        //     });
-        //     } else {
-        //       this._alertService.setAlert({
-        //         closable: false,
-        //         header : {
-        //           // pot lan
-        //           type: 'pot',
-        //           color: 'red',
-        //           icon: 'warning sign',
-        //           text: 'Username already exis',
-        //           subheader: 'User with name ' + fields.accountName + ' is already <strong>exist</strong>)'
-        //         },
-        //         message: "",
-        //         button : {
-        //           size: '',
-        //           position: 'center',
-        //           fluid: true,
-        //           fluidNumber: 'two',
-        //           ok : {display: true,text: 'Ok!',color: ''},
-        //           deny : {display : false,text: 'Cancel',color: ''}
-        //         },
-        //         onApprove : ($element) => {
+        // alert(fields.startDate)
+        
+        fields.createdBy = this._userService.getCurrentUserName();
+        fields.lastModifiedBy = this._userService.getCurrentUserName();
+        delete fields.jobfam_id;
+        event.preventDefault();
+          this._userService.checkUsername(fields.accountName)
+          .subscribe(response => {
+            if(response.json().confirmed === true) {
+              this._userService.create(fields).subscribe(response => {
+              if (response.json().confirmed === true) {
+                let usrObj = response.json().data.User_Created;
+                this._alertService.setAlert({
+                  closable: false,
+                  header : {
+                    // pot lan
+                    type: 'pot',
+                    color: 'purple',
+                    icon: 'user add',
+                    text: 'User Created',
+                    subheader: 'User with name ' + usrObj.fullName + ' (<strong>mitrais\\' + usrObj.accountName +'</strong>)'
+                  },
+                  message: "",
+                  button : {
+                    size: '',
+                    position: 'center',
+                    fluid: true,
+                    fluidNumber: 'two',
+                    ok : {display: true,text: 'Ok!',color: 'purple'},
+                    deny : {display : false,text: 'Cancel',color: ''}
+                  },
+                  onApprove : ($element) => {
+                    this.router.navigate(['/users']);
+                  },
+                  onDeny: ($element) => {}
+                });
+              } else {
+                this._alertService.buildAlertError(response.json().data.UserFailedCreate);
+              }
+            });
+            } else {
+              this._alertService.setAlert({
+                closable: false,
+                header : {
+                  // pot lan
+                  type: 'pot',
+                  color: 'red',
+                  icon: 'warning sign',
+                  text: 'Username already exis',
+                  subheader: 'User with name <strong>' + fields.accountName + '</strong> is already exist'
+                },
+                message: "",
+                button : {
+                  size: '',
+                  position: 'center',
+                  fluid: true,
+                  fluidNumber: 'two',
+                  ok : {display: true,text: 'Ok!',color: ''},
+                  deny : {display : false,text: 'Cancel',color: ''}
+                },
+                onApprove : ($element) => {
 
-        //         },
-        //         onDeny: ($element) => {}
+                },
+                onDeny: ($element) => {}
 
-        //       });
-        //     }
-        //   }, err => {
-        //     if(!err.ok) {
-        //       this._alertService.buildAlertError('Sorry, our server is offline');
-        //       this.isLoading = false;
-        //     }
-        //   });
+              });
+            }
+          }, err => {
+            if(!err.ok) {
+              this._alertService.buildAlertError('Sorry, our server is offline');
+              this.isLoading = false;
+            }
+          });
       }, inline: true, on : 'blur'
   });
   }

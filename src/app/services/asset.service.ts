@@ -9,13 +9,16 @@ export class AssetService {
     let choosenUrl;
     switch (assetCode) {
       case "_icon":
-        choosenUrl = './assets/tas.png';
+        choosenUrl = './assets/tas_padded.png';
         break;
       case "_logo":
         choosenUrl = './assets/logo.png';
         break;
       case "_logo_tas":
-        choosenUrl = './assets/tas_.png';
+        choosenUrl = './assets/tas_fitted.png';
+        break;
+      case "_logo_tas_texted":
+        choosenUrl = './assets/tas_texted.png';
         break;
       default:
         choosenUrl = './assets/tas.png';

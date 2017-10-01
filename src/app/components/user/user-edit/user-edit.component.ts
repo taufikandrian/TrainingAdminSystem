@@ -26,24 +26,32 @@ export class UserEditComponent implements OnInit {
               private _alertService: AlertService,) { }
 
   ngOnInit() : void {
-    this._menuService.setCurrentHeader({
-      icon  : 'user',
-      main  : 'User Edit',
-      sub   : 'Edit existing user',
-      size  : 'large',
-      visible: true,
-    });
-    this._menuService.setCurrentRoute(this.router.url);
     this.route.params.subscribe(params => {
       this._userService.detail(params['id']).subscribe(response => {
         let user : User;
         user = response.json().data.Get_User;
         this.curUser = user;
+        this.initTopMenu();
         this.initDropdown();
         this.initForm()
         this.isLoading = false
       })
     })
+  }
+
+  initTopMenu() {
+    this._menuService.setCurrentRoute(this.router.url);
+    this._menuService.setCurrentHeader({
+      icon  : 'pencil',
+      main  : 'Edit User',
+      sub   : 'Edit user with name <strong>'+ this.curUser.fullName + '</strong>',
+      size  : 'large',
+      visible: true,
+    });
+    this._menuService.setCurrentBread({ before : [
+      {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+      {icon  : 'users', name  : 'Users', route: '/users'},
+    ], active: {icon  : 'pencil', name  : 'Edit user'}, });
   }
 
   initDropdown(): void {
@@ -113,7 +121,7 @@ export class UserEditComponent implements OnInit {
       }, onSuccess: (event, fields) => {
         this.isLoading = true;
         event.preventDefault();
-        this._userService.update(fields, this.curUser.accountName).subscribe(response => {
+        this._userService.update(fields, this.curUser.id).subscribe(response => {
           if (response.json().confirmed === true) {
 
             let usrObj: User;
@@ -123,7 +131,7 @@ export class UserEditComponent implements OnInit {
               icon: 'checkmark',
               headerMain: 'Successfully',
               headerSub: usrObj.fullName + ' successfully updated',
-              type: 'top tiny positive text container'
+              type: 'top tiny positive container'
             })
             this.isLoading = false
           } else {

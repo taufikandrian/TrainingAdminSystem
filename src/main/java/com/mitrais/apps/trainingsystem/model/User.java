@@ -55,7 +55,29 @@ public class User extends Auditable<String> implements Serializable {
     @Column(name = "user_status")
     private String status;
     
-    public User() {
+    @Column(name = "user_replacement")
+    private String replacementLevel;
+    
+    @Column(name = "user_gender")
+    private String gender;
+    
+    public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gander) {
+		this.gender = gander;
+	}
+
+	public String getReplacementLevel() {
+		return replacementLevel;
+	}
+
+	public void setReplacementLevel(String replacementLevel) {
+		this.replacementLevel = replacementLevel;
+	}
+
+	public User() {
     }
 
     public User(String name, String email, String accountName, String password, String status) {

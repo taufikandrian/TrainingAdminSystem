@@ -1,53 +1,69 @@
-<div class="ui purple attached segment text container">
-  <form id="usercreate" class="ui form usercreate" [ngClass]="{'loading': isLoading}">
-    <div class="equal width fields">
-      <div class="field">
-          <label>Account Name</label>
-          <div class="ui labeled input">
-              <div class="ui label">
-                mitrais\
-              </div>
-              <input type="text" name="accountName" placeholder="Account Name ...">
-          </div>
-      </div>
-      <div class="field">
-          <label>Password</label>
-          <input type="password" name="password" placeholder="New Password ...">
+<div class="ui violet attached segment">
+    <form id="usercreate" class="ui form usercreate" [ngClass]="{'loading': isLoading}">
+        <div class="ui segment no-margin">
+            <div class="ui top attached label">Personal Data</div>
+            <div class="equal width fields">
+                <div class="field">
+                    <label>Account Name</label>
+                    <div class="ui labeled input">
+                        <div class="ui label">
+                            mitrais\
+                        </div>
+                        <input type="text" name="accountName" placeholder="Account Name ...">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="New Password ...">
+                </div>
+            </div>
+            <div class="equal width fields">
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" name="fullName" placeholder="Full Name ...">
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="text" name="email" placeholder="Email ...">
+                </div>
+                <div class="field">
+                    <label>Gender</label>
+                    <select name="gender" class="ui dropdown genderdropdown">
+                        <option value="">Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="equal width fields">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" name="fullName" placeholder="Full Name ...">
-      </div>
-      <div class="field">
-          <label>Email</label>
-          <input type="text" name="email" placeholder="Email ...">
+        <div class="ui segment">
+            <div class="ui top attached label">Position</div>
+            <div class="equal width fields">
+                <div class="field">
+                    <label class="capitalize">Job Family</label>
+                    <select name="jobfam_id" class="ui dropdown search jobfamdropdown">
+                      <option value="">Select Job Family</option>
+                      <option *ngFor="let item of jobfamdropdown" value="{{item.value}}">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label class="capitalize">Division</label>
+                    <select name="division_id" class="ui dropdown disabled search divisiondropdown">
+                      <option value="">Select Division</option>
+                      <option *ngFor="let item of divisiondropdown" value="{{item.value}}">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label class="capitalize">Grade</label>
+                    <select name="grade_id" class="ui dropdown disabled search gradedropdown">
+                      <option value="">Select Grade</option>
+                      <option *ngFor="let item of gradedropdown" value="{{item.value}}">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="equal width fields">
-      <div class="field">
-        <label class="capitalize">Job Family</label>
-        <select name="jobfam_id" class="ui dropdown search jobfamdropdown">
-          <option value="">Select Job Family</option>
-          <option *ngFor="let item of jobfamdropdown" value="{{item.value}}">{{item.name}}</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="capitalize">Division</label>
-        <select name="division_id" class="ui dropdown disabled search divisiondropdown">
-          <option value="">Select Division</option>
-          <option *ngFor="let item of divisiondropdown" value="{{item.value}}">{{item.name}}</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="capitalize">Grade</label>
-        <select name="grade_id" class="ui dropdown disabled search gradedropdown">
-          <option value="">Select Grade</option>
-          <option *ngFor="let item of gradedropdown" value="{{item.value}}">{{item.name}}</option>
-        </select>
-      </div>
-      <!-- <div class="field ui calendar" id="start-date-add-period">
+
+        <!-- <div class="field ui calendar" id="start-date-add-period">
         <label>Start Date</label>
         <div class="ui input left icon">
           <i class="calendar icon"></i>
@@ -61,24 +77,32 @@
           <input type="text" name="endDate" placeholder="End Date">
         </div>
       </div> -->
-    </div>
-    <div class="equal width fields">
-        <div class="field">
-          <label class="capitalize">Role</label>
-          <select name="roles" multiple class="ui dropdown multiple search roledropdown">
-            <option value="">Select Role</option>
-            <option *ngFor="let item of roledropdown" value="{{item.value}}">{{item.name}}</option>
-          </select>
+
+        <div class="ui segment">
+            <div class="ui top attached label">Training Admin System Data</div>
+            <div class="equal width fields">
+                <div class="field">
+                    <label class="capitalize">Role</label>
+                    <select name="roles" multiple class="ui dropdown multiple search roledropdown">
+                      <option value="">Select Role</option>
+                      <option *ngFor="let item of roledropdown" value="{{item.value}}">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="six wide field">
+                    <div class="field">
+                        <label>Replecement Level</label>
+                        <input type="number" name="replacementLevel" placeholder="Level ...">
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-  </form>
-</div>
-<div class="ui bottom attached segment text container">
-    <button class="ui purple button" form="usercreate">
-      <i class="icon save"></i>
-      Submit
+    </form>
+    <div class="ui divider"></div>
+    <button class="ui violet button" form="usercreate">
+        <i class="icon save"></i>
+        Submit
     </button>
     <button class="ui button" [routerLink]="['/users']">
-      Back
+        Back
     </button>
 </div>
