@@ -31,7 +31,6 @@ export class UserCreateComponent implements OnInit {
     this.initTopMenu();
     this.initDropdown();
     this.initForm();
-    this.initDate();
   }
 
   initTopMenu() {
@@ -47,38 +46,6 @@ export class UserCreateComponent implements OnInit {
       {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
       {icon  : 'users', name  : 'Users', route: '/users'},
     ], active: {icon  : 'user add', name  : 'Create user'}, });
-  }
-
-  initDate() {
-    // $('#start-date-add-period').calendar({
-    //   type: 'time',
-    //   ampm: false,
-      // endCalendar: $('#end-date-add-period'),
-      // formatter: {
-      //   date: function (date, settings) {
-      //     if (!date) return '';
-      //     var day = date.getDate();
-      //     var month = date.getMonth() + 1;
-      //     var year = date.getFullYear();
-      //     return year + '-' + month + '-' + day;
-      //   }
-      // }
-    // });
-
-    // $('#start-date-add-period').calendar({
-    //   type: 'date',
-    //   endCalendar: $('#end-date-add-period'),
-    //   formatter: {
-    //     date: function (date, settings) {
-    //       if (!date) return '';
-
-    //       var day = date.getDate();
-    //       var month = date.getMonth() + 1;
-    //       var year = date.getFullYear();
-    //       return year + '-' + month + '-' + day;
-    //     }
-    //   }
-    // });
   }
 
   initDropdown() {
@@ -290,8 +257,7 @@ export class UserCreateComponent implements OnInit {
           }]
         }
       }, onSuccess: (event, fields) => {
-        // alert(fields.startDate)
-        
+
         fields.createdBy = this._userService.getCurrentUserName();
         fields.lastModifiedBy = this._userService.getCurrentUserName();
         delete fields.jobfam_id;

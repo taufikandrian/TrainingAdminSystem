@@ -27,8 +27,22 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._menuService.setCurrentRoute(this.router.url);
+    this.initTopMenu();
+  }
+
+  initTopMenu() {
     this._sidebarService.hide();
+    this._menuService.setCurrentRoute(this.router.url);
+    this._menuService.setCurrentHeader({
+      icon  : 'dashboard',
+      main  : 'Dashboard',
+      sub   : 'Dashboard of Training Admin System',
+      size  : 'large',
+      visible: true,
+    });
+    this._menuService.setCurrentBread({ before : [
+      // {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+    ], active: {icon  : 'dashboard', name  : 'Dashboard', route: '/users'}, });
   }
 
 }

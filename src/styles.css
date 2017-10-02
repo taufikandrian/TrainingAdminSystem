@@ -88,7 +88,7 @@ table.dataTable tbody>tr>.selected {
     vertical-align: middle;
 }
 
-.ui.attached.segment {
+.ui.attached.segment.edited {
     margin: 0 !important;
     width: 100%;
 }

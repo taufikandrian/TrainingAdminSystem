@@ -5,8 +5,11 @@ import { DatatableService } from '../../../services/datatable.service';
 import { Environment } from '../../../classes/environment';
 import { MenuService } from '../../../services/menu.service';
 import { AlertService } from '../../../services/alert.service';
+import { PeriodService } from '../../../services/period.service';
 import { UserService } from '../../../services/user.service';
 import { SidebarService } from '../../../services/sidebar.service';
+
+import { Period } from '../../../classes/period';
 
 declare var $:any;
 declare let window;
@@ -25,18 +28,27 @@ export class PeriodListComponent implements OnInit {
               private _dtService: DatatableService,
               private _alertService: AlertService,
               private _userService: UserService,
+              private _periodService: PeriodService,
               private _sidebarService: SidebarService,
               private _menuService: MenuService,) { }
 
-  ngOnInit() {
+  initTopMenu() {
     this._sidebarService.hide();
+    this._menuService.setCurrentRoute(this.router.url);
     this._menuService.setCurrentHeader({
       icon  : 'calendar',
-      main  : 'Period List',
-      sub   : 'List all periods in Database',
+      main  : 'List Periods',
+      sub   : 'List all periods in Training Admin System',
       size  : 'large',
       visible: true,
     });
+    this._menuService.setCurrentBread({ before : [
+      {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+    ], active: {icon  : 'calendar', name  : 'Periods', route: '/periods'}, });
+  }
+
+  ngOnInit() {
+    this.initTopMenu();
     let _periodDTClass = '.table-periodtable';
 
     // crear seach box
@@ -49,7 +61,7 @@ export class PeriodListComponent implements OnInit {
     });
 
     // create table
-    var _userDT = $(_periodDTClass)
+    var _periodDT = $(_periodDTClass)
       .on( 'processing.dt', ( e, settings, processing ) => {
         if(processing)
           $(_periodDTClass).closest('.dimmable').find('.dimmer').addClass('active');
@@ -57,9 +69,9 @@ export class PeriodListComponent implements OnInit {
           $(_periodDTClass).closest('.dimmable').find('.dimmer').removeClass('active');
       })
       .DataTable( {
-        responsive  : true,
-        scrollY     : false,
-        deferRender : true,
+        // responsive  : true,
+        // scrollY     : false,
+        // deferRender : true,
         processing  : false,
         serverSide  : true,
         // dom: '<"toolbar">frtip',
@@ -159,28 +171,105 @@ export class PeriodListComponent implements OnInit {
           searchable : false,
           render : (data, type, row) => {
             return `<div class="ui icon mini buttons">\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui purple button ul-editbtn"><i class="edit icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-infobtn"><i class="info icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-trashbtn"><i class="trash icon"></i></button>\
+                      <button data-periodobj='${JSON.stringify(row)}' class="ui purple button pr-editbtn"><i class="edit icon"></i></button>\
+                      <button data-periodobj='${JSON.stringify(row)}' class="ui button pr-trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
         },
         ],
         select: {
-          style:    'multi', selector: 'td:first-child .checkbox'
+          style: 'multi', selector: 'td:first-child .checkbox'
         },
         order: [[ 1, 'asc' ]],
         createdRow: function( row, data, dataIndex ) {
-          // $(row).attr('id', data.id);
+          $(row).attr('id', data.id);
         },
         drawCallback: function (settings, json) {
-          // this.api().rows( ( idx, data, node ) => {
-          //   if ( $.inArray(data.id, this.userDTSelected) !== -1 ) {
-          //     return true;
-          //   }
-          // }).select();
-
+          this.api().rows( ( idx, data, node ) => {
+            if ( $.inArray(data.id, this.periodDTSelected) !== -1 ) {
+              return true;
+            }
+          }).select();
         }
+    });
+    var that = this;
+    this.periodDT = _periodDT;
+    //Edit
+    $(document).on('click', '.pr-editbtn', function() {
+      let periodObj = $(this).data('periodobj');
+      that.router.navigate(['/users/edit', periodObj.id]);
+    });
+
+    //Delete
+    $(document).on('click', '.pr-trashbtn', function() {
+      let periodObj  = $(this).data('periodobj');
+      that._alertService.setAlert({
+        closable: false,
+        header : {
+          // pot lan
+          type: 'pot',
+          color: 'red',
+          icon: 'calendar',
+          text: 'Delete Confirmation',
+          subheader: 'Delete Period/Training with name ' + periodObj.trainingName
+        },
+        message: "Are you sure?",
+        button : {
+          size: '',
+          position: 'center',
+          fluid: true,
+          fluidNumber: 'two',
+          ok : {display: true,text: 'Yes! please',color: 'red'},
+          deny : {display : true,text: 'Cancel',color: ''}
+        },
+        onApprove : ($element) => {
+          that._periodService.delete({"trainingID" : [periodObj.id], "actionBy": that._userService.getCurrentUserName()}).subscribe(response => {
+            that.periodDT.ajax.reload(null, false);
+          })
+        },
+        onDeny: ($element) => {}
+
+      });
+      // that.router.navigate(['/users/edit', $(this).data('id')]);
+    });
+
+    // CheckBox
+    _periodDT.on( 'select', ( e, dt, type, indexes ) => {
+      if ( type === 'row' ) {
+        var data = _periodDT.rows( indexes ).data().pluck( 'id' );
+        for(let i = 0 ; i < data.length ; i++) {
+          var id = data[i];
+          $('tr[id='+id+']').find('.checkbox').checkbox('check');
+          var index = $.inArray(id, this.periodDTSelected);
+          if ( index === -1 ) {
+              this.periodDTSelected.push( id );
+          }
+        }
+      }
+    }).on('deselect', (e, dt, type, indexes) => {
+      var data = _periodDT.rows( indexes ).data().pluck( 'id' );
+
+      for(let i = 0 ; i < data.length ; i++) {
+        var id = data[i];
+        $('tr[id='+id+']').find('.checkbox').checkbox('uncheck');
+        var index = $.inArray(id, this.periodDTSelected);
+        if ( index === -1 ) {
+          this.periodDTSelected.push( id );
+        } else {
+          this.periodDTSelected.splice( index, 1 );
+        }
+      }
+    });
+
+    // create search fungsi
+
+    _periodDT.columns().every( function () {
+      var that = this;
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+        if ( that.search() !== this.value ) {
+          that.search( this.value ).draw();
+        }
+      });
     });
   }
 

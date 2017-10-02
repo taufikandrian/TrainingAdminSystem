@@ -20,24 +20,32 @@ export class UserDetailComponent implements OnInit {
               private _sidebarService: SidebarService,) { }
 
   ngOnInit() {
-    this._sidebarService.hide();
-    this._menuService.setCurrentHeader({
-      icon  : 'user',
-      main  : 'Detail',
-      sub   : '',
-      size  : 'large',
-      visible: false,
-    });
     this._menuService.setCurrentRoute(this.router.url);
     this.route.params.subscribe(params => {
       this._userService.detail(params['id']).subscribe(response => {
         let user : User;
         user = response.json().data.Get_User;
         this.curUser = user;
-
+        this.initTopMenu();
         this.isLoading = false
       })
     })
+  }
+
+  initTopMenu() {
+    this._sidebarService.hide();
+    this._menuService.setCurrentRoute(this.router.url);
+    this._menuService.setCurrentHeader({
+      icon  : 'user',
+      main  : 'Detail User',
+      sub   : 'Detail user with name <strong>'+ this.curUser.fullName + '</strong>',
+      size  : 'large',
+      visible: true,
+    });
+    this._menuService.setCurrentBread({ before : [
+      {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+      {icon  : 'users', name  : 'Users', route: '/users'},
+    ], active: {icon  : 'user', name  : 'Detail user'}, });
   }
 
 }

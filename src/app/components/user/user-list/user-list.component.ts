@@ -26,6 +26,7 @@ export class UserListComponent implements OnInit {
               private _userService: UserService,
               private _sidebarService: SidebarService,
               private _menuService: MenuService,) { window["my_unique_class_name"]=this; }
+
   initTopMenu() {
     this._sidebarService.hide();
     this._menuService.setCurrentRoute(this.router.url);
