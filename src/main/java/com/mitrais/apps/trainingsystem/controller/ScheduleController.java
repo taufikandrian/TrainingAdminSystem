@@ -258,4 +258,24 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
+	
+	@GetMapping("/schedule/EligibleStaff/{trainingCourseId}")
+	public ResponseEntity<JSONObject> getEligibleStaff(@PathVariable String trainingCourseId){
+		JsonFormatter responseJson = new JsonFormatter();
+		TrainingCourse courseTmp = schRepo.findById(trainingCourseId);
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Course_Detail", courseTmp);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Course Detail Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
 }

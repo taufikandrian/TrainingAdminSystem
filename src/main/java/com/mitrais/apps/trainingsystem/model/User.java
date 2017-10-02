@@ -54,9 +54,8 @@ public class User extends Auditable<String> implements Serializable {
     
     @Column(name = "user_status")
     private String status;
-    
     @Column(name = "user_replacement")
-    private String replacementLevel;
+    private Integer userReplacement;
     
     @Column(name = "user_gender")
     private String gender;
@@ -69,14 +68,13 @@ public class User extends Auditable<String> implements Serializable {
 		this.gender = gander;
 	}
 
-	public String getReplacementLevel() {
-		return replacementLevel;
+	public Integer getUserReplacement() {
+		return userReplacement;
 	}
 
-	public void setReplacementLevel(String replacementLevel) {
-		this.replacementLevel = replacementLevel;
+	public void setUserReplacement(Integer userReplacement) {
+		this.userReplacement = userReplacement;
 	}
-
 	public User() {
     }
 
