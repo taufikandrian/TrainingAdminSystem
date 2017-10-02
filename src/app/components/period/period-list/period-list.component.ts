@@ -194,6 +194,7 @@ export class PeriodListComponent implements OnInit {
     });
     var that = this;
     this.periodDT = _periodDT;
+
     //Edit
     $(document).on('click', '.pr-editbtn', function() {
       let periodObj = $(this).data('periodobj');
@@ -262,7 +263,6 @@ export class PeriodListComponent implements OnInit {
     });
 
     // create search fungsi
-
     _periodDT.columns().every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change', function () {
@@ -271,6 +271,28 @@ export class PeriodListComponent implements OnInit {
         }
       });
     });
+
+    _periodDT.on( 'draw', () => {
+      this.checkAll();
+    });
+  }
+
+  setCheckAllrow(bool): void {
+    $('.checkallrow').checkbox('uncheck');
+  }
+
+  checkAll(): void {
+    alert($('.checkallrow').checkbox('is checked'))
+    if($('.checkallrow').checkbox('is checked') === true){
+
+      this.periodDT.rows( function ( idx, data, node ) {
+        return true;
+      }).select();
+    } else {
+      this.periodDT.rows( function ( idx, data, node ) {
+        return true;
+      }).deselect();
+    }
   }
 
 }

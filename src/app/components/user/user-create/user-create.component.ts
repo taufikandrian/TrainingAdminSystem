@@ -235,8 +235,8 @@ export class UserCreateComponent implements OnInit {
             prompt : 'Please enter {name}'
           }]
         },
-        replacementLevel: {
-          identifier: 'replacementLevel',
+        userReplacement: {
+          identifier: 'userReplacement',
           rules: [{
             type : 'empty',
             prompt : 'Please enter {name}'
