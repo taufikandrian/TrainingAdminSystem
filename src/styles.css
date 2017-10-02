@@ -1,84 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
+
 .borderradiusless {
-  border-radius: 0 !important;
+    border-radius: 0 !important;
 }
 
 .no-padding {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
 .no-padding-top {
-  padding-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .no-padding-bottom {
-  padding-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .no-padding-left {
-  padding-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 .no-padding-right {
-  padding-right: 0 !important;
+    padding-right: 0 !important;
 }
 
 .no-margin {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 
 .no-margin-top {
-  margin-top: 0 !important;
+    margin-top: 0 !important;
 }
 
 .no-margin-bottom {
-  margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .no-margin-left {
-  margin-left: 0 !important;
+    margin-left: 0 !important;
 }
 
 .no-margin-right {
-  margin-right: 0 !important;
+    margin-right: 0 !important;
 }
 
 .text-center {
-  text-align: center !important;
+    text-align: center !important;
 }
 
 .text-right {
-  text-align: right !important;
+    text-align: right !important;
 }
 
 .text-left {
-  text-align: left !important;
+    text-align: left !important;
 }
 
+
 /* .dataTables_filter { display: none !important; } */
+
 
 /* .swal2-modal {
   border-radius: 0 !important;
 } */
 
+
 /* table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.dataTable tbody td.selected {
   color: red;
 } */
 
-table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
-  background-color: rgba(0, 194, 243, 0.11);
+table.dataTable tbody>tr.selected,
+table.dataTable tbody>tr>.selected {
+    background-color: rgba(0, 194, 243, 0.11);
 }
 
 .field label {
-  color: rgba(0, 0, 0, .5);
-  font-weight: 400 !important;
-  font-style: italic;
+    color: rgba(0, 0, 0, .5);
+    font-weight: 400 !important;
+    font-style: italic;
 }
 
 .ui.header>.icons {
-  display: table-cell;
-  opacity: 1;
-  font-size: 1.5em;
-  padding-top: 0;
-  vertical-align: middle;
+    display: table-cell;
+    opacity: 1;
+    font-size: 1.5em;
+    padding-top: 0;
+    vertical-align: middle;
+}
+
+.ui.attached.segment {
+    margin: 0 !important;
+    width: 100%;
 }

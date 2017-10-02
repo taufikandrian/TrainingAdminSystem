@@ -175,6 +175,7 @@ public class UserController extends BaseController<User> {
 				User currentuser = this.userRepo.findById(userID.get(i).toLowerCase());
 				if(currentuser != null) {
 					currentuser.setStatus("Deleted");
+					currentuser.setDeletedBy(user.getAsString("actionBy"));
 					userRepo.save(currentuser);
 					//responseJson.appendToData("User_Deleted", currentuser);
 					userTmp.add(currentuser);
@@ -196,10 +197,10 @@ public class UserController extends BaseController<User> {
 	}
 	
 	//get data for update feature
-	@GetMapping("/users/update/{accountName}")
-	public ResponseEntity<JSONObject> updateGetData(@PathVariable String accountName){
+	@GetMapping("/users/update/{userid}")
+	public ResponseEntity<JSONObject> updateGetData(@PathVariable String userid){
 		JsonFormatter responseJson = new JsonFormatter();
-		User userTmp = userRepo.findByAccountName(accountName);
+		User userTmp = userRepo.findById(userid);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
@@ -217,10 +218,10 @@ public class UserController extends BaseController<User> {
 	}
 	
 	//post data for update feature
-	@PostMapping("/users/update/{accountName}")
-	public ResponseEntity<JSONObject> updatePostData(@RequestBody User user,@PathVariable String accountName){
+	@PostMapping("/users/update/{userid}")
+	public ResponseEntity<JSONObject> updatePostData(@RequestBody User user,@PathVariable String userid){
 		JsonFormatter responseJson = new JsonFormatter();
-		User userTmp = userRepo.findByAccountName(accountName);
+		User userTmp = userRepo.findById(userid);
 		Set<Role> listRole = new HashSet<Role>();
 		try{
 			for(int i = 0; i < user.roles.size();i++){

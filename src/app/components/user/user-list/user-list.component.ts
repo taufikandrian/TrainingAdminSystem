@@ -26,16 +26,23 @@ export class UserListComponent implements OnInit {
               private _userService: UserService,
               private _sidebarService: SidebarService,
               private _menuService: MenuService,) { window["my_unique_class_name"]=this; }
-
-  ngOnInit() {
+  initTopMenu() {
     this._sidebarService.hide();
+    this._menuService.setCurrentRoute(this.router.url);
     this._menuService.setCurrentHeader({
       icon  : 'users',
-      main  : 'User List',
-      sub   : 'List all users in Database',
+      main  : 'List Users',
+      sub   : 'List all users in Training Admin System',
       size  : 'large',
       visible: true,
     });
+    this._menuService.setCurrentBread({ before : [
+      {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
+    ], active: {icon  : 'users', name  : 'Users', route: '/users'}, });
+  }
+
+  ngOnInit() {
+    this.initTopMenu();
     let _userDTClass = '.table-usertable';
     // crear seach box
     $(_userDTClass+' tfoot th').each( function () {
@@ -78,7 +85,6 @@ export class UserListComponent implements OnInit {
             return JSON.stringify(d);
           }
         },
-        orderMulti: false,
         columns: [{
           data: 'anothercolumn',orderable : false,searchable : false,
           render : (data, type, row) => {
@@ -117,7 +123,7 @@ export class UserListComponent implements OnInit {
         }, {
           data: 'grade.gradeName',
           render: function (data, type, row) {
-            return row.division.jobFamily.familyCode + ' - ' + row.division.divisionCode + ' <br><b>'+row.grade.gradeName+'</b>' }
+            return '<b>'+row.grade.gradeName+'</b><br>' +  row.division.jobFamily.familyCode + ' - ' + row.division.divisionCode }
         }, {
           data: 'status',
         }, {
@@ -153,13 +159,13 @@ export class UserListComponent implements OnInit {
     //Edit
     $(document).on('click', '.ul-editbtn', function() {
       let usrObj = $(this).data('usrobj');
-      that.router.navigate(['/users/edit', usrObj.accountName]);
+      that.router.navigate(['/users/edit', usrObj.id]);
     });
 
     //Detail
     $(document).on('click', '.ul-infobtn', function() {
       let usrObj = $(this).data('usrobj');
-      that.router.navigate(['/users/detail', usrObj.accountName]);
+      that.router.navigate(['/users/detail', usrObj.id]);
     });
 
     //Delete
@@ -186,7 +192,7 @@ export class UserListComponent implements OnInit {
         },
         onApprove : ($element) => {
 
-          that._userService.delete({"userID" : [usrObj.id]}).subscribe(response => {
+          that._userService.delete({"userID" : [usrObj.id], "actionBy": that._userService.getCurrentUserName()}).subscribe(response => {
             that.userDT.ajax.reload(null, false);
           })
 

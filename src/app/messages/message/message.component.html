@@ -1,10 +1,10 @@
-<div *ngIf="data" class="ui icon {{ data?.type }} message">
-  <i class="close icon"></i>
-  <i class="{{data?.icon}} icon"></i>
-  <div class="content">
-    <div class="header">
-      {{ data?.headerMain }}
+<div *ngIf="data" class="ui icon {{ data?.type }} message" style="margin: 1em 0">
+    <i class="close icon"></i>
+    <i class="{{data?.icon}} icon"></i>
+    <div class="content">
+        <div class="header">
+            {{ data?.headerMain }}
+        </div>
+        <p>{{ data?.headerSub }}</p>
     </div>
-    <p>{{ data?.headerSub }}</p>
-  </div>
 </div>

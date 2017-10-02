@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd }            from '@angular/router';
+import { Router, NavigationEnd, NavigationStart }            from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 declare var $:any;
@@ -23,6 +23,7 @@ export class PeriodComponent implements OnInit {
     private _assetService: AssetService,
     private _menuService: MenuService,
     private _sidebarService: SidebarService,) {
+      this.activeRoute = this.router.url
       this._authService.check();
     }
 
@@ -31,9 +32,7 @@ export class PeriodComponent implements OnInit {
       if(val instanceof NavigationEnd)
         this.activeRoute = val.url;
     })
-
     this._menuService.setCurrentRoute(this.router.url);
-    this._sidebarService.hide();
   }
 
   isActiveRoute(routeURL) {

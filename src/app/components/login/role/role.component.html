@@ -1,35 +1,35 @@
 <div class="ui inverted segment borderradiusless">
-  <div class="ui equal width fluid grid" style="height: 100vh">
-      <div class="middle aligned row">
-          <div class="column"></div>
-          <div class="four wide column">
-              <div class="ui attached message borderradiusless">
-                  <h4 class="ui header">
-                      <img class="ui image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
-                      <div class="content">
-                          {{ currentUser.fullName }}
-                          <div class="sub header">
-                            {{ currentUser.email }}
-                          </div>
-                      </div>
-                  </h4>
-              </div>
-              <form class="ui form attached padded segment role" [ngClass]="{'loading': isLoading}" #role="ngForm" (ngSubmit)="setRole(role)">
-                  <div class="field">
-                    <label class="capitalize">Choose Role</label>
-                    <select name="choosenRole" class="ui dropdown search roledropdown"></select>
-                  </div>
-                  <div class="ui center aligned field">
-                    <button class="ui primary button fluid uppercase ki-text">Sign as {{ choosenRoleText }}</button>
-                  </div>
-                  <div class="ui center aligned field">
-                    <div (click)="logout()" class="ui red button fluid uppercase ki-text">Sign out</div>
+    <div class="ui equal width fluid grid" style="height: 100vh">
+        <div class="middle aligned row">
+            <div class="column"></div>
+            <div class="four wide column">
+                <div class="ui attached message borderradiusless">
+                    <h4 class="ui header">
+                        <img class="ui image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+                        <div class="content">
+                            {{ currentUser.fullName }}
+                            <div class="sub header">
+                                {{ currentUser.email }}
+                            </div>
+                        </div>
+                    </h4>
                 </div>
-              </form>
-          </div>
-          <div class="column">
+                <form class="ui form attached padded segment role" [ngClass]="{'loading': isLoading}" #role="ngForm" (ngSubmit)="setRole(role)">
+                    <div class="field">
+                        <label class="capitalize">Choose Role</label>
+                        <select name="choosenRole" class="ui dropdown search roledropdown"></select>
+                    </div>
+                    <div class="ui center aligned field">
+                        <button class="ui violet button fluid uppercase ki-text">Sign as {{ choosenRoleText }}</button>
+                    </div>
+                    <div class="ui center aligned field">
+                        <div (click)="logout()" class="ui button fluid uppercase ki-text">Sign out</div>
+                    </div>
+                </form>
+            </div>
+            <div class="column">
 
-          </div>
-      </div>
-  </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -35,6 +35,11 @@ export class UserService {
     return this.currentUser;
   }
 
+  getCurrentUserName() : any {
+    this.updateUser();
+    return this.currentUser.fullName
+  }
+
   getCurrentRolesUser() : any {
     this.updateUser();
     return this.currentRolesUser;

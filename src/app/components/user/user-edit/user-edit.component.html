@@ -1,55 +1,60 @@
-<app-message></app-message>
-<div class="ui segment top attached text container" [ngClass]="{'loading': isLoading}">
+<div class="ui segment top attached container" [ngClass]="{'loading': isLoading}">
     <h1 class="ui huge  header">
-      <i class="user purple icon"></i>
-      <div class="content">
-        {{ curUser?.fullName }} <div class="ui green horizontal label">{{ curUser?.status }}</div>
-        <div class="sub header">{{ curUser?.division.jobFamily.familyCode }} - {{ curUser?.division.divisionCode }} <b>{{ curUser?.grade.gradeName }}</b></div>
-      </div>
+        <i class="user purple icon"></i>
+        <div class="content">
+            {{ curUser?.fullName }}
+            <div class="ui green horizontal label">{{ curUser?.status }}</div>
+            <div class="sub header">{{ curUser?.division.jobFamily.familyCode }} - {{ curUser?.division.divisionCode }} <b>{{ curUser?.grade.gradeName }}</b></div>
+        </div>
     </h1>
-  </div>
-<div class="ui purple attached segment text container" [ngClass]="{'loading': isLoading}">
-  <div class="equal width ui grid">
-    <div class="column">
-      <div class="ui tiny header">
-        <div class="sub header">Account Name</div>
-        <b>mitrais\{{ curUser?.accountName }}</b>
-      </div>
-    </div>
-    <div class="column">
-        <div class="ui tiny header">
-          <div class="sub header">Email</div>
-          {{ curUser?.email }}
+</div>
+<div class="ui purple attached segment container" [ngClass]="{'loading': isLoading}">
+    <div class="equal width ui grid">
+        <div class="column">
+            <div class="ui tiny header">
+                <div class="sub header">Account Name</div>
+                <b>mitrais\{{ curUser?.accountName }}</b>
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui tiny header">
+                <div class="sub header">Email</div>
+                {{ curUser?.email }}
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui tiny header">
+                <div class="sub header">Gender</div>
+                {{ curUser?.gender }}
+            </div>
         </div>
     </div>
-  </div>
-  <div class="ui divider"></div>
-  <form id="usercreate" class="ui form usercreate">
-    <div class="equal width fields">
-        <div class="field">
-          <label class="capitalize">Role</label>
-          <select name="roles" multiple class="ui dropdown multiple search roledropdown">
+    <div class="ui divider"></div>
+    <form id="usercreate" class="ui form usercreate">
+        <div class="equal width fields">
+            <div class="field">
+                <label class="capitalize">Roles</label>
+                <select name="roles" multiple class="ui dropdown multiple search roledropdown">
             <option value="">Select Role</option>
             <option *ngFor="let item of roledropdown" value="{{item.value}}" [attr.selected]="item.selected">{{item.name}}</option>
           </select>
+            </div>
         </div>
-    </div>
-    <div class="field">
-        <label class="capitalize">Status</label>
-        <select name="status" class="ui selection dropdown statusdropdown">
+        <div class="field">
+            <label class="capitalize">Status</label>
+            <select name="status" class="ui selection dropdown statusdropdown">
           <option value="">Select Status</option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
-      </div>
-  </form>
-</div>
-<div class="ui bottom attached segment text container">
+        </div>
+    </form>
+    <div class="ui divider"></div>
     <button class="ui purple button" form="usercreate">
-      <i class="icon history"></i>
-      Update
-    </button>
+        <i class="icon history"></i>
+        Update
+      </button>
     <button class="ui button" [routerLink]="['/users']">
-      Back
-    </button>
+        Back
+      </button>
 </div>

@@ -9,8 +9,12 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "user_tb")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Auditable<String> implements Serializable {
 	
 	/**
@@ -50,18 +54,27 @@ public class User extends Auditable<String> implements Serializable {
     
     @Column(name = "user_status")
     private String status;
-    
     @Column(name = "user_replacement")
     private Integer userReplacement;
     
-    public Integer getUserReplacement() {
+    @Column(name = "user_gender")
+    private String gender;
+    
+    public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gander) {
+		this.gender = gander;
+	}
+
+	public Integer getUserReplacement() {
 		return userReplacement;
 	}
 
 	public void setUserReplacement(Integer userReplacement) {
 		this.userReplacement = userReplacement;
 	}
-
 	public User() {
     }
 
@@ -117,8 +130,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.status = status;
 	}
 	
-	//@JsonIgnore
-	@ManyToOne(optional=false) 
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="division_id",referencedColumnName="division_id")
     private Division division;
 	public Division getDivision() {
@@ -128,8 +140,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.division = division;
 	}
 	
-	//@JsonIgnore
-	@ManyToOne(optional=false)
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="grade_id",referencedColumnName="grade_id")
     private Grade grade;
 	public Grade getGrade() {
@@ -139,8 +150,7 @@ public class User extends Auditable<String> implements Serializable {
 		this.grade = grade;
 	}
 	
-	//@JsonIgnore
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="user_role_tb",
             joinColumns=
             @JoinColumn(name="user_id", referencedColumnName="user_id"),
@@ -148,17 +158,11 @@ public class User extends Auditable<String> implements Serializable {
             @JoinColumn(name="role_id", referencedColumnName="role_id")
     )
 	private Set<Role> roleList;
+	
 	public Set<Role> getRoleList() {
 		return roleList;
 	}
 	public void setRoleList(Set<Role> role){
 		this.roleList = role;
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "User{" +
-//				", name='" + fullName + '\'' +
-//				'}';
-//	}
 }
