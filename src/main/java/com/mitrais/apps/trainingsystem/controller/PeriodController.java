@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
+import com.mitrais.apps.trainingsystem.model.EligibleUser;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.User;
+import com.mitrais.apps.trainingsystem.repository.EligibleUserRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
@@ -38,6 +40,9 @@ public class PeriodController extends BaseController<Training> {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private EligibleUserRepository eligibleRepo;
 	
 	// Datatables training	
 	@PostMapping(value="/training/dt/all")
@@ -134,7 +139,6 @@ public class PeriodController extends BaseController<Training> {
 			}
 			Training trainTmp = this.trainRepo.findById(id);
 			trainTmp.setEligibleList(userTmp);
-			System.out.println(trainTmp.getEligibleList());
 			trainRepo.save(trainTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
@@ -147,6 +151,34 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setStatus("failed");
 			responseJson.setCode("200");
 			responseJson.setMessage("Add Eligible Data Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	@PostMapping("/training/deleteEligibleList/{id}")
+	public ResponseEntity<JSONObject> DeleteEligibleData(@RequestBody JSONObject user,@PathVariable String id){
+		JsonFormatter responseJson = new JsonFormatter();
+		try{
+			List<EligibleUser> listOfEligible = new ArrayList<EligibleUser>();
+			@SuppressWarnings("unchecked")
+			List<String> userID = (List<String>) user.get("userID");
+			for(int i = 0; i < userID.size();i++){
+				EligibleUser eligibleTmp = this.eligibleRepo.findByUserIDEligible(userID.get(i).toLowerCase());
+				listOfEligible.add(eligibleTmp);
+				eligibleRepo.delete(eligibleTmp);
+			}
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Eligible User", listOfEligible);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Deleted Data Cannot be Completed");
+			responseJson.appendToData("EligibleUserFailedDeleted", ex.getMessage());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
