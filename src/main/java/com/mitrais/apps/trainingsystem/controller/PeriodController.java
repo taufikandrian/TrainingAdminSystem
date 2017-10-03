@@ -163,7 +163,7 @@ public class PeriodController extends BaseController<Training> {
 			@SuppressWarnings("unchecked")
 			List<String> userID = (List<String>) user.get("userID");
 			for(int i = 0; i < userID.size();i++){
-				EligibleUser eligibleTmp = this.eligibleRepo.findByUserIDEligible(userID.get(i).toLowerCase());
+				EligibleUser eligibleTmp = this.eligibleRepo.findByUserIDEligibleAndTrainingIDEligible(userID.get(i).toLowerCase(),id);
 				listOfEligible.add(eligibleTmp);
 				eligibleRepo.delete(eligibleTmp);
 			}
