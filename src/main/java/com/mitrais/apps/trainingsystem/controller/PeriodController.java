@@ -1,6 +1,7 @@
 package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,12 +28,16 @@ import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
+import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 @RestController
 public class PeriodController extends BaseController<Training> {
 	
 	@Autowired
 	private TrainingRepository trainRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 	
 	// Datatables training	
 	@PostMapping(value="/training/dt/all")
@@ -89,6 +94,59 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setCode("200");
 			responseJson.setMessage("Eligible User Cannot be Displayed");
 			responseJson.appendToData("EligibleUser", ex.getMessage());
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	//get data for update feature
+	@GetMapping("/training/addEligibleList")
+	public ResponseEntity<JSONObject> ListofEligibleParticipant(){
+		JsonFormatter responseJson = new JsonFormatter();
+		List<User> userTmp = userRepo.findAll();
+		try{
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_EligibleUser", userTmp);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Updated Training Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	@PostMapping("/training/addEligibleList/{id}")
+	public ResponseEntity<JSONObject> AddEligibleData(@RequestBody JSONObject user,@PathVariable String id){
+		JsonFormatter responseJson = new JsonFormatter();
+		try {
+			Set<User> userTmp = new HashSet<>();
+			@SuppressWarnings("unchecked")
+			List<String> userID = (List<String>) user.get("userID");
+			for(int i = 0; i < userID.size();i++){
+				User currentuser = this.userRepo.findById(userID.get(i).toLowerCase());
+				if(currentuser != null) {
+					userTmp.add(currentuser);
+				}
+			}
+			Training trainTmp = this.trainRepo.findById(id);
+			trainTmp.setEligibleList(userTmp);
+			System.out.println(trainTmp.getEligibleList());
+			trainRepo.save(trainTmp);
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Eligible User", trainTmp.getEligibleList());
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Add Eligible Data Cannot be Completed");
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
