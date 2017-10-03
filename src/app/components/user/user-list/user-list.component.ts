@@ -17,15 +17,20 @@ declare let window;
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  @Output() uploadCheckAll: EventEmitter<any> = new EventEmitter();
+  // @Output() uploadCheckAll: EventEmitter<any> = new EventEmitter();
   private userDT: any;
   private userDTSelected = [];
+  private userDTUnSelected = [];
+  private userDTPages = [];
   constructor(private router: Router,
               private _dtService: DatatableService,
               private _alertService: AlertService,
               private _userService: UserService,
               private _sidebarService: SidebarService,
-              private _menuService: MenuService,) { window["my_unique_class_name"]=this; }
+              private _menuService: MenuService,) {
+                // window["my_unique_class_name"]=this;
+              }
+
   initTopMenu() {
     this._sidebarService.hide();
     this._menuService.setCurrentRoute(this.router.url);
@@ -42,8 +47,11 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
+    var that = this;
+
     this.initTopMenu();
     let _userDTClass = '.table-usertable';
+
     // crear seach box
     $(_userDTClass+' tfoot th').each( function () {
       var title = $(this).text();
@@ -139,22 +147,22 @@ export class UserListComponent implements OnInit {
                   }
         },],
         select: {
-          style:    'multi', selector: 'td:first-child .checkbox'
+          style:    'multi', selector: 'td:first-child .checkbox', info: false
         },
         order: [[ 1, 'asc' ]],
         createdRow: function( row, data, dataIndex ) {
           $(row).attr('id', data.id);
         },
-        drawCallback: function (settings, json) {
-          this.api().rows( ( idx, data, node ) => {
-            if ( $.inArray(data.id, this.userDTSelected) !== -1 ) {
-              return true;
-            }
-          }).select();
+        // drawCallback: function (settings, json) {
 
-        }
+          // this.api().rows( function ( idx, data, node ) {
+          //   if ( $.inArray(data.id, that.userDTSelected) !== -1 ) {
+          //     return true;
+          //   }
+          // }).select();
+        // }
     });
-    var that = this;
+
     this.userDT = _userDT;
     //Edit
     $(document).on('click', '.ul-editbtn', function() {
@@ -210,29 +218,35 @@ export class UserListComponent implements OnInit {
         for(let i = 0 ; i < data.length ; i++) {
           var id = data[i];
           $('tr[id='+id+']').find('.checkbox').checkbox('check');
-          var index = $.inArray(id, this.userDTSelected);
-          if ( index === -1 ) {
-              this.userDTSelected.push( id );
-          }
+
+          if($.inArray(id, this.userDTSelected) === -1)
+            this.userDTSelected.push( id );
+
+          var index = $.inArray(id, this.userDTUnSelected);
+          if(index !== -1)
+            this.userDTUnSelected.splice(index, 1);
+
         }
       }
+      this.updateButton();
+
     }).on('deselect', (e, dt, type, indexes) => {
       var data = _userDT.rows( indexes ).data().pluck( 'id' );
-
       for(let i = 0 ; i < data.length ; i++) {
         var id = data[i];
         $('tr[id='+id+']').find('.checkbox').checkbox('uncheck');
+
+        if($.inArray(id, this.userDTUnSelected) === -1)
+          this.userDTUnSelected.push( id );
+
         var index = $.inArray(id, this.userDTSelected);
-        if ( index === -1 ) {
-          this.userDTSelected.push( id );
-        } else {
+        if(index !== -1)
           this.userDTSelected.splice( index, 1 );
-        }
       }
+      this.updateButton();
     });
 
     // create search fungsi
-
     _userDT.columns().every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change', function () {
@@ -245,29 +259,74 @@ export class UserListComponent implements OnInit {
     // $('input[name="searchkey"]').on( 'keyup change', function () {
     //   _userDT.search( this.value ).draw();
     // });
-    // $('div.tb-toolbar').html('<div class="ui tiny buttons">\
-    //                             <button class="ui button" onclick="my_unique_class_name.tes("adfa")">\
-    //                               <i class="icon add user"></i>\
-    //                               Pause\
-    //                             </button>\
-    //                           </div>');
+
+    // DT TOOLBAR
+    $('div.tb-toolbar').html('<div class="ui tiny buttons">\
+                                <button class="ui button ul-selected">\
+                                  <i class="info icon"></i>\
+                                  selected 0 rows\
+                                </button>\
+                                <button class="ui button ul-unselected">\
+                                  <i class="info icon"></i>\
+                                  unselected 0 rows\
+                                </button>\
+                              </div>');
+
     this.userDT.on( 'draw', () => {
-      this.checkAll();
+      if($.inArray(this.userDT.page.info().page, this.userDTPages) == -1) {
+        // page not visited yet
+        this.userDTPages.push(this.userDT.page.info().page);
+        this.toogleCheckAll();
+      } else {
+        // page visited
+        this.drawChecked();
+      }
     });
   }
 
-  setCheckAllrow(bool): void {
-    $('.checkallrow').checkbox('uncheck');
+  updateButton() {
+    let selected: Number;
+    let unselected: Number;
+
+    if(this.userDTSelected.length < 1) {
+      selected = 0
+      unselected = this.userDT.page.info().recordsTotal
+    }
+    else if(this.userDTSelected.length > 0) {
+      if($('.checkallrow').checkbox('is checked') == 'true,false' && this.userDTPages.length != this.userDT.page.info().pages){
+        selected = this.userDT.page.info().recordsTotal - this.userDTUnSelected.length
+        unselected = this.userDTUnSelected.length
+      } else {
+        selected = this.userDTSelected.length
+        unselected = this.userDT.page.info().recordsTotal - this.userDTSelected.length
+      }
+    }
+    $('.ul-selected').html('<i class="info icon"></i>\
+    selected '+ selected + ' rows');
+
+    $('.ul-unselected').html('<i class="info icon"></i>\
+    unselected '+ unselected + ' rows');
   }
 
-  checkAll(): void {
-
-    if($('.checkallrow').checkbox('is checked') == 'true,false'){
-      this.userDT.rows( function ( idx, data, node ) {
+  drawChecked(): void {
+    this.userDT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.userDTSelected) !== -1)
         return true;
+    }).select();
+
+    this.userDT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.userDTUnSelected) !== -1)
+        return true;
+    }).deselect();
+  }
+
+  toogleCheckAll(): void {
+    if($('.checkallrow').checkbox('is checked') == 'true,false'){
+      this.userDT.rows( ( idx, data, node ) => {
+          return true;
       }).select();
     } else {
-      this.userDT.rows( function ( idx, data, node ) {
+      this.userDT.rows( ( idx, data, node ) => {
         return true;
       }).deselect();
     }

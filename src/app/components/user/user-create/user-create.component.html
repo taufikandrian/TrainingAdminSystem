@@ -1,9 +1,9 @@
-<div class="ui violet attached segment">
+<div class="ui violet attached segment edited">
     <form id="usercreate" class="ui form usercreate" [ngClass]="{'loading': isLoading}">
         <div class="ui segment no-margin">
             <div class="ui top attached label">Personal Data</div>
             <div class="equal width fields">
-                <div class="field">
+                <div class="required field">
                     <label>Account Name</label>
                     <div class="ui labeled input">
                         <div class="ui label">
@@ -12,21 +12,21 @@
                         <input type="text" name="accountName" placeholder="Account Name ...">
                     </div>
                 </div>
-                <div class="field">
+                <div class="required field">
                     <label>Password</label>
                     <input type="password" name="password" placeholder="New Password ...">
                 </div>
             </div>
             <div class="equal width fields">
-                <div class="field">
+                <div class="required field">
                     <label>Full Name</label>
                     <input type="text" name="fullName" placeholder="Full Name ...">
                 </div>
-                <div class="field">
+                <div class="required field">
                     <label>Email</label>
                     <input type="text" name="email" placeholder="Email ...">
                 </div>
-                <div class="field">
+                <div class="required field">
                     <label>Gender</label>
                     <select name="gender" class="ui dropdown genderdropdown">
                         <option value="">Gender</option>
@@ -39,21 +39,21 @@
         <div class="ui segment">
             <div class="ui top attached label">Position</div>
             <div class="equal width fields">
-                <div class="field">
+                <div class="required field">
                     <label class="capitalize">Job Family</label>
                     <select name="jobfam_id" class="ui dropdown search jobfamdropdown">
                       <option value="">Select Job Family</option>
                       <option *ngFor="let item of jobfamdropdown" value="{{item.value}}">{{item.name}}</option>
                     </select>
                 </div>
-                <div class="field">
+                <div class="required field">
                     <label class="capitalize">Division</label>
                     <select name="division_id" class="ui dropdown disabled search divisiondropdown">
                       <option value="">Select Division</option>
                       <option *ngFor="let item of divisiondropdown" value="{{item.value}}">{{item.name}}</option>
                     </select>
                 </div>
-                <div class="field">
+                <div class="required field">
                     <label class="capitalize">Grade</label>
                     <select name="grade_id" class="ui dropdown disabled search gradedropdown">
                       <option value="">Select Grade</option>
@@ -62,26 +62,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="field ui calendar" id="start-date-add-period">
-        <label>Start Date</label>
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" name="startDate" placeholder="Start Date">
-        </div>
-      </div>
-      <div class="field ui calendar" id="end-date-add-period">
-        <label>End Date</label>
-          <div class="ui input left icon">
-          <i class="calendar icon"></i>
-          <input type="text" name="endDate" placeholder="End Date">
-        </div>
-      </div> -->
-
         <div class="ui segment">
             <div class="ui top attached label">Training Admin System Data</div>
             <div class="equal width fields">
-                <div class="field">
+                <div class="required field">
                     <label class="capitalize">Role</label>
                     <select name="roles" multiple class="ui dropdown multiple search roledropdown">
                       <option value="">Select Role</option>
@@ -89,9 +73,9 @@
                     </select>
                 </div>
                 <div class="six wide field">
-                    <div class="field">
+                    <div class="required field">
                         <label>Replecement Level</label>
-                        <input type="number" name="replacementLevel" placeholder="Level ...">
+                        <input type="number" name="userReplacement" placeholder="Level ...">
                     </div>
                 </div>
             </div>

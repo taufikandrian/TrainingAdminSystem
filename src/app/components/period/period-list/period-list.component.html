@@ -1,4 +1,4 @@
-<div class="ui purple borderradiusless segment">
+<div class="ui violet borderradiusless segment">
     <!-- <a class="ui purple left ribbon label">Specs</a> -->
     <!-- <a [routerLink]="['/users/create']" class="ui vertical purple animated button" tabindex="0" style="margin-bottom: 20px">
         <div class="hidden content">Create New</div>
@@ -6,46 +6,47 @@
             <i class="add user icon"></i>
         </div>
     </a> -->
-    <button class="ui purple button" [routerLink]="['/users/create']">
+    <button class="ui violet button" [routerLink]="['/periods/create']">
       <i class="icon add calendar" ></i>
       Create New Period
     </button>
     <div class="ui divider"></div>
     <div class="dimmable">
-      <div class="ui inverted dimmer">
-          <div class="ui loader"></div>
-      </div>
-      <table class="ui celled table table-periodtable" id="bla">
-        <thead>
-          <tr>
-            <th><div class="ui fitted checkbox checkallrow">
-                <input type="checkbox" (change)="checkAll()"/>
-                <label></label>
-              </div>
-            </th>
-            <th class="four wide" style="text-align: center">Training Name</th>
-            <th class="two wide" style="text-align: center">Status</th>
-            <th class="two wide" style="text-align: center">Courses</th>
-            <th class="two wide" style="text-align: center">Start Date</th>
-            <th class="two wide" style="text-align: center">End Date</th>
-            <th class="four wide" style="text-align: center">Created By</th>
-            <th class="two wide" style="text-align: center">Action</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th class="disabled"></th>
-            <th class="four wide" style="text-align: center">Training Name</th>
-            <th class="two wide" style="text-align: center">Status</th>
-            <th class="two wide" style="text-align: center">Courses</th>
-            <th class="two wide" style="text-align: center">Start Date</th>
-            <th class="two wide" style="text-align: center">End Date</th>
-            <th class="four wide" style="text-align: center">Created By</th>
-            <th class="two wide" style="text-align: center">Action</th>
-          </tr>
-        </tfoot>
-        <tbody>
-        </tbody>
-      </table>
+        <div class="ui inverted dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <table class="ui celled table table-periodtable" id="bla">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="ui fitted checkbox checkallrow">
+                            <input type="checkbox" (change)="checkAll()" />
+                            <label></label>
+                        </div>
+                    </th>
+                    <th class="four wide" style="text-align: center">Training Name</th>
+                    <th class="two wide" style="text-align: center">Status</th>
+                    <th class="two wide" style="text-align: center">Courses</th>
+                    <th class="two wide" style="text-align: center">Start Date</th>
+                    <th class="two wide" style="text-align: center">End Date</th>
+                    <th class="four wide" style="text-align: center">Created By</th>
+                    <th class="two wide" style="text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th class="disabled"></th>
+                    <th class="four wide" style="text-align: center">Training Name</th>
+                    <th class="two wide" style="text-align: center">Status</th>
+                    <th class="two wide" style="text-align: center">Courses</th>
+                    <th class="two wide" style="text-align: center">Start Date</th>
+                    <th class="two wide" style="text-align: center">End Date</th>
+                    <th class="four wide" style="text-align: center">Created By</th>
+                    <th class="two wide" style="text-align: center">Action</th>
+                </tr>
+            </tfoot>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-  </div>
+</div>

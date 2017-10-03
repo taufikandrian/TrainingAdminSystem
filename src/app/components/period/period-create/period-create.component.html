@@ -1,3 +1,59 @@
-<p>
-  period-create works!
-</p>
+<div class="ui violet attached segment edited">
+    <form id="periodcreate" class="ui form periodcreate" [ngClass]="{'loading': isLoading}">
+        <div class="ui segment no-margin">
+            <div class="ui top attached label">Period/Training Data</div>
+            <div class="equal width fields">
+                <div class="required field">
+                    <label>Training Name</label>
+                    <input type="text" name="trainingName" placeholder="Training Name ...">
+                </div>
+                <div class="required three wide field">
+                    <label>Status</label>
+                    <select name="status" class="ui dropdown statusdropdown">
+                      <option value="">Choose status ...</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+            </div>
+            <div class="equal width fields">
+              <div class="field">
+                <label>Training Description (optional)</label>
+                <textarea rows="2" name="trainingDescription" placeholder="Training Description ..."></textarea>
+              </div>
+            </div>
+            <div class="equal width fields">
+                <div class="required field ui calendar"  id="start-date-add-period">
+                    <label>Start Date</label>
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input type="text"  name="trainingStartDate"  placeholder="Start Date" />
+                    </div>
+                </div>
+                <div class="required field ui calendar"  id="end-date-add-period">
+                    <label>End Date</label>
+                    <div class="ui input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text"  name="trainingEndDate"  placeholder="End Date">
+                    </div>
+                </div>
+            </div>
+            <div class="equal width fields">
+              <div class="field">
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="isOpen">
+                    <label>Set this Period/Training <strong>"Open"</strong> for all staf</label>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </form>
+    <div class="ui divider"></div>
+    <button class="ui violet button" form="periodcreate">
+      <i class="icon save"></i>
+      Submit
+    </button>
+    <button class="ui button" [routerLink]="['/periods']">
+      Back
+    </button>
+</div>

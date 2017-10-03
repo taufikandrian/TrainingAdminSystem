@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.Search;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,10 +38,10 @@ public class PeriodController extends BaseController<Training> {
 	@PostMapping(value="/training/dt/all")
     public ResponseEntity<JSONObject> getTrains(@Valid @RequestBody DataTablesInput input) {
            JSONObject response = new JSONObject();
+           List<Column> columns = input.getColumns();
            
            //SORT
            List<Sort.Order> orders = new ArrayList<>();
-           List<Column> columns = input.getColumns();
            for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
                   String c = columns.get(item.getColumn()).getData();
                   if(item.getDir().equals("asc"))
@@ -48,6 +49,13 @@ public class PeriodController extends BaseController<Training> {
                   else
                         orders.add(new Sort.Order(Direction.DESC, c));
            }
+           
+           Search s = new Search();
+           Column c = new Column();
+           
+           s.setValue("Deleted");
+           c.setData("status");c.setSearch(s);
+           columns.add(c);
           
            Sort sort = new Sort(orders);
            Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
@@ -123,7 +131,8 @@ public class PeriodController extends BaseController<Training> {
 			for(int i = 0; i < trainingID.size();i++){
 				Training currenttraining = this.trainRepo.findById(trainingID.get(i).toLowerCase());
 				if(currenttraining != null) {
-					currenttraining.setStatus("Inactive");
+					currenttraining.setStatus("Deleted");
+					currenttraining.setDeletedBy(training.getAsString("actionBy"));
 					trainRepo.save(currenttraining);
 					trainTmp.add(currenttraining);
 				}

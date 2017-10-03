@@ -28,7 +28,7 @@
         </div>
     </div>
 </div>
-<div class="ui container borderradiusless segment" style="margin-top: 6em; margin-bottom: 1em" *ngIf="breadcrumbs">
+<div class="ui container borderradiusless segment" style="margin-top: 6em; margin-bottom: 1em" *ngIf="breadcrumbs && isVisible">
     <div class="ui breadcrumb">
         <a class="section" *ngFor="let bread of breadcrumbs.before" [routerLink]="bread.route"><i class="{{bread.icon}} icon"></i>{{bread.name}}<i class="right chevron icon divider"></i></a>
         <div class="active section"><i class="{{breadcrumbs.active.icon}} icon"></i>{{breadcrumbs.active.name}}</div>

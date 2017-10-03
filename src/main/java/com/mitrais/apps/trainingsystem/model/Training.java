@@ -50,6 +50,17 @@ public class Training extends Auditable<String> implements Serializable {
     @Column(name = "training_end_date")
     private Date trainingEndDate;
     
+    @Column(name = "training_is_open")
+    private Boolean isOpen;
+    
+	public Boolean getIsOpen() {
+		return isOpen;
+	}
+
+	public void setIsOpen(Boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
 	public String getTrainingName() {
 		return trainingName;
 	}
