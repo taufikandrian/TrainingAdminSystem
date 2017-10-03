@@ -1,6 +1,7 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public String classroom_id;
 	
 	@Transient
-	public String courseName_id;
+	public String courseType_id;
 	/**
 	 * 
 	 */
@@ -44,8 +45,14 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     @Column(name = "training_course_start_date") 
     private Date trainingCourseStartDate;
     
+    @Column(name = "training_course_start_time")
+    private Time trainingCourseStartTime;
+    
     @Column(name = "training_course_end_date")
     private Date trainingCourseEndDate;
+    
+    @Column(name = "training_course_end_time")
+    private Time trainingCourseEndTime;
     
     @Column(name = "training_course_capacity")
     private Integer trainingCourseCapacity;
@@ -53,6 +60,17 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     @Column(name = "training_course_status")
     private String status;
     
+    @Column(name = "training_course_type")
+    private String trainingType;
+    
+	public String getTrainingType() {
+		return trainingType;
+	}
+
+	public void setTrainingType(String trainingType) {
+		this.trainingType = trainingType;
+	}
+
 	public String getTrainingCourseName() {
 		return trainingCourseName;
 	}
@@ -88,6 +106,22 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public Integer getTrainingCourseCapacity() {
 		return trainingCourseCapacity;
 	}
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	public Time getTrainingCourseStartTime() {
+		return trainingCourseStartTime;
+	}
+
+	public void setTrainingCourseStartTime(Time trainingCourseStartTime) {
+		this.trainingCourseStartTime = trainingCourseStartTime;
+	}
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	public Time getTrainingCourseEndTime() {
+		return trainingCourseEndTime;
+	}
+
+	public void setTrainingCourseEndTime(Time trainingCourseEndTime) {
+		this.trainingCourseEndTime = trainingCourseEndTime;
+	}
 
 	public void setTrainingCourseCapacity(Integer trainingCourseCapacity) {
 		this.trainingCourseCapacity = trainingCourseCapacity;
@@ -105,13 +139,16 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
     	
     }
 	
-	public TrainingCourse(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus){
+	public TrainingCourse(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus,String trainingType,Time trainingCourseStartTime,Time trainingCourseEndTime){
     	this.trainingCourseName = trainingCourseName;
     	this.trainingCourseDescription = trainingCourseDescription;
     	this.trainingCourseStartDate = trainingCourseStartDate;
     	this.trainingCourseEndDate = trainingCourseEndDate;
     	this.trainingCourseCapacity = trainingCourseCapacity;
     	this.status = trainingCourseStatus;
+    	this.trainingType = trainingType;
+    	this.trainingCourseStartTime = trainingCourseStartTime;
+    	this.trainingCourseEndTime = trainingCourseEndTime;
     }
 
 	public String getId() {
@@ -135,14 +172,14 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 //	}
 	
 	@ManyToOne(optional=false)
-    @JoinColumn(name="course_name_id",referencedColumnName="course_name_id")
+    @JoinColumn(name="course_type_id",referencedColumnName="course_type_id")
 	//@JsonIgnore
-	private CourseName courseName;
-	public CourseName getCourseName() {
-		return courseName;
+	private CourseType courseType;
+	public CourseType getCourseType() {
+		return courseType;
 	}
-	public void setCourseName(CourseName courseName) {
-		this.courseName = courseName;
+	public void setCourseType(CourseType courseType) {
+		this.courseType = courseType;
 	}
 	
 	@ManyToOne(optional=false)

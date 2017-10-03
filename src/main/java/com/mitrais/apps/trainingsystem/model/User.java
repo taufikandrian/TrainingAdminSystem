@@ -9,9 +9,6 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
 @Table(name = "user_tb")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -54,6 +51,7 @@ public class User extends Auditable<String> implements Serializable {
     
     @Column(name = "user_status")
     private String status;
+    
     @Column(name = "user_replacement")
     private Integer userReplacement;
     
