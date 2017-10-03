@@ -104,25 +104,25 @@ public class PeriodController extends BaseController<Training> {
 	}
 	
 	//get data for update feature
-	@GetMapping("/training/addEligibleList")
-	public ResponseEntity<JSONObject> ListofEligibleParticipant(){
-		JsonFormatter responseJson = new JsonFormatter();
-		List<User> userTmp = userRepo.findAll();
-		try{
-			responseJson.setConfirmed(true);
-			responseJson.setStatus("success");
-			responseJson.setCode("200");
-			responseJson.appendToData("Get_EligibleUser", userTmp);
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-		catch(Exception ex){
-			responseJson.setConfirmed(false);
-			responseJson.setStatus("failed");
-			responseJson.setCode("200");
-			responseJson.setMessage("Updated Training Cannot be Completed");
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-	}
+//	@GetMapping("/training/addEligibleList")
+//	public ResponseEntity<JSONObject> ListofEligibleParticipant(){
+//		JsonFormatter responseJson = new JsonFormatter();
+//		List<User> userTmp = userRepo.findAll();
+//		try{
+//			responseJson.setConfirmed(true);
+//			responseJson.setStatus("success");
+//			responseJson.setCode("200");
+//			responseJson.appendToData("Get_EligibleUser", userTmp);
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//		catch(Exception ex){
+//			responseJson.setConfirmed(false);
+//			responseJson.setStatus("failed");
+//			responseJson.setCode("200");
+//			responseJson.setMessage("Updated Training Cannot be Completed");
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//	}
 	
 	@PostMapping("/training/addEligibleList/{id}")
 	public ResponseEntity<JSONObject> AddEligibleData(@RequestBody JSONObject user,@PathVariable String id){
@@ -252,6 +252,7 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Get_Training", trainTmp);
+			responseJson.appendToData("Get_Training_EligibleParticipants", trainTmp.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -293,6 +294,8 @@ public class PeriodController extends BaseController<Training> {
 			trainTmp.setTrainingName(training.getTrainingName());
 			trainTmp.setStatus(training.getStatus());
 			trainTmp.setTrainingDescription(training.getTrainingDescription());
+			trainTmp.setIsOpen(training.getIsOpen());
+			trainTmp.setLastModifiedBy(training.getLastModifiedBy());
 			trainRepo.save(trainTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
