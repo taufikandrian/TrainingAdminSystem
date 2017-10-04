@@ -129,21 +129,22 @@ public class PeriodController extends BaseController<Training> {
 		JsonFormatter responseJson = new JsonFormatter();
 		try {
 			Set<User> userTmp = new HashSet<>();
+			Training trainTmp = this.trainRepo.findById(id);
 			@SuppressWarnings("unchecked")
 			List<String> userID = (List<String>) user.get("userID");
 			for(int i = 0; i < userID.size();i++){
 				User currentuser = this.userRepo.findById(userID.get(i).toLowerCase());
 				if(currentuser != null) {
 					userTmp.add(currentuser);
+					trainTmp.getEligibleList().add(currentuser);
 				}
 			}
-			Training trainTmp = this.trainRepo.findById(id);
-			trainTmp.setEligibleList(userTmp);
+			//trainTmp.setEligibleList(userTmp);
 			trainRepo.save(trainTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Eligible User", trainTmp.getEligibleList());
+			responseJson.appendToData("EligibleUser", trainTmp.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

@@ -1,7 +1,9 @@
 package com.mitrais.apps.trainingsystem.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -25,6 +27,7 @@ import com.mitrais.apps.trainingsystem.model.CourseClassroom;
 import com.mitrais.apps.trainingsystem.model.CourseType;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.TrainingCourse;
+import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.repository.ClassroomRepository;
 import com.mitrais.apps.trainingsystem.repository.CourseTypeRepository;
 import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
@@ -267,7 +270,11 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 	@GetMapping("/schedule/EligibleStaff/{trainingCourseId}")
 	public ResponseEntity<JSONObject> getEligibleStaff(@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
+		Set<User> userListTmp = new HashSet<>();
 		TrainingCourse courseTmp = schRepo.findById(trainingCourseId);
+		Training trainTmp = courseTmp.getTraining();
+		userListTmp = trainTmp.getEligibleList();
+		System.out.println(userListTmp);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
