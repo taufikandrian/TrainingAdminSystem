@@ -5,9 +5,9 @@ import { DatatableService } from '../../../services/datatable.service';
 import { Environment } from '../../../classes/environment';
 import { MenuService } from '../../../services/menu.service';
 import { AlertService } from '../../../services/alert.service';
+import { SidebarService } from '../../../services/sidebar.service';
 import { PeriodService } from '../../../services/period.service';
 import { UserService } from '../../../services/user.service';
-import { SidebarService } from '../../../services/sidebar.service';
 
 import { Period } from '../../../classes/period';
 
@@ -24,13 +24,15 @@ export class PeriodListComponent implements OnInit {
   @Output() uploadCheckAll: EventEmitter<any> = new EventEmitter();
   private periodDT: any;
   private periodDTSelected = [];
+  private periodDTUnSelected = [];
+  private periodDTPages = [];
   constructor(private router: Router,
-              private _dtService: DatatableService,
               private _alertService: AlertService,
               private _userService: UserService,
               private _periodService: PeriodService,
               private _sidebarService: SidebarService,
-              private _menuService: MenuService,) { }
+              private _menuService: MenuService,
+              private _dtService: DatatableService,) { }
 
   initTopMenu() {
     this._sidebarService.hide();
@@ -48,6 +50,8 @@ export class PeriodListComponent implements OnInit {
   }
 
   ngOnInit() {
+    var that = this;
+
     this.initTopMenu();
     let _periodDTClass = '.table-periodtable';
 
@@ -69,9 +73,9 @@ export class PeriodListComponent implements OnInit {
           $(_periodDTClass).closest('.dimmable').find('.dimmer').removeClass('active');
       })
       .DataTable( {
-        // responsive  : true,
-        // scrollY     : false,
-        // deferRender : true,
+        responsive  : true,
+        scrollY     : false,
+        deferRender : true,
         processing  : false,
         serverSide  : true,
         // dom: '<"toolbar">frtip',
@@ -81,7 +85,7 @@ export class PeriodListComponent implements OnInit {
               >\
               <tr>\
               <"ui clearing basic segment no-padding"\
-                <"ui left floated segment basic no-margin no-padding"i>\
+                <"ui left floated segment basic no-margin no-padding" <"tb-toolbar-info">>\
                 <"ui right floated segment basic no-margin no-padding"p>\
               >',
         ajax: {
@@ -170,40 +174,34 @@ export class PeriodListComponent implements OnInit {
           orderable : false,
           searchable : false,
           render : (data, type, row) => {
+            delete row.trainingDescription
             return `<div class="ui icon mini buttons">\
-                      <button data-periodobj='${JSON.stringify(row)}' class="ui purple button pr-editbtn"><i class="edit icon"></i></button>\
-                      <button data-periodobj='${JSON.stringify(row)}' class="ui button pr-trashbtn"><i class="trash icon"></i></button>\
+                      <button data-obj='${JSON.stringify(row)}' class="ui purple button pr-editbtn"><i class="edit icon"></i></button>\
+                      <button data-obj='${JSON.stringify(row)}' class="ui button pr-trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
         },
         ],
         select: {
-          style: 'multi', selector: 'td:first-child .checkbox'
+          style: 'multi', selector: 'td:first-child .checkbox', info: false
         },
         order: [[ 1, 'asc' ]],
         createdRow: function( row, data, dataIndex ) {
           $(row).attr('id', data.id);
         },
-        drawCallback: function (settings, json) {
-          this.api().rows( ( idx, data, node ) => {
-            if ( $.inArray(data.id, this.periodDTSelected) !== -1 ) {
-              return true;
-            }
-          }).select();
-        }
     });
-    var that = this;
+
     this.periodDT = _periodDT;
 
     //Edit
     $(document).on('click', '.pr-editbtn', function() {
-      let periodObj = $(this).data('periodobj');
-      that.router.navigate(['/users/edit', periodObj.id]);
+      let periodObj = $(this).data('obj');
+      that.router.navigate(['/periods/detail', periodObj.id]);
     });
 
     //Delete
     $(document).on('click', '.pr-trashbtn', function() {
-      let periodObj  = $(this).data('periodobj');
+      let periodObj  = $(this).data('obj');
       that._alertService.setAlert({
         closable: false,
         header : {
@@ -231,7 +229,6 @@ export class PeriodListComponent implements OnInit {
         onDeny: ($element) => {}
 
       });
-      // that.router.navigate(['/users/edit', $(this).data('id')]);
     });
 
     // CheckBox
@@ -241,25 +238,31 @@ export class PeriodListComponent implements OnInit {
         for(let i = 0 ; i < data.length ; i++) {
           var id = data[i];
           $('tr[id='+id+']').find('.checkbox').checkbox('check');
-          var index = $.inArray(id, this.periodDTSelected);
-          if ( index === -1 ) {
-              this.periodDTSelected.push( id );
-          }
+
+          if($.inArray(id, this.periodDTSelected) === -1)
+            this.periodDTSelected.push( id );
+
+          var index = $.inArray(id, this.periodDTUnSelected);
+          if(index !== -1)
+            this.periodDTUnSelected.splice(index, 1);
         }
       }
+      this.updateButton();
+
     }).on('deselect', (e, dt, type, indexes) => {
       var data = _periodDT.rows( indexes ).data().pluck( 'id' );
-
       for(let i = 0 ; i < data.length ; i++) {
         var id = data[i];
         $('tr[id='+id+']').find('.checkbox').checkbox('uncheck');
+
+        if($.inArray(id, this.periodDTUnSelected) === -1)
+          this.periodDTUnSelected.push( id );
+
         var index = $.inArray(id, this.periodDTSelected);
-        if ( index === -1 ) {
-          this.periodDTSelected.push( id );
-        } else {
+        if(index !== -1)
           this.periodDTSelected.splice( index, 1 );
-        }
       }
+      this.updateButton();
     });
 
     // create search fungsi
@@ -272,24 +275,73 @@ export class PeriodListComponent implements OnInit {
       });
     });
 
+    // DT TOOLBAR
+    $('div.tb-toolbar').html('\
+      <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+      <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+      ');
+      $('div.tb-toolbar-info').html('<div class="ui buttons">\
+      <div class="ui button basic ul-selected no-padding-lf">\</div>\
+    </div>');
+
+    //ON DRAW
     _periodDT.on( 'draw', () => {
-      this.checkAll();
+      if($.inArray(this.periodDT.page.info().page, this.periodDTPages) == -1) {
+        // page not visited yet
+        this.periodDTPages.push(this.periodDT.page.info().page);
+        this.toogleCheckAll();
+      } else {
+        // page visited
+        this.drawChecked();
+      }
     });
   }
 
-  setCheckAllrow(bool): void {
-    $('.checkallrow').checkbox('uncheck');
+  updateButton() {
+    let selected: Number;
+    let unselected: Number;
+
+    if(this.periodDTSelected.length < 1) {
+      selected = 0
+      unselected = this.periodDT.page.info().recordsTotal
+    }
+    else if(this.periodDTSelected.length > 0) {
+      if($('.checkallrow').checkbox('is checked') == 'true,false' && this.periodDTPages.length != this.periodDT.page.info().pages){
+        selected = this.periodDT.page.info().recordsTotal - this.periodDTUnSelected.length
+        unselected = this.periodDTUnSelected.length
+      } else {
+        selected = this.periodDTSelected.length
+        unselected = this.periodDT.page.info().recordsTotal - this.periodDTSelected.length
+      }
+    }
+    if(selected == 0) {
+      $('.gs-info').addClass('disabled')
+    } else {
+      $('.gs-info').removeClass('disabled')
+    }
+    $('.ul-selected').html('Selected <b>'+ selected + ' rows</b> of ' + this.periodDT.page.info().recordsTotal + ' entries');
+    $('.gs-info .label').html(selected)
   }
 
-  checkAll(): void {
-    alert($('.checkallrow').checkbox('is checked'))
-    if($('.checkallrow').checkbox('is checked') === true){
-
-      this.periodDT.rows( function ( idx, data, node ) {
+  drawChecked(): void {
+    this.periodDT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.periodDTSelected) !== -1)
         return true;
+    }).select();
+
+    this.periodDT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.periodDTUnSelected) !== -1)
+        return true;
+    }).deselect();
+  }
+
+  toogleCheckAll(): void {
+    if($('.checkallrow').checkbox('is checked') == 'true,false'){
+      this.periodDT.rows( ( idx, data, node ) => {
+          return true;
       }).select();
     } else {
-      this.periodDT.rows( function ( idx, data, node ) {
+      this.periodDT.rows( ( idx, data, node ) => {
         return true;
       }).deselect();
     }

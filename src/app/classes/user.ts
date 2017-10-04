@@ -32,4 +32,7 @@ export interface User {
   status: String;
   replacementLevel: String;
   gender: String;
+  createdBy: String;
+  lastModifiedBy: String;
+  deletedBy: String;
 }

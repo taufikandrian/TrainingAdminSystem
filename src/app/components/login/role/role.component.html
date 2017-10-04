@@ -5,7 +5,8 @@
             <div class="four wide column">
                 <div class="ui attached message borderradiusless">
                     <h4 class="ui header">
-                        <img class="ui image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+                      <img *ngIf="currentUser.gender == 'Male'" class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+                      <img *ngIf="currentUser.gender == 'Female'" class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/helen.jpg">
                         <div class="content">
                             {{ currentUser.fullName }}
                             <div class="sub header">

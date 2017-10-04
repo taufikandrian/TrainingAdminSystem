@@ -77,14 +77,14 @@ export class UserListComponent implements OnInit {
         serverSide  : true,
         // dom: '<"toolbar">frtip',
         dom: '<"ui clearing basic segment no-padding"\
-                <"ui left floated segment basic no-margin no-padding" <"tb-toolbar">>\
-                <"ui right floated segment basic no-margin no-padding"l>\
-              >\
-              <tr>\
-              <"ui clearing basic segment no-padding"\
-                <"ui left floated segment basic no-margin no-padding"i>\
-                <"ui right floated segment basic no-margin no-padding"p>\
-              >',
+        <"ui left floated segment basic no-margin no-padding" <"tb-toolbar">>\
+        <"ui right floated segment basic no-margin no-padding"l>\
+      >\
+      <tr>\
+      <"ui clearing basic segment no-padding"\
+        <"ui left floated segment basic no-margin no-padding" <"tb-toolbar-info">>\
+        <"ui right floated segment basic no-margin no-padding"p>\
+      >',
         ajax: {
           contentType: 'application/json',
           url: Environment.apiUrl+'/users/dt/all',
@@ -153,14 +153,6 @@ export class UserListComponent implements OnInit {
         createdRow: function( row, data, dataIndex ) {
           $(row).attr('id', data.id);
         },
-        // drawCallback: function (settings, json) {
-
-          // this.api().rows( function ( idx, data, node ) {
-          //   if ( $.inArray(data.id, that.userDTSelected) !== -1 ) {
-          //     return true;
-          //   }
-          // }).select();
-        // }
     });
 
     this.userDT = _userDT;
@@ -208,7 +200,6 @@ export class UserListComponent implements OnInit {
         onDeny: ($element) => {}
 
       });
-      // that.router.navigate(['/users/edit', $(this).data('id')]);
     });
 
     // CheckBox
@@ -261,18 +252,16 @@ export class UserListComponent implements OnInit {
     // });
 
     // DT TOOLBAR
-    $('div.tb-toolbar').html('<div class="ui tiny buttons">\
-                                <button class="ui button ul-selected">\
-                                  <i class="info icon"></i>\
-                                  selected 0 rows\
-                                </button>\
-                                <button class="ui button ul-unselected">\
-                                  <i class="info icon"></i>\
-                                  unselected 0 rows\
-                                </button>\
-                              </div>');
+    $('div.tb-toolbar').html('\
+    <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+    <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+    ');
+    $('div.tb-toolbar-info').html('<div class="ui buttons">\
+    <div class="ui button basic ul-selected no-padding-lf">\</div>\
+  </div>');
 
-    this.userDT.on( 'draw', () => {
+    //ON DRAW
+    _userDT.on( 'draw', () => {
       if($.inArray(this.userDT.page.info().page, this.userDTPages) == -1) {
         // page not visited yet
         this.userDTPages.push(this.userDT.page.info().page);
@@ -301,11 +290,13 @@ export class UserListComponent implements OnInit {
         unselected = this.userDT.page.info().recordsTotal - this.userDTSelected.length
       }
     }
-    $('.ul-selected').html('<i class="info icon"></i>\
-    selected '+ selected + ' rows');
-
-    $('.ul-unselected').html('<i class="info icon"></i>\
-    unselected '+ unselected + ' rows');
+    if(selected == 0) {
+      $('.gs-info').addClass('disabled')
+    } else {
+      $('.gs-info').removeClass('disabled')
+    }
+    $('.ul-selected').html('Selected <b>'+ selected + ' rows</b> of ' + this.userDT.page.info().recordsTotal + ' entries');
+    $('.gs-info .label').html(selected)
   }
 
   drawChecked(): void {

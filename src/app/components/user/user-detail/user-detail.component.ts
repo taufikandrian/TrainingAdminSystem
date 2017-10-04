@@ -20,7 +20,6 @@ export class UserDetailComponent implements OnInit {
               private _sidebarService: SidebarService,) { }
 
   ngOnInit() {
-    this._menuService.setCurrentRoute(this.router.url);
     this.route.params.subscribe(params => {
       this._userService.detail(params['id']).subscribe(response => {
         let user : User;

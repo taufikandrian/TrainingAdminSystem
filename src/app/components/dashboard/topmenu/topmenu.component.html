@@ -9,6 +9,15 @@
                 </div>
             </div>
         </div>
+        <div class="item" *ngIf="!header?.visible" style="border-left: 1px solid rgba(0,0,0,.1)">
+            <div class="ui large violet header">
+                <img [src]="assets['logo']" alt="">
+                <div class="content">
+                    Training Admin System
+                    <div class="sub header">Application for Training Management in PT. Mitrais</div>
+                </div>
+            </div>
+        </div>
         <div class="menu right">
             <div class="item">
                 <img *ngIf="currentUser.gender == 'Male'" class="ui mini circular image" src="https://semantic-ui.com/images/avatar/small/matt.jpg">

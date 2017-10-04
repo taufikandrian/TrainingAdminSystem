@@ -19,8 +19,36 @@ export class PeriodService {
     });
   }
 
+  addEP(trainginID, addedEligiblesID): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/training/addEligibleList/'+trainginID, addedEligiblesID)
+    .map((response: Response) => {
+      return response;
+    })
+  }
+
+  deleteEP(trainginID,eligiblesID): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/training/deleteEligibleList/'+trainginID, eligiblesID)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
   delete(data): Observable<Response> {
     return this.http.post(Environment.apiUrl+'/training/delete', data)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  update(data, username): Observable<Response> {
+    return this.http.post(Environment.apiUrl+'/training/update/'+username, data)
+    .map((response: Response) => {
+      return response;
+    });
+  }
+
+  detail(data): Observable<Response> {
+    return this.http.get(Environment.apiUrl+'/training/update/'+data)
     .map((response: Response) => {
       return response;
     });

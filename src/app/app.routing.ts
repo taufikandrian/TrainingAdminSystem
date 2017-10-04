@@ -17,6 +17,10 @@ import { UserDetailComponent } from './components/user/user-detail/user-detail.c
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import { PeriodCreateComponent } from './components/period/period-create/period-create.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { PeriodDetailComponent } from './components/period/period-detail/period-detail.component';
+import { PeriodUpdateComponent } from './components/period/period-detail/period-update/period-update.component';
+import { PeriodEligibleComponent } from './components/period/period-detail/period-eligible/period-eligible.component';
+import { PeriodEligibleNotinComponent } from './components/period/period-detail/period-eligible-notin/period-eligible-notin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -25,6 +29,10 @@ const routes: Routes = [
   { path: 'dashboard',  component: DashboardComponent, children: [] },
   { path: 'periods',  component: PeriodComponent, children: [
     { path: 'create', component: PeriodCreateComponent },
+    { path: 'detail/:id', component: PeriodDetailComponent, children: [
+      { path: 'eligible', component: PeriodEligibleComponent },
+      { path: 'eligibleadd', component: PeriodEligibleNotinComponent },
+    ] },
   ] },
   { path: 'users',  component: UserComponent, children: [
     { path: 'create', component: UserCreateComponent },

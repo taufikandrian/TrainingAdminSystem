@@ -42,6 +42,11 @@ import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrum
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { UserDetailComponent } from './components/user/user-detail/user-detail.component';
 import { MessageComponent } from './messages/message/message.component';
+import { FooterComponent } from './components/dashboard/footer/footer.component';
+import { PeriodDetailComponent } from './components/period/period-detail/period-detail.component';
+import { PeriodUpdateComponent } from './components/period/period-detail/period-update/period-update.component';
+import { PeriodEligibleComponent } from './components/period/period-detail/period-eligible/period-eligible.component';
+import { PeriodEligibleNotinComponent } from './components/period/period-detail/period-eligible-notin/period-eligible-notin.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +71,11 @@ import { MessageComponent } from './messages/message/message.component';
     NotfoundComponent,
     UserDetailComponent,
     MessageComponent,
+    FooterComponent,
+    PeriodDetailComponent,
+    PeriodUpdateComponent,
+    PeriodEligibleComponent,
+    PeriodEligibleNotinComponent,
   ],
   imports: [
     BrowserModule,

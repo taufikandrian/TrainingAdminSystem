@@ -2,8 +2,7 @@
     <i class="close icon"></i>
     <i class="{{data?.icon}} icon"></i>
     <div class="content">
-        <div class="header">
-            {{ data?.headerMain }}
+        <div class="header" [innerHtml]="data?.headerMain">
         </div>
         <p>{{ data?.headerSub }}</p>
     </div>

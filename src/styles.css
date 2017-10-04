@@ -69,15 +69,23 @@
   color: red;
 } */
 
+.upppercase {
+  text-transform: uppercase !important;
+}
+
 table.dataTable tbody>tr.selected,
 table.dataTable tbody>tr>.selected {
     background-color: rgba(0, 194, 243, 0.11);
 }
 
 .field label {
-    color: rgba(0, 0, 0, .5);
+    color: rgba(0, 0, 0, .2) !important;
     font-weight: 400 !important;
     font-style: italic;
+}
+
+.field .checkbox label {
+    color: rgba(0, 0, 0, 1) !important;
 }
 
 .ui.header>.icons {
@@ -91,4 +99,13 @@ table.dataTable tbody>tr>.selected {
 .ui.attached.segment.edited {
     margin: 0 !important;
     width: 100%;
+}
+
+.no-padding-lf {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.gs-info .label {
+  margin-left: .5em !important;
 }

@@ -6,4 +6,9 @@ export interface Period {
   trainingStartDate: Date;
   trainingEndDate: Date;
   isOpen: Boolean;
+  eligibleList: [{}];
+  trainingCourses: [{}];
+  createdBy: String;
+  lastModifiedBy: String;
+  deletedBy: String;
 }
