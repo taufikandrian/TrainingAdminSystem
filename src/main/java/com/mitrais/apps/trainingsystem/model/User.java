@@ -9,6 +9,10 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "user_tb")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -162,5 +166,16 @@ public class User extends Auditable<String> implements Serializable {
 	}
 	public void setRoleList(Set<Role> role){
 		this.roleList = role;
+	}
+	
+	@ManyToMany(mappedBy="eligibleList")
+	private Set<Training> eligibleTrainings;
+
+	public Set<Training> getEligibleTrainings() {
+		return eligibleTrainings;
+	}
+
+	public void setEligibleTrainings(Set<Training> eligibleTrainings) {
+		this.eligibleTrainings = eligibleTrainings;
 	}
 }
