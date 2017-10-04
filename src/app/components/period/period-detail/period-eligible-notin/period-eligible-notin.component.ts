@@ -250,7 +250,7 @@ export class PeriodEligibleNotinComponent implements OnInit {
 
     // DT TOOLBAR
     $('div.tb-toolbar-addel').html('\
-      <div class="ui mini green gs-info del-btn button">Add all selected employee <a class="ui mini circular label">0</a></div>\
+      <div class="ui mini green basic gs-info del-btn button">Add all selected employee <a class="ui mini green circular label">0</a></div>\
       ');
       $('div.tb-toolbar-info-addel').html('<div class="ui buttons">\
       <div class="ui button basic ul-selected no-padding-lf">\</div>\

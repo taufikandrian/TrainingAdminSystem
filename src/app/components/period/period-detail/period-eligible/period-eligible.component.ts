@@ -254,7 +254,7 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
 
     // DT TOOLBAR
     $('div.tb-toolbar').html('\
-      <div class="ui mini gs-info del-btn button">Delete All Selected <a class="ui mini red circular label">0</a></div>\
+      <div class="ui mini gs-info basic red del-btn button">Delete All Selected <a class="ui mini red circular label">0</a></div>\
       ');
       $('div.tb-toolbar-info').html('<div class="ui buttons">\
       <div class="ui button basic ul-selected no-padding-lf">\</div>\
