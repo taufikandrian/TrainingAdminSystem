@@ -26,6 +26,7 @@ import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 import com.mitrais.apps.trainingsystem.repository.GradeRepository;
 import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 import com.mitrais.apps.trainingsystem.repository.RoleRepository;
+import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 import net.minidev.json.JSONObject;
@@ -44,6 +45,9 @@ public class UserController extends BaseController<User> {
 	
 	@Autowired
 	private RoleRepository rolesRepo;
+	
+	@Autowired
+	private TrainingRepository trainRepo;
 	
 	@Autowired
 	private JobFamilyRepository jobfamRepo;
@@ -85,7 +89,90 @@ public class UserController extends BaseController<User> {
            PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
            Page<User> data = userRepo.findAll(DataTable(columns), page);
            response.put("draw", input.getDraw());
-           response.put("recordsTotal", userRepo.findAll(notDeleted()).size());
+           response.put("recordsTotal", userRepo.findAll(DataTable(columns)).size());
+           response.put("recordsFiltered", data.getTotalElements());
+           response.put("data", data.getContent());
+           return ResponseEntity.ok(response);
+    }
+	
+	// Datatables eligible participants	
+	@PostMapping(value="/training/{trainingID}/eligible/all")
+    public ResponseEntity<JSONObject> getEligibleUser(@Valid @RequestBody DataTablesInput input, @PathVariable String trainingID) {
+           JSONObject response = new JSONObject();
+           List<Column> columns = input.getColumns();
+           
+           //SORT
+           List<Sort.Order> orders = new ArrayList<>();
+           for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+                  String c = columns.get(item.getColumn()).getData();
+                  if(item.getDir().equals("asc"))
+                        orders.add(new Sort.Order(Direction.ASC, c));
+                  else
+                        orders.add(new Sort.Order(Direction.DESC, c));
+           }
+           
+           Search s = new Search();
+           Column c = new Column();
+           
+           s.setValue("Deleted");
+           c.setData("status");c.setSearch(s);
+           columns.add(c);
+           
+	       s.setValue(trainingID);
+	       c.setData("join.eligibleTrainings.id");c.setSearch(s);
+	       columns.add(c);
+          
+           Sort sort = new Sort(orders);
+           Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+           PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
+           Page<User> data = userRepo.findAll(DataTable(columns), page);
+           response.put("draw", input.getDraw());
+           response.put("recordsTotal", userRepo.findAll(DataTable(columns)).size());
+           response.put("recordsFiltered", data.getTotalElements());
+           response.put("data", data.getContent());
+           return ResponseEntity.ok(response);
+    }
+	
+	// Datatables not in eligible participants
+	@PostMapping(value="/training/{trainingID}/eligible/notin")
+    public ResponseEntity<JSONObject> getNotInEligibleUser(@Valid @RequestBody DataTablesInput input, @PathVariable String trainingID) {
+           JSONObject response = new JSONObject();
+           List<Column> columns = input.getColumns();
+           
+           //SORT
+           List<Sort.Order> orders = new ArrayList<>();
+           for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+                  String c = columns.get(item.getColumn()).getData();
+                  if(item.getDir().equals("asc"))
+                        orders.add(new Sort.Order(Direction.ASC, c));
+                  else
+                        orders.add(new Sort.Order(Direction.DESC, c));
+           }
+           
+           Search s = new Search();
+           Column c = new Column();
+           
+           s.setValue("Deleted");
+           c.setData("status");c.setSearch(s);
+           columns.add(c);
+           
+//	       s.setValue(trainingID);
+//	       c.setData("join.eligibleTrainings.id");c.setSearch(s);
+//	       columns.add(c);
+	       
+	       List<String> inData= new ArrayList<>();
+	       Set<User> eligibleUsers = new HashSet<>();
+	       eligibleUsers = trainRepo.findById(trainingID).getEligibleList();
+	       for (User itemUser : eligibleUsers) {
+	    	    inData.add(itemUser.getId());
+	       }
+	       System.out.println(inData);
+           Sort sort = new Sort(orders);
+           Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+           PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
+           Page<User> data = userRepo.findAll(DataTableNotIn(columns, inData), page);
+           response.put("draw", input.getDraw());
+           response.put("recordsTotal", userRepo.findAll(DataTableNotIn(columns, inData)).size());
            response.put("recordsFiltered", data.getTotalElements());
            response.put("data", data.getContent());
            return ResponseEntity.ok(response);

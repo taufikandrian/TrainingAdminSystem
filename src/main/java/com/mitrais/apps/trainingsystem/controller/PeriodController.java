@@ -72,57 +72,57 @@ public class PeriodController extends BaseController<Training> {
            PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
            Page<Training> data = trainRepo.findAll(DataTable(columns), page);
            response.put("draw", input.getDraw());
-           response.put("recordsTotal", trainRepo.findAll(notDeleted()).size());
+           response.put("recordsTotal", trainRepo.findAll(DataTable(columns)).size());
            response.put("recordsFiltered", data.getTotalElements());
            response.put("data", data.getContent());
            return ResponseEntity.ok(response);
     }
 	
 	// get eligible participant from IDTraining
-	@PostMapping("/training/getEligibleUser")
-	public ResponseEntity<JSONObject> getEligibleUser(@RequestBody JSONObject data) {
-		JsonFormatter responseJson = new JsonFormatter();
-		try{
-			String trainingID = (String) data.get("trainingID");
-			Training trainCoba = trainRepo.findById(trainingID.toLowerCase());
-			Set<User> userEligible = trainCoba.getEligibleList();
-			responseJson.setConfirmed(true);
-			responseJson.setStatus("success");
-			responseJson.setCode("200");
-			responseJson.appendToData("Training", trainCoba);
-			responseJson.appendToData("UserEligible", userEligible);
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-		catch(Exception ex){
-			responseJson.setConfirmed(false);
-			responseJson.setStatus("failed");
-			responseJson.setCode("200");
-			responseJson.setMessage("Eligible User Cannot be Displayed");
-			responseJson.appendToData("EligibleUser", ex.getMessage());
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-	}
+//	@PostMapping("/training/getEligibleUser")
+//	public ResponseEntity<JSONObject> getEligibleUser(@RequestBody JSONObject data) {
+//		JsonFormatter responseJson = new JsonFormatter();
+//		try{
+//			String trainingID = (String) data.get("trainingID");
+//			Training trainCoba = trainRepo.findById(trainingID.toLowerCase());
+//			Set<User> userEligible = trainCoba.getEligibleList();
+//			responseJson.setConfirmed(true);
+//			responseJson.setStatus("success");
+//			responseJson.setCode("200");
+//			responseJson.appendToData("Training", trainCoba);
+//			responseJson.appendToData("UserEligible", userEligible);
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//		catch(Exception ex){
+//			responseJson.setConfirmed(false);
+//			responseJson.setStatus("failed");
+//			responseJson.setCode("200");
+//			responseJson.setMessage("Eligible User Cannot be Displayed");
+//			responseJson.appendToData("EligibleUser", ex.getMessage());
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//	}
 	
 	//get data for update feature
-	@GetMapping("/training/addEligibleList")
-	public ResponseEntity<JSONObject> ListofEligibleParticipant(){
-		JsonFormatter responseJson = new JsonFormatter();
-		List<User> userTmp = userRepo.findAll();
-		try{
-			responseJson.setConfirmed(true);
-			responseJson.setStatus("success");
-			responseJson.setCode("200");
-			responseJson.appendToData("Get_EligibleUser", userTmp);
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-		catch(Exception ex){
-			responseJson.setConfirmed(false);
-			responseJson.setStatus("failed");
-			responseJson.setCode("200");
-			responseJson.setMessage("Updated Training Cannot be Completed");
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-	}
+//	@GetMapping("/training/addEligibleList")
+//	public ResponseEntity<JSONObject> ListofEligibleParticipant(){
+//		JsonFormatter responseJson = new JsonFormatter();
+//		List<User> userTmp = userRepo.findAll();
+//		try{
+//			responseJson.setConfirmed(true);
+//			responseJson.setStatus("success");
+//			responseJson.setCode("200");
+//			responseJson.appendToData("Get_EligibleUser", userTmp);
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//		catch(Exception ex){
+//			responseJson.setConfirmed(false);
+//			responseJson.setStatus("failed");
+//			responseJson.setCode("200");
+//			responseJson.setMessage("Updated Training Cannot be Completed");
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//	}
 	
 	@PostMapping("/training/addEligibleList/{id}")
 	public ResponseEntity<JSONObject> AddEligibleData(@RequestBody JSONObject user,@PathVariable String id){
@@ -168,10 +168,12 @@ public class PeriodController extends BaseController<Training> {
 				listOfEligible.add(eligibleTmp);
 				eligibleRepo.delete(eligibleTmp);
 			}
+			Training curTrain = this.trainRepo.findById(id);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Eligible User", listOfEligible);
+			responseJson.appendToData("Get_Training", curTrain);
+			responseJson.appendToData("Get_Training_EligibleParticipants", curTrain.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -253,6 +255,7 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Get_Training", trainTmp);
+			responseJson.appendToData("Get_Training_EligibleParticipants", trainTmp.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -265,25 +268,25 @@ public class PeriodController extends BaseController<Training> {
 	}
 	
 	//get data detail training
-	@GetMapping("/training/TrainingDetail/{id}")
-	public ResponseEntity<JSONObject> getDetailTraining(@PathVariable String id){
-		JsonFormatter responseJson = new JsonFormatter();
-		Training trainTmp = trainRepo.findById(id);
-		try{
-			responseJson.setConfirmed(true);
-			responseJson.setStatus("success");
-			responseJson.setCode("200");
-			responseJson.appendToData("Get_Training", trainTmp);
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-		catch(Exception ex){
-			responseJson.setConfirmed(false);
-			responseJson.setStatus("failed");
-			responseJson.setCode("200");
-			responseJson.setMessage("Updated Training Cannot be Completed");
-			return ResponseEntity.ok(responseJson.getJson());
-		}
-	}
+//	@GetMapping("/training/TrainingDetail/{id}")
+//	public ResponseEntity<JSONObject> getDetailTraining(@PathVariable String id){
+//		JsonFormatter responseJson = new JsonFormatter();
+//		Training trainTmp = trainRepo.findById(id);
+//		try{
+//			responseJson.setConfirmed(true);
+//			responseJson.setStatus("success");
+//			responseJson.setCode("200");
+//			responseJson.appendToData("Get_Training", trainTmp);
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//		catch(Exception ex){
+//			responseJson.setConfirmed(false);
+//			responseJson.setStatus("failed");
+//			responseJson.setCode("200");
+//			responseJson.setMessage("Updated Training Cannot be Completed");
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//	}
 	
 	//post data for update feature
 	@PostMapping("/training/update/{id}")
@@ -294,11 +297,14 @@ public class PeriodController extends BaseController<Training> {
 			trainTmp.setTrainingName(training.getTrainingName());
 			trainTmp.setStatus(training.getStatus());
 			trainTmp.setTrainingDescription(training.getTrainingDescription());
+			trainTmp.setIsOpen(training.getIsOpen());
+			trainTmp.setLastModifiedBy(training.getLastModifiedBy());
 			trainRepo.save(trainTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Update_Training", trainTmp);
+			responseJson.appendToData("Update_Training_EligibleParticipants", trainTmp.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

@@ -18,11 +18,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "training_tb")
-
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Training extends Auditable<String> implements Serializable {
 
 	/**
@@ -116,6 +119,7 @@ public class Training extends Auditable<String> implements Serializable {
 	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
 	@JoinTable(name="eligible_user_tb",
 	    joinColumns=
 	    @JoinColumn(name="training_id", referencedColumnName="training_id"),
