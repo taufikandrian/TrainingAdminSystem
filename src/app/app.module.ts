@@ -47,6 +47,8 @@ import { PeriodDetailComponent } from './components/period/period-detail/period-
 import { PeriodUpdateComponent } from './components/period/period-detail/period-update/period-update.component';
 import { PeriodEligibleComponent } from './components/period/period-detail/period-eligible/period-eligible.component';
 import { PeriodEligibleNotinComponent } from './components/period/period-detail/period-eligible-notin/period-eligible-notin.component';
+import { PeriodCourseComponent } from './components/period/period-course/period-course.component';
+import { PeriodCoursesComponent } from './components/period/period-detail/period-courses/period-courses.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { PeriodEligibleNotinComponent } from './components/period/period-detail/
     PeriodUpdateComponent,
     PeriodEligibleComponent,
     PeriodEligibleNotinComponent,
+    PeriodCourseComponent,
+    PeriodCoursesComponent,
   ],
   imports: [
     BrowserModule,

@@ -252,10 +252,10 @@ export class UserListComponent implements OnInit {
     // });
 
     // DT TOOLBAR
-    $('div.tb-toolbar').html('\
-    <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
-    <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
-    ');
+    // $('div.tb-toolbar').html('\
+    // <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+    // <div class="ui mini gs-info button">Delete <a class="ui mini red circular label">0</a></div>\
+    // ');
     $('div.tb-toolbar-info').html('<div class="ui buttons">\
     <div class="ui button basic ul-selected no-padding-lf">\</div>\
   </div>');

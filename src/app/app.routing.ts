@@ -21,6 +21,8 @@ import { PeriodDetailComponent } from './components/period/period-detail/period-
 import { PeriodUpdateComponent } from './components/period/period-detail/period-update/period-update.component';
 import { PeriodEligibleComponent } from './components/period/period-detail/period-eligible/period-eligible.component';
 import { PeriodEligibleNotinComponent } from './components/period/period-detail/period-eligible-notin/period-eligible-notin.component';
+import { PeriodCourseComponent } from './components/period/period-course/period-course.component';
+import { PeriodCoursesComponent } from './components/period/period-detail/period-courses/period-courses.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -30,6 +32,11 @@ const routes: Routes = [
   { path: 'periods',  component: PeriodComponent, children: [
     { path: 'create', component: PeriodCreateComponent },
     { path: 'detail/:id', component: PeriodDetailComponent, children: [
+      { path: 'eligible', component: PeriodEligibleComponent },
+      { path: 'eligibleadd', component: PeriodEligibleNotinComponent },
+      { path: 'courses', component: PeriodCoursesComponent },
+    ] },
+    { path: 'course/:id', component: PeriodCourseComponent, children: [
       { path: 'eligible', component: PeriodEligibleComponent },
       { path: 'eligibleadd', component: PeriodEligibleNotinComponent },
     ] },
