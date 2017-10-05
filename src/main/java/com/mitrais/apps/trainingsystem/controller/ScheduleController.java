@@ -294,11 +294,13 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> getDetailTraining(@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse trainCourseTmp = schRepo.findById(trainingCourseId);
+		List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Get_Training_Course", trainCourseTmp);
+			responseJson.appendToData("Trainer", trainerTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -333,6 +335,27 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Update_Training_Course", trainCourseTmp);
+			List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
+			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
+				trainerTmp.get(0).setTrainerStatus("Primary");
+				trainerTmp.get(0).setUserId(trainingCourse.trainerFirst_id.trim());
+				trainerTmp.get(0).setTrainingCourseId(trainingCourse.getId());
+				trainerRepo.save(trainerTmp.get(0));
+			}
+			else {
+				for(int j = 0;j<2;j++) {
+					if(j == 0) {
+						trainerTmp.get(j).setTrainerStatus("Primary");
+						trainerTmp.get(j).setUserId(trainingCourse.trainerFirst_id.trim());
+					}
+					else {
+						trainerTmp.get(j).setTrainerStatus("Backup");
+						trainerTmp.get(j).setUserId(trainingCourse.trainerSecond_id.trim());
+					}
+					trainerTmp.get(j).setTrainingCourseId(trainingCourse.getId());
+					trainerRepo.save(trainerTmp.get(j));
+				}
+			}
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
