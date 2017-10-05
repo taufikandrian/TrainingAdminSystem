@@ -114,7 +114,7 @@ public class UserCourse extends Auditable<String> implements Serializable {
 
 	public TrainingCourse getTrainingCourse() {
 		return trainingCourse;
-	}
+	} 
 
 	public void setTrainingCourse(TrainingCourse trainingCourse) {
 		this.trainingCourse = trainingCourse;

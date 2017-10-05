@@ -108,7 +108,7 @@ public class UserCourseDetail implements Serializable {
 	@JoinColumn(name="user_course_attendance_id",referencedColumnName="user_course_attendance_id")
 	private UserCourseAttendance userAttendanceID;
 	public UserCourseAttendance getUserAttendanceID() {
-		return userAttendanceID;
+		return userAttendanceID; 
 	}
 	
 	public void setUserAttendanceID(UserCourseAttendance userAttendanceID) {

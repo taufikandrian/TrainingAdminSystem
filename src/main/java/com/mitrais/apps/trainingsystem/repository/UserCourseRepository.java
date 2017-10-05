@@ -8,3 +8,4 @@ import com.mitrais.apps.trainingsystem.model.UserCourse;
 public interface UserCourseRepository extends JpaRepository<UserCourse, String>, JpaSpecificationExecutor<UserCourse> {
 
 }
+ 

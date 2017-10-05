@@ -228,7 +228,7 @@ public class PeriodController extends BaseController<Training> {
 				if(currenttraining != null) {
 					currenttraining.setStatus("Deleted");
 					currenttraining.setDeletedBy(training.getAsString("actionBy"));
-					trainRepo.save(currenttraining);
+					trainRepo.save(currenttraining); 
 					trainTmp.add(currenttraining);
 				}
 			}
