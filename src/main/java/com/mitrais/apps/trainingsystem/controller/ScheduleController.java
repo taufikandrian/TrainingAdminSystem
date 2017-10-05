@@ -157,13 +157,13 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			//trainingCourse.setTrainingCourseName(courseNameTmp.getCourseNameName());
+			trainingCourse.setTrainingCourseName((courseTypeTmp.getCourseTypeName() + " " + trainingCourse.getTrainingCourseName()));
 			trainingCourse.setStatus("Active");
 			trainingCourse.setClassroom(classroomTmp);
 			trainingCourse.setCourseType(courseTypeTmp);
 			trainingCourse.setTraining(trainTmp);
-			responseJson.appendToData("TrainingSchedule_Created", trainingCourse);
 			schRepo.save(trainingCourse);
+			responseJson.appendToData("TrainingSchedule_Created", trainingCourse);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

@@ -144,8 +144,6 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Get_Training", trainTmp);
-			responseJson.appendToData("Get_Training_EligibleParticipants", trainTmp.getEligibleList());
 			responseJson.appendToData("Added_EligibleUser", userTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
@@ -174,7 +172,6 @@ public class PeriodController extends BaseController<Training> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
-			responseJson.appendToData("Get_Training", curTrain);
 			responseJson.appendToData("Get_Training_EligibleParticipants", curTrain.getEligibleList());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
