@@ -98,12 +98,14 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
         }
         Search s = new Search();
         Column c = new Column();
+        Search s1 = new Search();
+        Column c1 = new Column();
         
         //WHERE status
-        s.setValue("Deleted");
-        c.setData("status");
-        c.setSearch(s);
-        columns.add(c);
+        s1.setValue("Inactive");
+        c1.setData("status");
+        c1.setSearch(s1);
+        columns.add(c1);
         
         //JOIN
         s.setValue(trainingId);
@@ -120,7 +122,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
         PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(), sort);
         Page<TrainingCourseDT> data = schDTRepo.findAll(DataTable(columns), page);
         response.put("draw", input.getDraw());
-        response.put("recordsTotal", schDTRepo.findAll(notDeleted()).size());
+        response.put("recordsTotal", schDTRepo.findAll(DataTable(columns)).size());
         response.put("recordsFiltered", data.getTotalElements());
         response.put("data", data.getContent());
         return ResponseEntity.ok(response);
@@ -214,6 +216,8 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
+			Training currentTraining = trainTmp.get(0).getTraining();
+			responseJson.appendToData("Training_Courses", currentTraining.getTrainingCourses());
 			responseJson.appendToData("Training_Course_Deleted", trainTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
@@ -292,6 +296,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Course_Detail", courseTmp);
+			responseJson.appendToData("Course_Training", courseTmp.getTraining());
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

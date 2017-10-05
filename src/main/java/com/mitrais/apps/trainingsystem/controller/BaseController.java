@@ -51,11 +51,10 @@ public abstract class BaseController<U> {
              //SEARCH
              for (Column item : columns) {
         	 	String search = item.getSearch().getValue();
-        	 	
         	 	if(!search.equals("")) {
         	 		String data= item.getData();
-        	 		
         	 		if(item.getData() == "status") {
+        	 			
             	 		where.add(builder.notEqual(root.get(item.getData()), search));
             	 	} else if (item.getData().contains(".")) {
             	 		String[] splitedCol = data.split("\\.");
