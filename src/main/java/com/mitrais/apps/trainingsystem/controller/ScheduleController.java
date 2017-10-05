@@ -1,12 +1,19 @@
 package com.mitrais.apps.trainingsystem.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -145,7 +152,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 		JsonFormatter responseJson = new JsonFormatter();
 		Training trainTmp = trainRepo.findById(trainingId);
 		CourseType courseTypeTmp = typeRepo.findById(trainingCourse.courseType_id);
-		CourseClassroom classroomTmp = clsRoomRepo.findByCourseClassroomCode(trainingCourse.classroom_id);
+		CourseClassroom classroomTmp = clsRoomRepo.findById(trainingCourse.classroom_id);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
@@ -277,22 +284,58 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 		}
 	}
 	
-	@GetMapping("/schedule/EligibleStaff/{trainingCourseId}")
-	public ResponseEntity<JSONObject> getEligibleStaff(@PathVariable String trainingCourseId){
+//	@GetMapping("/schedule/EligibleStaff/{trainingCourseId}")
+//	public ResponseEntity<JSONObject> getEligibleStaff(@PathVariable String trainingCourseId){
+//		JsonFormatter responseJson = new JsonFormatter();
+//		try{
+//			String cekTypeCourse = "";
+//			
+//			Set<User> hasil = new HashSet<>();
+//			
+//			TrainingCourse courseTmp = schRepo.findById(trainingCourseId);
+//			Training trainTmp = courseTmp.getTraining();
+//			CourseType courseTypeTmp = courseTmp.getCourseType();
+//
+//			cekTypeCourse = courseTypeTmp.getCourseTypeGroup();
+//			
+//			if(cekTypeCourse.trim() == "BCC") {
+//				//hasil filter 
+//			}
+//			else {
+//				hasil = trainTmp.getEligibleList();
+//			}
+//			
+//			responseJson.setConfirmed(true);
+//			responseJson.setStatus("success");
+//			responseJson.setCode("200");
+//			responseJson.appendToData("Course_Detail", hasil);
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//		catch(Exception ex){
+//			responseJson.setConfirmed(false);
+//			responseJson.setStatus("failed");
+//			responseJson.setCode("200");
+//			responseJson.setMessage("Get Course Detail Cannot be Completed");
+//			return ResponseEntity.ok(responseJson.getJson());
+//		}
+//	}
+	
+	@PostMapping("/schedule/EligibleStaffAdd/{trainingCourseId}")
+	public ResponseEntity<JSONObject> AddEligibleStaff(@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
-		Set<User> userListTmp = new HashSet<>();
-		TrainingCourse courseTmp = schRepo.findById(trainingCourseId);
-		Training trainTmp = courseTmp.getTraining();
-		userListTmp = trainTmp.getEligibleList();
-		System.out.println(userListTmp);
 		try{
-			responseJson.setConfirmed(true);
-			responseJson.setStatus("success");
-			responseJson.setCode("200");
-			responseJson.appendToData("Course_Detail", courseTmp);
+			TrainingCourse trainCourseTmp = this.schRepo.findById(trainingCourseId);
+			if(trainCourseTmp.getTrainingType().trim() == "Periodically") {
+				LocalDate localDateStart = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseStartDate()));
+				LocalDate localDateEnd = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseEndDate()));
+//				Date startDateTmp = trainCourseTmp.getTrainingCourseStartDate();
+//				Date endDateTmp = trainCourseTmp.getTrainingCourseEndDate();
+				long daysBetween = ChronoUnit.DAYS.between(localDateStart, localDateEnd);
+				System.out.println(daysBetween);
+			}
 			return ResponseEntity.ok(responseJson.getJson());
 		}
-		catch(Exception ex){
+		catch(Exception ex) {
 			responseJson.setConfirmed(false);
 			responseJson.setStatus("failed");
 			responseJson.setCode("200");
