@@ -316,10 +316,10 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody TrainingCourse trainingCourse,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse trainCourseTmp = schRepo.findById(trainingCourseId);
-		CourseType courseTypeTmp = typeRepo.findById(trainingCourse.courseType_id);
-		CourseClassroom classroomTmp = clsRoomRepo.findByCourseClassroomCode(trainingCourse.classroom_id);
+//		CourseType courseTypeTmp = typeRepo.findById(trainingCourse.courseType_id);
+//		CourseClassroom classroomTmp = clsRoomRepo.findByCourseClassroomCode(trainingCourse.classroom_id);
 		try{
-			trainCourseTmp.setTrainingCourseName(courseTypeTmp.getCourseTypeName());
+//			trainCourseTmp.setTrainingCourseName(courseTypeTmp.getCourseTypeName());
 			trainCourseTmp.setTrainingCourseDescription(trainingCourse.getTrainingCourseDescription());
 			trainCourseTmp.setTrainingCourseStartDate(trainingCourse.getTrainingCourseStartDate());
 			trainCourseTmp.setTrainingCourseStartTime(trainingCourse.getTrainingCourseStartTime());
@@ -327,35 +327,36 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			trainCourseTmp.setTrainingCourseEndDate(trainingCourse.getTrainingCourseEndDate());
 			trainCourseTmp.setTrainingCourseCapacity(trainingCourse.getTrainingCourseCapacity());
 			trainCourseTmp.setStatus(trainingCourse.getStatus());
-			trainCourseTmp.setTrainingType(trainingCourse.getTrainingType());
-			trainCourseTmp.setClassroom(classroomTmp);
-			trainCourseTmp.setCourseType(courseTypeTmp);
+//			trainCourseTmp.setTrainingType(trainingCourse.getTrainingType());
+//			trainCourseTmp.setClassroom(classroomTmp);
+//			trainCourseTmp.setCourseType(courseTypeTmp);
 			schRepo.save(trainCourseTmp);
+//			List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
+//			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
+//				trainerTmp.get(0).setTrainerStatus("Primary");
+//				trainerTmp.get(0).setUserId(trainingCourse.trainerFirst_id.trim());
+//				trainerTmp.get(0).setTrainingCourseId(trainingCourseId);
+//				trainerRepo.save(trainerTmp.get(0));
+//			}
+//			else {
+//				for(int j = 0;j<2;j++) {
+//					if(j == 0) {
+//						trainerTmp.get(j).setTrainerStatus("Primary");
+//						trainerTmp.get(j).setUserId(trainingCourse.trainerFirst_id.trim());
+//					}
+//					else {
+//						trainerTmp.get(j).setTrainerStatus("Backup");
+//						trainerTmp.get(j).setUserId(trainingCourse.trainerSecond_id.trim());
+//					}
+//					trainerTmp.get(j).setTrainingCourseId(trainingCourseId);
+//					trainerRepo.save(trainerTmp.get(j));
+//				}
+//			}
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Update_Training_Course", trainCourseTmp);
-			List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
-			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
-				trainerTmp.get(0).setTrainerStatus("Primary");
-				trainerTmp.get(0).setUserId(trainingCourse.trainerFirst_id.trim());
-				trainerTmp.get(0).setTrainingCourseId(trainingCourse.getId());
-				trainerRepo.save(trainerTmp.get(0));
-			}
-			else {
-				for(int j = 0;j<2;j++) {
-					if(j == 0) {
-						trainerTmp.get(j).setTrainerStatus("Primary");
-						trainerTmp.get(j).setUserId(trainingCourse.trainerFirst_id.trim());
-					}
-					else {
-						trainerTmp.get(j).setTrainerStatus("Backup");
-						trainerTmp.get(j).setUserId(trainingCourse.trainerSecond_id.trim());
-					}
-					trainerTmp.get(j).setTrainingCourseId(trainingCourse.getId());
-					trainerRepo.save(trainerTmp.get(j));
-				}
-			}
+//			responseJson.appendToData("Update_Trainer", trainerTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){

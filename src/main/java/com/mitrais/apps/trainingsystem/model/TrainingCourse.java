@@ -38,9 +38,6 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	
 	@Transient
 	public String trainerSecond_id;
-	
-	@Transient
-	public String trainer_id;
 	/**
 	 * 
 	 */
