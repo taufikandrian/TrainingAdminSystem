@@ -237,7 +237,7 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 		}
 	}
 	//post data for update feature
-	@PostMapping("/schedule/update/{trainingCourseId}")
+	@PostMapping("/schedule/update/{trainingCourseId}") 
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody TrainingCourse trainingCourse,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse trainCourseTmp = schRepo.findById(trainingCourseId);
