@@ -7,4 +7,5 @@ import com.mitrais.apps.trainingsystem.model.CourseClassroom;
 
 public interface ClassroomRepository extends JpaRepository<CourseClassroom, String>, JpaSpecificationExecutor<CourseClassroom> {
 	CourseClassroom findByCourseClassroomCode(String courseClassroomCode);
+	CourseClassroom findById(String id);
 }
