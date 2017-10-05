@@ -3,9 +3,13 @@ package com.mitrais.apps.trainingsystem.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+//import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +17,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,19 +37,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.CourseClassroom;
 import com.mitrais.apps.trainingsystem.model.CourseType;
+import com.mitrais.apps.trainingsystem.model.EligibleUser;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 import com.mitrais.apps.trainingsystem.model.User;
+import com.mitrais.apps.trainingsystem.model.UserCourse;
+import com.mitrais.apps.trainingsystem.model.UserCourseDetail;
 import com.mitrais.apps.trainingsystem.repository.ClassroomRepository;
 import com.mitrais.apps.trainingsystem.repository.CourseTypeRepository;
 import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
+import com.mitrais.apps.trainingsystem.repository.UserCourseDetailRepository;
+import com.mitrais.apps.trainingsystem.repository.UserCourseRepository;
+import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 import net.minidev.json.JSONObject;
 
 @RestController
 public class ScheduleController extends BaseController<TrainingCourse> {
 
+	@Autowired
+	private UserRepository userRepo;
 	
 	@Autowired
 	private ScheduleRepository schRepo;
@@ -57,6 +70,12 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 	
 	@Autowired
 	private CourseTypeRepository typeRepo;
+	
+	@Autowired
+	private UserCourseRepository userCourseRepo;
+	
+	@Autowired
+	private UserCourseDetailRepository userCourseDtlRepo;
 	
 	@PostMapping("/schedule/dt/all/{trainingId}")
 	public ResponseEntity<JSONObject> getTrainsCourse(@Valid @RequestBody DataTablesInput input,@PathVariable String trainingId) {
@@ -311,18 +330,76 @@ public class ScheduleController extends BaseController<TrainingCourse> {
 //	}
 	
 	@PostMapping("/schedule/EligibleStaffAdd/{trainingCourseId}")
-	public ResponseEntity<JSONObject> AddEligibleStaff(@PathVariable String trainingCourseId){
+	public ResponseEntity<JSONObject> AddEligibleStaff(@RequestBody JSONObject user,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		try{
+			//List<EligibleUser> listOfEligible = new ArrayList<EligibleUser>();
 			TrainingCourse trainCourseTmp = this.schRepo.findById(trainingCourseId);
-			if(trainCourseTmp.getTrainingType().trim() == "Periodically") {
-				LocalDate localDateStart = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseStartDate()));
-				LocalDate localDateEnd = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseEndDate()));
-//				Date startDateTmp = trainCourseTmp.getTrainingCourseStartDate();
-//				Date endDateTmp = trainCourseTmp.getTrainingCourseEndDate();
-				long daysBetween = ChronoUnit.DAYS.between(localDateStart, localDateEnd);
-				System.out.println(daysBetween);
+			Training trainTmp = trainCourseTmp.getTraining();
+			@SuppressWarnings("unchecked")
+			List<String> userID = (List<String>) user.get("userID");
+			for(int i = 0; i < userID.size();i++){
+				UserCourse userCourseTmp = new UserCourse();
+				userCourseTmp.setUserCourseStatus("Active");
+				userCourseTmp.setUserCourseDescription(trainCourseTmp.getTrainingCourseName());
+				userCourseTmp.setUserCourseAverageScore("0");
+				userCourseTmp.setUserCourseFinalScore("0");
+				userCourseTmp.setUserCourseFinalTest("0");
+				userCourseTmp.setUser(userRepo.findById(userID.get(i).toLowerCase()));
+				userCourseTmp.setTrainingCourse(trainCourseTmp);
+				userCourseRepo.save(userCourseTmp);
+				if(trainCourseTmp.getTrainingType().trim().equals("Fixed")) {
+					LocalDate localDateStart = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseStartDate()));
+					LocalDate localDateEnd = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseEndDate()));
+					//long daysBetween = ChronoUnit.DAYS.between(localDateStart, localDateEnd);
+					//System.out.println(daysBetween);
+					List<LocalDate> totalDates = new ArrayList<>();
+					while (!localDateStart.isAfter(localDateEnd)) {
+					    totalDates.add(localDateStart);
+						Date dateStart = Date.from(localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						UserCourseDetail userCourseDtlTmp = new UserCourseDetail();
+						userCourseDtlTmp.setUserCourseDetailStartDate(dateStart);
+						userCourseDtlTmp.setUserCourseDetailEndDate(dateStart);
+						userCourseDtlTmp.setUserCourseDetailStartTime(trainCourseTmp.getTrainingCourseStartTime());
+						userCourseDtlTmp.setUserCourseDetailEndTime(trainCourseTmp.getTrainingCourseEndTime());
+						userCourseDtlTmp.setUserCourseID(userCourseTmp);
+						userCourseDtlRepo.save(userCourseDtlTmp);
+					    localDateStart = localDateStart.plusDays(1);
+					}
+				}
+				else {
+					SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
+					LocalDate localDateStart = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainTmp.getTrainingStartDate()));
+					LocalDate localDateEnd = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainTmp.getTrainingEndDate()));
+					String day = simpleDateformat.format(trainCourseTmp.getTrainingCourseStartDate());
+
+					List<Date> listOfDate = new ArrayList<>();
+					
+					System.out.println();
+					System.out.println(day);
+					System.out.println(localDateStart);
+					
+					for (LocalDate date = localDateStart; date.isBefore(localDateEnd); date = date.plusDays(1)) {
+						Date dateStart = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						if(simpleDateformat.format(dateStart).trim().equals(day)) {
+					    	listOfDate.add(dateStart);
+						}
+					}
+					System.out.println(listOfDate.size());
+					for(int j = 0; j < listOfDate.size(); j++) {
+						UserCourseDetail userCourseDtlTmp = new UserCourseDetail();
+						userCourseDtlTmp.setUserCourseDetailStartDate(listOfDate.get(j));
+						userCourseDtlTmp.setUserCourseDetailEndDate(listOfDate.get(j));
+						userCourseDtlTmp.setUserCourseDetailStartTime(trainCourseTmp.getTrainingCourseStartTime());
+						userCourseDtlTmp.setUserCourseDetailEndTime(trainCourseTmp.getTrainingCourseEndTime());
+						userCourseDtlTmp.setUserCourseID(userCourseTmp);
+						userCourseDtlRepo.save(userCourseDtlTmp);
+					}
+				}
 			}
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex) {
