@@ -21,12 +21,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "training_course_tb")
-public class TrainingCourse extends Auditable<String> implements Serializable {
-
+public class TrainingCourseDT extends Auditable<String> implements Serializable {
 	@Transient
 	public String classroom_id;
 	
@@ -102,7 +100,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	}
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingCourseEndDate() {
-		return trainingCourseEndDate; 
+		return trainingCourseEndDate;
 	}
 
 	public void setTrainingCourseEndDate(Date trainingCourseEndDate) {
@@ -141,11 +139,11 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.status = trainingCourseStatus;
 	}
 	
-	public TrainingCourse(){
+	public TrainingCourseDT(){
     	
     }
 	
-	public TrainingCourse(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus,String trainingType,Time trainingCourseStartTime,Time trainingCourseEndTime){
+	public TrainingCourseDT(String trainingCourseName,String trainingCourseDescription,Date trainingCourseStartDate,Date trainingCourseEndDate,Integer trainingCourseCapacity,String trainingCourseStatus,String trainingType,Time trainingCourseStartTime,Time trainingCourseEndTime){
     	this.trainingCourseName = trainingCourseName;
     	this.trainingCourseDescription = trainingCourseDescription;
     	this.trainingCourseStartDate = trainingCourseStartDate;
@@ -194,6 +192,19 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.training = training;
 	}
 	
-	
-	
+	@ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="trainer_tb",
+            joinColumns=
+            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
+      inverseJoinColumns=
+            @JoinColumn(name="user_id", referencedColumnName="user_id")
+    )
+	private Set<User> trainingCourseTrainer;
+    public void setTrainingCourseTrainer(Set<User> trainingCourseTrainer) {
+		this.trainingCourseTrainer = trainingCourseTrainer;
+	}
+
+	public Set<User> getTrainingCourseTrainer() {
+		return this.trainingCourseTrainer;
+	}
 }

@@ -40,11 +40,13 @@ import com.mitrais.apps.trainingsystem.model.CourseType;
 import com.mitrais.apps.trainingsystem.model.EligibleUser;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.TrainingCourse;
+import com.mitrais.apps.trainingsystem.model.TrainingCourseDT;
 import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.model.UserCourse;
 import com.mitrais.apps.trainingsystem.model.UserCourseDetail;
 import com.mitrais.apps.trainingsystem.repository.ClassroomRepository;
 import com.mitrais.apps.trainingsystem.repository.CourseTypeRepository;
+import com.mitrais.apps.trainingsystem.repository.ScheduleDTRepository;
 import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserCourseDetailRepository;
@@ -54,13 +56,16 @@ import com.mitrais.apps.trainingsystem.repository.UserRepository;
 import net.minidev.json.JSONObject;
 
 @RestController
-public class ScheduleController extends BaseController<TrainingCourse> {
+public class ScheduleController extends BaseController<TrainingCourseDT> {
 
 	@Autowired
 	private UserRepository userRepo;
 	
 	@Autowired
 	private ScheduleRepository schRepo;
+	
+	@Autowired
+	private ScheduleDTRepository schDTRepo;
 	
 	@Autowired
 	private ClassroomRepository clsRoomRepo;
@@ -105,12 +110,17 @@ public class ScheduleController extends BaseController<TrainingCourse> {
         c.setData("join.training.id");
         c.setSearch(s);
         columns.add(c);
+        
+//        s.setValue(trainingId);
+//        c.setData("join.trainingCourseTrainer.id");
+//        c.setSearch(s);
+//        columns.add(c);
        
         Sort sort = new Sort(orders);
         PageRequest page = new PageRequest(input.getStart(),input.getStart()+input.getLength(), sort);
-        Page<TrainingCourse> data = schRepo.findAll(DataTable(columns), page);
+        Page<TrainingCourseDT> data = schDTRepo.findAll(DataTable(columns), page);
         response.put("draw", input.getDraw());
-        response.put("recordsTotal", schRepo.findAll(notDeleted()).size());
+        response.put("recordsTotal", schDTRepo.findAll(notDeleted()).size());
         response.put("recordsFiltered", data.getTotalElements());
         response.put("data", data.getContent());
         return ResponseEntity.ok(response);
