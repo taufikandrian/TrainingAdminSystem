@@ -38,20 +38,25 @@ import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.CourseClassroom;
 import com.mitrais.apps.trainingsystem.model.CourseType;
 import com.mitrais.apps.trainingsystem.model.EligibleUser;
+import com.mitrais.apps.trainingsystem.model.Role;
+import com.mitrais.apps.trainingsystem.model.Trainer;
 import com.mitrais.apps.trainingsystem.model.Training;
 import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 import com.mitrais.apps.trainingsystem.model.TrainingCourseDT;
 import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.model.UserCourse;
 import com.mitrais.apps.trainingsystem.model.UserCourseDetail;
+import com.mitrais.apps.trainingsystem.model.UserRole;
 import com.mitrais.apps.trainingsystem.repository.ClassroomRepository;
 import com.mitrais.apps.trainingsystem.repository.CourseTypeRepository;
 import com.mitrais.apps.trainingsystem.repository.ScheduleDTRepository;
 import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
+import com.mitrais.apps.trainingsystem.repository.TrainerRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
 import com.mitrais.apps.trainingsystem.repository.UserCourseDetailRepository;
 import com.mitrais.apps.trainingsystem.repository.UserCourseRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
+import com.mitrais.apps.trainingsystem.repository.UserRoleRepository;
 
 import net.minidev.json.JSONObject;
 
@@ -81,6 +86,9 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	
 	@Autowired
 	private UserCourseDetailRepository userCourseDtlRepo;
+	
+	@Autowired
+	private TrainerRepository trainerRepo;
 	
 	@PostMapping("/schedule/dt/all/{trainingId}")
 	public ResponseEntity<JSONObject> getTrainsCourse(@Valid @RequestBody DataTablesInput input,@PathVariable String trainingId) {
@@ -167,6 +175,39 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}
+	@GetMapping("/trainer/all")
+    public ResponseEntity<JSONObject> getAllTrainer() {
+		JsonFormatter responseJson = new JsonFormatter();
+		try{
+			List<User> userTrainer = new ArrayList<>();
+			List<User> userRoleList = userRepo.findAll();
+			System.out.println(userRoleList.size());
+			for(int i = 0; i < userRoleList.size(); i++) {
+				//@SuppressWarnings("unchecked")
+				List<Role> roleTmp = new ArrayList<>();// (List<Role>) userRoleList.get(i).getRoleList();
+				roleTmp.addAll(userRoleList.get(i).getRoleList());
+				System.out.println(roleTmp.size());
+				for(int j = 0; j < roleTmp.size(); j++) {
+					if(roleTmp.get(j).getRoleName().trim().equals("Trainer")) {
+						userTrainer.add(userRoleList.get(i));
+					}
+				}
+				
+			}
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("Get_Trainer", userTrainer);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Trainer Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
 	
 	@PostMapping("/schedule/{trainingId}/create")
 	public ResponseEntity<JSONObject> add(@RequestBody TrainingCourse trainingCourse,@PathVariable String trainingId){
@@ -183,8 +224,30 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			trainingCourse.setClassroom(classroomTmp);
 			trainingCourse.setCourseType(courseTypeTmp);
 			trainingCourse.setTraining(trainTmp);
-			schRepo.save(trainingCourse);
 			responseJson.appendToData("TrainingSchedule_Created", trainingCourse);
+			schRepo.save(trainingCourse);
+			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
+				Trainer trainerTmp = new Trainer();
+				trainerTmp.setTrainerStatus("Primary");
+				trainerTmp.setUserId(trainingCourse.trainerFirst_id.trim());
+				trainerTmp.setTrainingCourseId(trainingCourse.getId());
+				trainerRepo.save(trainerTmp);
+			}
+			else {
+				for(int i = 0;i<2;i++) {
+					Trainer trainerTmp = new Trainer();
+					if(i == 0) {
+						trainerTmp.setTrainerStatus("Primary");
+						trainerTmp.setUserId(trainingCourse.trainerFirst_id.trim());
+					}
+					else {
+						trainerTmp.setTrainerStatus("Backup");
+						trainerTmp.setUserId(trainingCourse.trainerSecond_id.trim());
+					}
+					trainerTmp.setTrainingCourseId(trainingCourse.getId());
+					trainerRepo.save(trainerTmp);
+				}
+			}
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -235,11 +298,13 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> getDetailTraining(@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse trainCourseTmp = schRepo.findById(trainingCourseId);
+		List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Get_Training_Course", trainCourseTmp);
+			responseJson.appendToData("Trainer", trainerTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -255,10 +320,10 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> updatePostData(@RequestBody TrainingCourse trainingCourse,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse trainCourseTmp = schRepo.findById(trainingCourseId);
-		CourseType courseTypeTmp = typeRepo.findById(trainingCourse.courseType_id);
-		CourseClassroom classroomTmp = clsRoomRepo.findByCourseClassroomCode(trainingCourse.classroom_id);
+//		CourseType courseTypeTmp = typeRepo.findById(trainingCourse.courseType_id);
+//		CourseClassroom classroomTmp = clsRoomRepo.findByCourseClassroomCode(trainingCourse.classroom_id);
 		try{
-			trainCourseTmp.setTrainingCourseName(courseTypeTmp.getCourseTypeName());
+//			trainCourseTmp.setTrainingCourseName(courseTypeTmp.getCourseTypeName());
 			trainCourseTmp.setTrainingCourseDescription(trainingCourse.getTrainingCourseDescription());
 			trainCourseTmp.setTrainingCourseStartDate(trainingCourse.getTrainingCourseStartDate());
 			trainCourseTmp.setTrainingCourseStartTime(trainingCourse.getTrainingCourseStartTime());
@@ -266,14 +331,36 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			trainCourseTmp.setTrainingCourseEndDate(trainingCourse.getTrainingCourseEndDate());
 			trainCourseTmp.setTrainingCourseCapacity(trainingCourse.getTrainingCourseCapacity());
 			trainCourseTmp.setStatus(trainingCourse.getStatus());
-			trainCourseTmp.setTrainingType(trainingCourse.getTrainingType());
-			trainCourseTmp.setClassroom(classroomTmp);
-			trainCourseTmp.setCourseType(courseTypeTmp);
+//			trainCourseTmp.setTrainingType(trainingCourse.getTrainingType());
+//			trainCourseTmp.setClassroom(classroomTmp);
+//			trainCourseTmp.setCourseType(courseTypeTmp);
 			schRepo.save(trainCourseTmp);
+//			List<Trainer> trainerTmp = trainerRepo.findByTrainingCourseId(trainingCourseId);
+//			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
+//				trainerTmp.get(0).setTrainerStatus("Primary");
+//				trainerTmp.get(0).setUserId(trainingCourse.trainerFirst_id.trim());
+//				trainerTmp.get(0).setTrainingCourseId(trainingCourseId);
+//				trainerRepo.save(trainerTmp.get(0));
+//			}
+//			else {
+//				for(int j = 0;j<2;j++) {
+//					if(j == 0) {
+//						trainerTmp.get(j).setTrainerStatus("Primary");
+//						trainerTmp.get(j).setUserId(trainingCourse.trainerFirst_id.trim());
+//					}
+//					else {
+//						trainerTmp.get(j).setTrainerStatus("Backup");
+//						trainerTmp.get(j).setUserId(trainingCourse.trainerSecond_id.trim());
+//					}
+//					trainerTmp.get(j).setTrainingCourseId(trainingCourseId);
+//					trainerRepo.save(trainerTmp.get(j));
+//				}
+//			}
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Update_Training_Course", trainCourseTmp);
+//			responseJson.appendToData("Update_Trainer", trainerTmp);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
