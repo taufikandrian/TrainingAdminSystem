@@ -16,8 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_role_tb")
 public class UserRole extends Auditable<String> implements Serializable{
 	
-    private User user;
-    private Role role;
 	/**
 	 * 
 	 */
@@ -54,11 +52,22 @@ public class UserRole extends Auditable<String> implements Serializable{
 	
 	@ManyToOne(optional=false)
     @JoinColumn(name="user_id",referencedColumnName="user_id")
+    private User user;
 	public User getUser() {
 		return user;
 	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@ManyToOne(optional=false)
     @JoinColumn(name="role_id",referencedColumnName="role_id")
+    private Role role;
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public Role getRole() {
 		return role;
 	}
