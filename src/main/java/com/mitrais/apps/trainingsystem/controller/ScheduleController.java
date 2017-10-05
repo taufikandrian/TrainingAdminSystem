@@ -434,6 +434,8 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 //		}
 //	}
 	
+	
+	
 	@PostMapping("/schedule/EligibleStaffAdd/{trainingCourseId}")
 	public ResponseEntity<JSONObject> AddEligibleStaff(@RequestBody JSONObject user,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
@@ -512,6 +514,30 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setStatus("failed");
 			responseJson.setCode("200");
 			responseJson.setMessage("Get Course Detail Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	@GetMapping("/schedule/inviteEligible/{trainingCourseId}/{userId}")
+	public ResponseEntity<JSONObject> InviteEligibleData(@PathVariable String trainingCourseId,@PathVariable String userId){
+		JsonFormatter responseJson = new JsonFormatter();
+		try{
+			TrainingCourse trainingCourseTmp = this.schRepo.findById(trainingCourseId);
+			User userListTmp = this.userRepo.findById(userId);
+			UserCourse userCourseTmp = this.userCourseRepo.findByTrainingCourseAndUser(trainingCourseTmp, userListTmp);
+			userCourseTmp.setUserCourseStatus("Invited");
+			userCourseRepo.save(userCourseTmp);
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("InvitedCourse", userCourseTmp);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Deleted Data Cannot be Completed");
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}

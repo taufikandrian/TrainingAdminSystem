@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,6 +17,11 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_course_tb")
 public class UserCourse extends Auditable<String> implements Serializable {
 
+	@Transient
+	public String user_id;
+	
+	@Transient
+	public String trainingCourse_id;
 	/**
 	 * 
 	 */
