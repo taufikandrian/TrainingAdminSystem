@@ -110,7 +110,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
         Column c1 = new Column();
         
         //WHERE status
-        s1.setValue("Inactive");
+        s1.setValue("Deleted");
         c1.setData("status");
         c1.setSearch(s1);
         columns.add(c1);
@@ -271,7 +271,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			for(int i = 0; i < trainingCourseID.size();i++){
 				TrainingCourse currenttrainingCourse = this.schRepo.findById(trainingCourseID.get(i).toLowerCase());
 				if(currenttrainingCourse != null) {
-					currenttrainingCourse.setStatus("Inactive");
+					currenttrainingCourse.setStatus("Deleted");
 					schRepo.save(currenttrainingCourse);
 					trainTmp.add(currenttrainingCourse);
 				}
@@ -330,6 +330,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			trainCourseTmp.setTrainingCourseEndTime(trainingCourse.getTrainingCourseEndTime());
 			trainCourseTmp.setTrainingCourseEndDate(trainingCourse.getTrainingCourseEndDate());
 			trainCourseTmp.setTrainingCourseCapacity(trainingCourse.getTrainingCourseCapacity());
+			System.out.println(trainingCourse.getStatus());
 			trainCourseTmp.setStatus(trainingCourse.getStatus());
 //			trainCourseTmp.setTrainingType(trainingCourse.getTrainingType());
 //			trainCourseTmp.setClassroom(classroomTmp);
@@ -378,12 +379,14 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> getDetailData(@PathVariable String id){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse courseTmp = schRepo.findById(id);
+		Set<User> participants = userCourseRepo.findByTrainingCourse(courseTmp);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
 			responseJson.appendToData("Course_Detail", courseTmp);
 			responseJson.appendToData("Course_Training", courseTmp.getTraining());
+			responseJson.appendToData("Course_Participants", participants);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
@@ -442,7 +445,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			List<String> userID = (List<String>) user.get("userID");
 			for(int i = 0; i < userID.size();i++){
 				UserCourse userCourseTmp = new UserCourse();
-				userCourseTmp.setUserCourseStatus("Active");
+				userCourseTmp.setUserCourseStatus("Invited");
 				userCourseTmp.setUserCourseDescription(trainCourseTmp.getTrainingCourseName());
 				userCourseTmp.setUserCourseAverageScore("0");
 				userCourseTmp.setUserCourseFinalScore("0");

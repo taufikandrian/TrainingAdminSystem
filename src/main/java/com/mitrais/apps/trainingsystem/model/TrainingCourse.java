@@ -200,6 +200,4 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 		this.training = training;
 	}
 	
-	
-	
 }
