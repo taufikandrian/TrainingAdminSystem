@@ -10,6 +10,6 @@ import com.mitrais.apps.trainingsystem.model.User;
 import com.mitrais.apps.trainingsystem.model.UserCourse;
 
 public interface UserCourseRepository extends JpaRepository<UserCourse, String>, JpaSpecificationExecutor<UserCourse> {
-	Set<User> findByTrainingCourse(TrainingCourse course);
+	Set<UserCourse> findByTrainingCourse(TrainingCourse course);
 }
  

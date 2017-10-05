@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mitrais.apps.trainingsystem.model.UserCourse;
 import com.mitrais.apps.trainingsystem.repository.UserCourseRepository;
+import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 import net.minidev.json.JSONObject;
 
@@ -29,6 +30,9 @@ public class EnrolementController extends BaseController<UserCourse> {
 	
 	@Autowired
 	UserCourseRepository userCourseRepo;
+	
+	@Autowired
+	UserRepository userRepo;
 	
 	@PostMapping(value="/schedule/{scheduleID}/participant/all")
     public ResponseEntity<JSONObject> getParticipant(@Valid @RequestBody DataTablesInput input, @PathVariable String scheduleID) {
@@ -70,5 +74,4 @@ public class EnrolementController extends BaseController<UserCourse> {
        response.put("data", data.getContent());
        return ResponseEntity.ok(response);
     }
-
 }

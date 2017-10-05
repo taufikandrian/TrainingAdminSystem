@@ -178,6 +178,47 @@ public class UserController extends BaseController<User> {
            return ResponseEntity.ok(response);
     }
 	
+	@PostMapping(value="/schedule/{scheduleID}/participant/notin")
+    public ResponseEntity<JSONObject> getParticipantNot(@Valid @RequestBody DataTablesInput input, @PathVariable String scheduleID) {
+       JSONObject response = new JSONObject();
+       List<Column> columns = input.getColumns();
+       
+       //SORT
+       List<Sort.Order> orders = new ArrayList<>();
+       for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+              String c = columns.get(item.getColumn()).getData();
+              if(item.getDir().equals("asc"))
+                    orders.add(new Sort.Order(Direction.ASC, c));
+              else
+                    orders.add(new Sort.Order(Direction.DESC, c));
+       }
+       
+       Search s = new Search();
+       Column c = new Column();
+       
+       s.setValue("Deleted");
+       c.setData("status");c.setSearch(s);
+       columns.add(c);
+       
+       s.setValue(scheduleID);
+       c.setData("join.trainingCourse.id");c.setSearch(s);
+       columns.add(c);
+       
+//       s.setValue(scheduleID);
+//       c.setData("join.eligibleTrainings.id");c.setSearch(s);
+//       columns.add(c);
+      
+       Sort sort = new Sort(orders);
+       Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+       PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
+       Page<User> data = userRepo.findAll(DataTable(columns), page);
+       response.put("draw", input.getDraw());
+       response.put("recordsTotal", userRepo.findAll(DataTable(columns)).size());
+       response.put("recordsFiltered", data.getTotalElements());
+       response.put("data", data.getContent());
+       return ResponseEntity.ok(response);
+    }
+	
 	//Dropdown of Role User
 	@PostMapping("/users/getRole")
     public ResponseEntity<JSONObject> getAllRole(@RequestBody JSONObject data) {

@@ -379,7 +379,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> getDetailData(@PathVariable String id){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse courseTmp = schRepo.findById(id);
-		Set<User> participants = userCourseRepo.findByTrainingCourse(courseTmp);
+		Set<UserCourse> participants = userCourseRepo.findByTrainingCourse(courseTmp);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
