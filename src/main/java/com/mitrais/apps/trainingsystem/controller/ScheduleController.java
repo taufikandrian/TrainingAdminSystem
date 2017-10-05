@@ -222,8 +222,8 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			trainingCourse.setClassroom(classroomTmp);
 			trainingCourse.setCourseType(courseTypeTmp);
 			trainingCourse.setTraining(trainTmp);
-			schRepo.save(trainingCourse);
 			responseJson.appendToData("TrainingSchedule_Created", trainingCourse);
+			schRepo.save(trainingCourse);
 			if(trainingCourse.trainerSecond_id.trim().isEmpty()) {
 				Trainer trainerTmp = new Trainer();
 				trainerTmp.setTrainerStatus("Primary");
@@ -246,8 +246,6 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 					trainerRepo.save(trainerTmp);
 				}
 			}
-			schRepo.save(trainingCourse);
-
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex){
