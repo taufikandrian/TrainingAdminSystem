@@ -1,6 +1,7 @@
 package com.mitrais.apps.trainingsystem.model;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,14 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.joda.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "user_course_detail_tb")
 public class UserCourseDetail implements Serializable {
-
-	private UserCourse userCourseID;
-	private UserCourseAttendance userAttendanceID;
 
 	/**
 	 * 
@@ -38,11 +37,12 @@ public class UserCourseDetail implements Serializable {
     private Date userCourseDetailEndDate;
 	
 	@Column(name = "user_course_detail_start_time", nullable = false)
-    private LocalTime userCourseDetailStartTime;
+    private Time userCourseDetailStartTime;
     
 	@Column(name = "user_course_detail_end_time")
-    private LocalTime userCourseDetailEndTime;
+    private Time userCourseDetailEndTime;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getUserCourseDetailStartDate() {
 		return userCourseDetailStartDate;
 	}
@@ -51,6 +51,7 @@ public class UserCourseDetail implements Serializable {
 		this.userCourseDetailStartDate = userCourseDetailStartDate;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getUserCourseDetailEndDate() {
 		return userCourseDetailEndDate;
 	}
@@ -59,19 +60,21 @@ public class UserCourseDetail implements Serializable {
 		this.userCourseDetailEndDate = userCourseDetailEndDate;
 	}
 
-	public LocalTime getUserCourseDetailStartTime() {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	public Time getUserCourseDetailStartTime() {
 		return userCourseDetailStartTime;
 	}
 
-	public void setUserCourseDetailStartTime(LocalTime userCourseDetailStartTime) {
+	public void setUserCourseDetailStartTime(Time userCourseDetailStartTime) {
 		this.userCourseDetailStartTime = userCourseDetailStartTime;
 	}
 
-	public LocalTime getUserCourseDetailEndTime() {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	public Time getUserCourseDetailEndTime() {
 		return userCourseDetailEndTime;
 	}
 
-	public void setUserCourseDetailEndTime(LocalTime userCourseDetailEndTime) {
+	public void setUserCourseDetailEndTime(Time userCourseDetailEndTime) {
 		this.userCourseDetailEndTime = userCourseDetailEndTime;
 	}
 
@@ -79,7 +82,7 @@ public class UserCourseDetail implements Serializable {
 		
 	}
 	
-	public UserCourseDetail(Date userCourseDetailStartDate,Date userCourseDetailEndDate,LocalTime userCourseDetailStartTime,LocalTime userCourseDetailEndTime){
+	public UserCourseDetail(Date userCourseDetailStartDate,Date userCourseDetailEndDate,Time userCourseDetailStartTime,Time userCourseDetailEndTime){
 		this.userCourseDetailStartDate = userCourseDetailStartDate;
 		this.userCourseDetailEndDate = userCourseDetailEndDate;
 		this.userCourseDetailStartTime = userCourseDetailStartTime;
@@ -92,14 +95,24 @@ public class UserCourseDetail implements Serializable {
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="user_course_id",referencedColumnName="user_course_id")
+	private UserCourse userCourseID;
+	public void setUserCourseID(UserCourse userCourseID) {
+		this.userCourseID = userCourseID;
+	}
+
 	public UserCourse getUserCourseID() {
 		return userCourseID;
 	}
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="user_course_attendance_id",referencedColumnName="user_course_attendance_id")
+	private UserCourseAttendance userAttendanceID;
 	public UserCourseAttendance getUserAttendanceID() {
-		return userAttendanceID;
+		return userAttendanceID; 
+	}
+	
+	public void setUserAttendanceID(UserCourseAttendance userAttendanceID) {
+		this.userAttendanceID = userAttendanceID;
 	}
 
 }

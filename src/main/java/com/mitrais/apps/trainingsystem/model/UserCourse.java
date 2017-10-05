@@ -16,7 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_course_tb")
 public class UserCourse extends Auditable<String> implements Serializable {
 
-    private User user;
 	/**
 	 * 
 	 */
@@ -100,7 +99,25 @@ public class UserCourse extends Auditable<String> implements Serializable {
 
 	@ManyToOne(optional=false)
     @JoinColumn(name="user_id",referencedColumnName="user_id")
-    public User getUser() {
+    private User user;
+    public void setUser(User user) {
+		this.user = user;
+	}
+
+	public User getUser() {
 		return user;
 	}
+	
+	@ManyToOne(optional=false)
+    @JoinColumn(name="training_course_id",referencedColumnName="training_course_id")
+	private TrainingCourse trainingCourse;
+
+	public TrainingCourse getTrainingCourse() {
+		return trainingCourse;
+	} 
+
+	public void setTrainingCourse(TrainingCourse trainingCourse) {
+		this.trainingCourse = trainingCourse;
+	}
+	
 }

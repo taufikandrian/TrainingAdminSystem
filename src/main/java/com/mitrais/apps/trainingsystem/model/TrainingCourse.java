@@ -102,7 +102,7 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	}
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Date getTrainingCourseEndDate() {
-		return trainingCourseEndDate;
+		return trainingCourseEndDate; 
 	}
 
 	public void setTrainingCourseEndDate(Date trainingCourseEndDate) {
