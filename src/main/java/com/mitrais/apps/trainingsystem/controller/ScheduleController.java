@@ -379,7 +379,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 	public ResponseEntity<JSONObject> getDetailData(@PathVariable String id){
 		JsonFormatter responseJson = new JsonFormatter();
 		TrainingCourse courseTmp = schRepo.findById(id);
-		Set<User> participants = userCourseRepo.findByTrainingCourse(courseTmp);
+		Set<UserCourse> participants = userCourseRepo.findByTrainingCourse(courseTmp);
 		try{
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
@@ -434,7 +434,36 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 //		}
 //	}
 	
-	
+	@PostMapping("/schedule/EligibleStaffDelete/{trainingCourseId}")
+	public ResponseEntity<JSONObject> DeleteEligibleStaff(@RequestBody JSONObject userID,@PathVariable String trainingCourseId){
+		JsonFormatter responseJson = new JsonFormatter();
+		try {
+			TrainingCourse trainCourseTmp = this.schRepo.findById(trainingCourseId);
+			@SuppressWarnings("unchecked")
+			List<String> UserID = (List<String>) userID.get("UserID");
+			for(int i = 0; i < UserID.size();i++) {
+				User userDeleteTmp = this.userRepo.findById(UserID.get(i));
+				UserCourse userCourseTmp = this.userCourseRepo.findByTrainingCourseAndUser(trainCourseTmp, userDeleteTmp);
+				userCourseTmp.setUserCourseStatus("Deleted");
+				userCourseRepo.save(userCourseTmp);
+				List<UserCourseDetail> userCourseDetailTmp = this.userCourseDtlRepo.findByUserCourseID(userCourseTmp);
+				for(int j = 0; j < userCourseDetailTmp.size(); j++) {
+					userCourseDtlRepo.delete(userCourseDetailTmp.get(j));
+				}
+			}
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex) {
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Course Detail Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
 	
 	@PostMapping("/schedule/EligibleStaffAdd/{trainingCourseId}")
 	public ResponseEntity<JSONObject> AddEligibleStaff(@RequestBody JSONObject user,@PathVariable String trainingCourseId){
@@ -525,7 +554,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			TrainingCourse trainingCourseTmp = this.schRepo.findById(trainingCourseId);
 			User userListTmp = this.userRepo.findById(userId);
 			UserCourse userCourseTmp = this.userCourseRepo.findByTrainingCourseAndUser(trainingCourseTmp, userListTmp);
-			userCourseTmp.setUserCourseStatus("Invited");
+			userCourseTmp.setUserCourseStatus("Enrolled");
 			userCourseRepo.save(userCourseTmp);
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
