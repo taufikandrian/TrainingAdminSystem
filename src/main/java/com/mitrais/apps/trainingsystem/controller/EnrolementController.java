@@ -51,10 +51,12 @@ public class EnrolementController extends BaseController<UserCourse> {
        
        Search s = new Search();
        Column c = new Column();
+       Search s1 = new Search();
+       Column c1 = new Column();
        
-       s.setValue("Deleted");
-       c.setData("status");c.setSearch(s);
-       columns.add(c);
+       s1.setValue("Deleted");
+       c1.setData("status");c1.setSearch(s1);
+       columns.add(c1);
        
        s.setValue(scheduleID);
        c.setData("join.trainingCourse.id");c.setSearch(s);

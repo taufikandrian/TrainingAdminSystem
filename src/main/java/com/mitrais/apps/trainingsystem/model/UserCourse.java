@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,6 +17,11 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_course_tb")
 public class UserCourse extends Auditable<String> implements Serializable {
 
+	@Transient
+	public String user_id;
+	
+	@Transient
+	public String trainingCourse_id;
 	/**
 	 * 
 	 */
@@ -27,7 +33,7 @@ public class UserCourse extends Auditable<String> implements Serializable {
     private String id;
 	
 	@Column(name = "user_course_status", nullable = false)
-    private String userCourseStatus;
+    private String status;
     
 	@Column(name = "user_course_description")
     private String userCourseDescription;
@@ -41,12 +47,12 @@ public class UserCourse extends Auditable<String> implements Serializable {
     @Column(name = "user_course_final_test")
     private String userCourseFinalTest;
     
-    public String getUserCourseStatus() {
-		return userCourseStatus;
+    public String getStatus() {
+		return status;
 	}
 
-	public void setUserCourseStatus(String userCourseStatus) {
-		this.userCourseStatus = userCourseStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getUserCourseDescription() {
@@ -86,7 +92,7 @@ public class UserCourse extends Auditable<String> implements Serializable {
     }
     
     public UserCourse(String userCourseStatus,String userCourseDescription,String userCourseAverageScore,String userCourseFinalScore,String userCourseFinalTest){
-    	this.userCourseStatus = userCourseStatus;
+    	this.status = userCourseStatus;
     	this.userCourseDescription = userCourseDescription;
     	this.userCourseAverageScore = userCourseAverageScore;
     	this.userCourseFinalScore = userCourseFinalScore;

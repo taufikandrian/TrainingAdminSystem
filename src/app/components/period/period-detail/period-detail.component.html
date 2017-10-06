@@ -56,4 +56,5 @@
     <app-period-eligible (onUpdatePeriod)="onUpdatePeriod($event)" [currentPeriod]="currentPeriod" *ngIf="isActiveRoute('/periods/detail/'+currentPeriod?.id+'/eligible')"></app-period-eligible>
     <app-period-eligible-notin (onUpdatePeriod)="onUpdatePeriod($event)" [currentPeriod]="currentPeriod" *ngIf="isActiveRoute('/periods/detail/'+currentPeriod?.id+'/eligibleadd')"></app-period-eligible-notin>
     <app-period-courses (onUpdatePeriod)="onUpdatePeriod($event)" [currentPeriod]="currentPeriod" *ngIf="isActiveRoute('/periods/detail/'+currentPeriod?.id+'/courses')"></app-period-courses>
-  </div>
+    <app-period-courses-add (onUpdatePeriod)="onUpdatePeriod($event)" [currentPeriod]="currentPeriod" *ngIf="isActiveRoute('/periods/detail/'+currentPeriod?.id+'/courses/create')"></app-period-courses-add>
+</div>

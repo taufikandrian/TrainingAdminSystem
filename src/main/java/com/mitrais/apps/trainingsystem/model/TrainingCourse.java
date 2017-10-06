@@ -199,5 +199,5 @@ public class TrainingCourse extends Auditable<String> implements Serializable {
 	public void setTraining(Training training) {
 		this.training = training;
 	}
-	
+		
 }

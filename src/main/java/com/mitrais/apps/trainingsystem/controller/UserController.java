@@ -21,12 +21,17 @@ import org.springframework.web.bind.annotation.*;
 import com.mitrais.apps.trainingsystem.classes.JsonFormatter;
 import com.mitrais.apps.trainingsystem.model.JobFamily;
 import com.mitrais.apps.trainingsystem.model.Role;
+import com.mitrais.apps.trainingsystem.model.Training;
+import com.mitrais.apps.trainingsystem.model.TrainingCourse;
 import com.mitrais.apps.trainingsystem.model.User;
+import com.mitrais.apps.trainingsystem.model.UserCourse;
 import com.mitrais.apps.trainingsystem.repository.DivisionRepository;
 import com.mitrais.apps.trainingsystem.repository.GradeRepository;
 import com.mitrais.apps.trainingsystem.repository.JobFamilyRepository;
 import com.mitrais.apps.trainingsystem.repository.RoleRepository;
+import com.mitrais.apps.trainingsystem.repository.ScheduleRepository;
 import com.mitrais.apps.trainingsystem.repository.TrainingRepository;
+import com.mitrais.apps.trainingsystem.repository.UserCourseRepository;
 import com.mitrais.apps.trainingsystem.repository.UserRepository;
 
 import net.minidev.json.JSONObject;
@@ -50,7 +55,13 @@ public class UserController extends BaseController<User> {
 	private TrainingRepository trainRepo;
 	
 	@Autowired
+	private ScheduleRepository schRepo;
+	
+	@Autowired
 	private JobFamilyRepository jobfamRepo;
+	
+	@Autowired
+	private UserCourseRepository userCourseRepo;
 	
 	@GetMapping(value="/tes/tes")
 	public User getusertes() {
@@ -166,7 +177,7 @@ public class UserController extends BaseController<User> {
 	       for (User itemUser : eligibleUsers) {
 	    	    inData.add(itemUser.getId());
 	       }
-	       System.out.println(inData);
+	       
            Sort sort = new Sort(orders);
            Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
            PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
@@ -180,43 +191,47 @@ public class UserController extends BaseController<User> {
 	
 	@PostMapping(value="/schedule/{scheduleID}/participant/notin")
     public ResponseEntity<JSONObject> getParticipantNot(@Valid @RequestBody DataTablesInput input, @PathVariable String scheduleID) {
-       JSONObject response = new JSONObject();
-       List<Column> columns = input.getColumns();
+		JSONObject response = new JSONObject();
+        List<Column> columns = input.getColumns();
+        TrainingCourse trainCourse = schRepo.findById(scheduleID);
+        Training trainTmp = trainCourse.getTraining();
+        //SORT
+        List<Sort.Order> orders = new ArrayList<>();
+        for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
+               String c = columns.get(item.getColumn()).getData();
+               if(item.getDir().equals("asc"))
+                     orders.add(new Sort.Order(Direction.ASC, c));
+               else
+                     orders.add(new Sort.Order(Direction.DESC, c));
+        }
+        
+        Search s = new Search();
+        Column c = new Column();
+        
+        s.setValue("Deleted");
+        c.setData("status");c.setSearch(s);
+        columns.add(c);
+        
+	       s.setValue(trainTmp.getId());
+	       c.setData("join.eligibleTrainings.id");c.setSearch(s);
+	       columns.add(c);
+	       
+	       List<String> inData= new ArrayList<>();
+	       Set<UserCourse> participant = new HashSet<>();
+	       participant = userCourseRepo.findByTrainingCourse(trainCourse);
+	       for (UserCourse itemUserCourse : participant) {
+	    	    inData.add(itemUserCourse.getUser().getId());
+	       }
        
-       //SORT
-       List<Sort.Order> orders = new ArrayList<>();
-       for (org.springframework.data.jpa.datatables.mapping.Order item : input.getOrder()) {
-              String c = columns.get(item.getColumn()).getData();
-              if(item.getDir().equals("asc"))
-                    orders.add(new Sort.Order(Direction.ASC, c));
-              else
-                    orders.add(new Sort.Order(Direction.DESC, c));
-       }
-       
-       Search s = new Search();
-       Column c = new Column();
-       
-       s.setValue("Deleted");
-       c.setData("status");c.setSearch(s);
-       columns.add(c);
-       
-       s.setValue(scheduleID);
-       c.setData("join.trainingCourse.id");c.setSearch(s);
-       columns.add(c);
-       
-//       s.setValue(scheduleID);
-//       c.setData("join.eligibleTrainings.id");c.setSearch(s);
-//       columns.add(c);
-      
-       Sort sort = new Sort(orders);
-       Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
-       PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
-       Page<User> data = userRepo.findAll(DataTable(columns), page);
-       response.put("draw", input.getDraw());
-       response.put("recordsTotal", userRepo.findAll(DataTable(columns)).size());
-       response.put("recordsFiltered", data.getTotalElements());
-       response.put("data", data.getContent());
-       return ResponseEntity.ok(response);
+        Sort sort = new Sort(orders);
+        Integer pageNumber = (int) Math.ceil(input.getStart() / input.getLength());
+        PageRequest page = new PageRequest(pageNumber,input.getLength(), sort);
+        Page<User> data = userRepo.findAll(DataTableNotIn(columns, inData), page);
+        response.put("draw", input.getDraw());
+        response.put("recordsTotal", userRepo.findAll(DataTableNotIn(columns, inData)).size());
+        response.put("recordsFiltered", data.getTotalElements());
+        response.put("data", data.getContent());
+        return ResponseEntity.ok(response);
     }
 	
 	//Dropdown of Role User

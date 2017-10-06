@@ -434,6 +434,42 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 //		}
 //	}
 	
+	@PostMapping("/schedule/EligibleStaffDelete/{trainingCourseId}")
+	public ResponseEntity<JSONObject> DeleteEligibleStaff(@RequestBody JSONObject userID,@PathVariable String trainingCourseId){
+		JsonFormatter responseJson = new JsonFormatter();
+		try {
+			TrainingCourse trainCourseTmp = this.schRepo.findById(trainingCourseId);
+			@SuppressWarnings("unchecked")
+			Set<UserCourse> deletedParticipants = new HashSet<>();
+			List<String> UserID = (List<String>) userID.get("userID");
+			for(int i = 0; i < UserID.size();i++) {
+				User userDeleteTmp = this.userRepo.findById(UserID.get(i));
+				UserCourse userCourseTmp = this.userCourseRepo.findByTrainingCourseAndUser(trainCourseTmp, userDeleteTmp);
+				userCourseTmp.setStatus("Deleted");
+				
+				deletedParticipants.add(userCourseTmp);
+				List<UserCourseDetail> userCourseDetailTmp = this.userCourseDtlRepo.findByUserCourseID(userCourseTmp);
+				for(int j = 0; j < userCourseDetailTmp.size(); j++) {
+					userCourseDtlRepo.delete(userCourseDetailTmp.get(j));
+				}
+				userCourseRepo.delete(userCourseTmp);
+			}
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("New_Participants", userCourseRepo.findByTrainingCourse(trainCourseTmp));
+			responseJson.appendToData("Deleted_Participants", deletedParticipants);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex) {
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Get Course Detail Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
 	@PostMapping("/schedule/EligibleStaffAdd/{trainingCourseId}")
 	public ResponseEntity<JSONObject> AddEligibleStaff(@RequestBody JSONObject user,@PathVariable String trainingCourseId){
 		JsonFormatter responseJson = new JsonFormatter();
@@ -443,9 +479,10 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			Training trainTmp = trainCourseTmp.getTraining();
 			@SuppressWarnings("unchecked")
 			List<String> userID = (List<String>) user.get("userID");
+			Set<UserCourse> participants = new HashSet<>();
 			for(int i = 0; i < userID.size();i++){
 				UserCourse userCourseTmp = new UserCourse();
-				userCourseTmp.setUserCourseStatus("Invited");
+				userCourseTmp.setStatus("Invited");
 				userCourseTmp.setUserCourseDescription(trainCourseTmp.getTrainingCourseName());
 				userCourseTmp.setUserCourseAverageScore("0");
 				userCourseTmp.setUserCourseFinalScore("0");
@@ -453,6 +490,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 				userCourseTmp.setUser(userRepo.findById(userID.get(i).toLowerCase()));
 				userCourseTmp.setTrainingCourse(trainCourseTmp);
 				userCourseRepo.save(userCourseTmp);
+				participants.add(userCourseTmp);
 				if(trainCourseTmp.getTrainingType().trim().equals("Fixed")) {
 					LocalDate localDateStart = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseStartDate()));
 					LocalDate localDateEnd = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(trainCourseTmp.getTrainingCourseEndDate()));
@@ -505,6 +543,7 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setConfirmed(true);
 			responseJson.setStatus("success");
 			responseJson.setCode("200");
+			responseJson.appendToData("Added_Parrticipants", participants);
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 		catch(Exception ex) {
@@ -512,6 +551,30 @@ public class ScheduleController extends BaseController<TrainingCourseDT> {
 			responseJson.setStatus("failed");
 			responseJson.setCode("200");
 			responseJson.setMessage("Get Course Detail Cannot be Completed");
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+	}
+	
+	@GetMapping("/schedule/inviteEligible/{trainingCourseId}/{userId}")
+	public ResponseEntity<JSONObject> InviteEligibleData(@PathVariable String trainingCourseId,@PathVariable String userId){
+		JsonFormatter responseJson = new JsonFormatter();
+		try{
+			TrainingCourse trainingCourseTmp = this.schRepo.findById(trainingCourseId);
+			User userListTmp = this.userRepo.findById(userId);
+			UserCourse userCourseTmp = this.userCourseRepo.findByTrainingCourseAndUser(trainingCourseTmp, userListTmp);
+			userCourseTmp.setStatus("Enrolled");
+			userCourseRepo.save(userCourseTmp);
+			responseJson.setConfirmed(true);
+			responseJson.setStatus("success");
+			responseJson.setCode("200");
+			responseJson.appendToData("InvitedCourse", userCourseTmp);
+			return ResponseEntity.ok(responseJson.getJson());
+		}
+		catch(Exception ex){
+			responseJson.setConfirmed(false);
+			responseJson.setStatus("failed");
+			responseJson.setCode("200");
+			responseJson.setMessage("Deleted Data Cannot be Completed");
 			return ResponseEntity.ok(responseJson.getJson());
 		}
 	}

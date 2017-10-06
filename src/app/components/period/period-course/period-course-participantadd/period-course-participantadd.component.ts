@@ -16,20 +16,20 @@ import { Environment } from '../../../../classes/environment';
 declare var $:any;
 
 @Component({
-  selector: 'app-period-eligible',
-  templateUrl: './period-eligible.component.html',
-  styleUrls: ['./period-eligible.component.css']
+  selector: 'app-period-course-participantadd',
+  templateUrl: './period-course-participantadd.component.html',
+  styleUrls: ['./period-course-participantadd.component.css']
 })
-export class PeriodEligibleComponent implements OnInit, OnDestroy {
+export class PeriodCourseParticipantaddComponent implements OnInit {
   private isLoading = true;
-  private eliPartDT: any;
-  private eliPartDTSelected = [];
-  private eliPartDTUnSelected = [];
-  private eliPartDTPages = [];
+  private DT: any;
+  private DTSelected = [];
+  private DTUnSelected = [];
+  private DTPages = [];
 
+  @Input('currentCourse') currentCourse;
   @Input('currentPeriod') currentPeriod: Period;
-  @Output() onUpdatePeriod = new EventEmitter<Period>();
-  @Output() onUpdateBreadcrumbs = new EventEmitter<any>();
+  @Output() onUpdate = new EventEmitter<any>();
 
   constructor(private router: Router,
     private _periodService: PeriodService,
@@ -42,19 +42,6 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
         if(val instanceof NavigationEnd)
           this.initTopMenu()
       })
-    }
-
-  ngOnDestroy() {
-
-    if ( $.fn.dataTable.isDataTable( '.table-eliparttable' ) ) {
-      // this.eliPartDT.rows().deselect();
-      $('.table-eliparttable').DataTable().destroy();
-    }
-    this.eliPartDTSelected = [];
-    this.eliPartDTUnSelected = [];
-    this.eliPartDTPages = [];
-    $('.checkallrow-eliparttable').checkbox('set unchecked')
-    // this.eliPartDT.state.clear();
   }
 
   initTopMenu() {
@@ -65,15 +52,22 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
       {icon  : 'dashboard', name  : 'Dashboard', route: '/dashboard'},
       {icon  : 'calendar', name  : 'Periods', route: '/periods'},
       {icon  : 'student', name  : this.currentPeriod.trainingName, route: '/periods/detail/'+this.currentPeriod.id},
-    ], active: {icon  : 'users', name  : "Eligible participants", route: ''}, });
+      {icon  : 'bookmark', name  : "Courses/Schedule List", route: '/periods/detail/'+this.currentPeriod.id+"/courses"},
+      {icon  : 'bookmark', name  : this.currentCourse.trainingCourseName, route: '/periods/course/'+this.currentCourse.id},
+    ], active: {icon  : 'user add', name  : "Add participants", route: ''}, });
+  }
+
+  ngOnInit() {
+    this.initTopMenu()
+    this.initTable()
   }
 
   initTable() {
     var that = this;
-    let _eliPartDTClass = '.table-eliparttable';
+    let _DTClass = '.table-eligibleperiodadd';
 
     // crear seach box
-    $(_eliPartDTClass+' tfoot th').each( function () {
+    $(_DTClass+' tfoot th').each( function () {
       var title = $(this).text();
       if($(this).hasClass('disabled'))
         $(this).html( '<div class="ui small fluid input disabled"><input type="text" placeholder="Disabled" /></div>' );
@@ -82,12 +76,12 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
     });
 
     // create table
-    var eliPartDT = $(_eliPartDTClass)
+    var DT = $(_DTClass)
         .on( 'processing.dt', ( e, settings, processing ) => {
           if(processing)
-            $(_eliPartDTClass).closest('.dimmable').find('.dimmer').addClass('active');
+            $(_DTClass).closest('.dimmable').find('.dimmer').addClass('active');
           else
-            $(_eliPartDTClass).closest('.dimmable').find('.dimmer').removeClass('active');
+            $(_DTClass).closest('.dimmable').find('.dimmer').removeClass('active');
         })
         .DataTable( {
           responsive  : true,
@@ -97,17 +91,17 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
           serverSide  : true,
           // dom: '<"toolbar">frtip',
           dom: '<"ui clearing basic segment no-padding"\
-                  <"ui left floated segment basic no-margin no-padding" <"tb-toolbar">>\
+                  <"ui left floated segment basic no-margin no-padding" <"tb-toolbar-addel">>\
                   <"ui right floated segment basic no-margin no-padding"l>\
                 >\
                 <tr>\
                 <"ui clearing basic segment no-padding"\
-                  <"ui left floated segment basic no-margin no-padding" <"tb-toolbar-info">>\
+                  <"ui left floated segment basic no-margin no-padding" <"tb-toolbar-info-addel">>\
                   <"ui right floated segment basic no-margin no-padding"p>\
                 >',
           ajax: {
             contentType: 'application/json',
-            url: Environment.apiUrl+'/training/'+this.currentPeriod.id+'/eligible/all',
+            url: Environment.apiUrl+'/schedule/'+that.currentCourse.id+'/participant/notin',
             type: 'POST',
             data: (d) => {
               return JSON.stringify(d);
@@ -125,9 +119,6 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
           },
           {
             data: 'fullName',
-            render: (data, type, row) => {
-              return data + "<br><i>" + row.email + "<i>"
-            }
           },{
             data: 'grade.gradeName',
             render: function (data, type, row) {
@@ -143,7 +134,7 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
                 fullName: row.fullName,
               }
               return `<div class="ui icon mini buttons">\
-                        <button data-obj='${JSON.stringify(newRow)}' class="ui button pr-trashbtn"><i class="trash icon"></i></button>\
+                        <button data-obj='${JSON.stringify(newRow)}' class="ui green button pr-trashbtn"><i class="user add icon"></i> Add</button>\
                       </div>`;
                     }
           },
@@ -158,18 +149,19 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
           createdRow: function( row, data, dataIndex ) {
             $(row).attr('id', data.id);
           },
-
+          fnInitComplete: function() {},
           // destroy: true
       });
 
-    this.eliPartDT = eliPartDT;
-    //Edit
-    $(document).on('click', '.pr-editbtn', function() {
-      let obj = $(this).data('obj');
-      that.router.navigate(['/periods/detail', obj.id]);
-    });
+    this.DT = DT;
 
-    //Delete
+    //Edit
+    // $(document).on('click', '.pr-editbtn', function() {
+    //   let obj = $(this).data('obj');
+    //   that.router.navigate(['/periods/detail', obj.id]);
+    // });
+
+    //ADD PARTICIPANTS
     $(document).on('click', '.pr-trashbtn', function() {
       let obj  = $(this).data('obj');
       that._alertService.setAlert({
@@ -177,10 +169,10 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
         header : {
           // pot lan
           type: 'pot',
-          color: 'red',
+          color: 'green',
           icon: 'user',
-          text: 'Delete Confirmation',
-          subheader: 'Delete Eligible User with name ' + obj.fullName
+          text: 'Add Confirmation',
+          subheader: 'Add Participants with name ' + obj.fullName
         },
         message: "Are you sure?",
         button : {
@@ -188,19 +180,20 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
           position: 'center',
           fluid: true,
           fluidNumber: 'two',
-          ok : {display: true,text: 'Yes! please',color: 'red'},
+          ok : {display: true,text: 'Yes! please',color: 'green'},
           deny : {display : true,text: 'Cancel',color: ''}
         },
         onApprove : ($element) => {
-          that._periodService.deleteEP(that.currentPeriod.id, {"userID": [obj.id]} ).subscribe(response => {
-            that.reloadTable();
+          that._periodService.addP(that.currentCourse.id, {"userID": [obj.id]} ).subscribe(response => {
+            that.reloadTable({ participant: response.json().data.Added_Parrticipants });
+            console.log(response.json().data.Added_Parrticipants)
             that._messageService.setMessage({
               icon: 'checkmark',
-              headerMain: 'Successfully <i>remove</i> Eligible Participants',
-              headerSub: obj.fullName + ' successfully removed',
-              type: 'top tiny warning container'
+              headerMain: 'Successfully <i>add</i> Participants',
+              headerSub: obj.fullName + ' successfully added',
+              type: 'top tiny green container'
             })
-            that.eliPartDTSelected = []
+            that.DTSelected = []
             that.updateButton();
           });
         },
@@ -209,41 +202,41 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
     });
 
     // CheckBox
-    eliPartDT.on( 'select', ( e, dt, type, indexes ) => {
+    DT.on( 'select', ( e, dt, type, indexes ) => {
       if ( type === 'row' ) {
-        var data = eliPartDT.rows( indexes ).data().pluck( 'id' );
+        var data = DT.rows( indexes ).data().pluck( 'id' );
         for(let i = 0 ; i < data.length ; i++) {
           var id = data[i];
           $('tr[id='+id+']').find('.checkbox').checkbox('check');
 
-          if($.inArray(id, this.eliPartDTSelected) === -1)
-            this.eliPartDTSelected.push( id );
+          if($.inArray(id, this.DTSelected) === -1)
+            this.DTSelected.push( id );
 
-          var index = $.inArray(id, this.eliPartDTUnSelected);
+          var index = $.inArray(id, this.DTUnSelected);
           if(index !== -1)
-            this.eliPartDTUnSelected.splice(index, 1);
+            this.DTUnSelected.splice(index, 1);
         }
       }
       this.updateButton();
 
     }).on('deselect', (e, dt, type, indexes) => {
-      var data = eliPartDT.rows( indexes ).data().pluck( 'id' );
+      var data = DT.rows( indexes ).data().pluck( 'id' );
       for(let i = 0 ; i < data.length ; i++) {
         var id = data[i];
         $('tr[id='+id+']').find('.checkbox').checkbox('uncheck');
 
-        if($.inArray(id, this.eliPartDTUnSelected) === -1)
-          this.eliPartDTUnSelected.push( id );
+        if($.inArray(id, this.DTUnSelected) === -1)
+          this.DTUnSelected.push( id );
 
-        var index = $.inArray(id, this.eliPartDTSelected);
+        var index = $.inArray(id, this.DTSelected);
         if(index !== -1)
-          this.eliPartDTSelected.splice( index, 1 );
+          this.DTSelected.splice( index, 1 );
       }
       this.updateButton();
     });
 
     // create search fungsi
-    eliPartDT.columns().every( function () {
+    DT.columns().every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change', function () {
         if ( that.search() !== this.value ) {
@@ -253,10 +246,10 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
     });
 
     // DT TOOLBAR
-    $('div.tb-toolbar').html('\
-      <div class="ui mini gs-info basic red del-btn button">Delete All Selected <a class="ui mini red circular label">0</a></div>\
+    $('div.tb-toolbar-addel').html('\
+      <div class="ui mini green basic gs-info del-btn button">Add all selected employee <a class="ui mini green circular label">0</a></div>\
       ');
-      $('div.tb-toolbar-info').html('<div class="ui buttons">\
+      $('div.tb-toolbar-info-addel').html('<div class="ui buttons">\
       <div class="ui button basic ul-selected no-padding-lf">\</div>\
     </div>');
 
@@ -267,10 +260,10 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
         header : {
           // pot lan
           type: 'pot',
-          color: 'red',
-          icon: 'user',
-          text: 'Delete Confirmation',
-          subheader: 'Delete selected Eligible User with ' + that.eliPartDTSelected.length + ' total data'
+          color: 'green',
+          icon: 'user add',
+          text: 'Add Confirmation',
+          subheader: 'Delete selected Employee ('+that.DTSelected.length+') to "Participants" in <b>"'+that.currentPeriod.trainingName+'"</b>',
         },
         message: "Are you sure?",
         button : {
@@ -278,34 +271,37 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
           position: 'center',
           fluid: true,
           fluidNumber: 'two',
-          ok : {display: true,text: 'Yes! please',color: 'red'},
+          ok : {display: true,text: 'Yes! please',color: 'green'},
           deny : {display : true,text: 'Cancel',color: ''}
         },
         onApprove : ($element) => {
-          that._periodService.deleteEP(that.currentPeriod.id, {"userID": that.eliPartDTSelected} ).subscribe(response => {
-
-            that.currentPeriod.eligibleList = response.json().data.Get_Training_EligibleParticipants;
-            that.onUpdatePeriod.emit(that.currentPeriod);
+          that._periodService.addP(that.currentCourse.id, {"userID": that.DTSelected} ).subscribe(response => {
+            that.reloadTable({ participant: response.json().data.Added_Parrticipants });
             that._messageService.setMessage({
               icon: 'checkmark',
-              headerMain: 'Successfully <i>remove</i> Eligible Participants',
-              headerSub: that.eliPartDTSelected.length + ' employee successfully removed',
-              type: 'top tiny warning container'
+              headerMain: 'Successfully <i>add</i> Participants',
+              headerSub: that.DTSelected.length + ' successfully added',
+              type: 'top tiny green container'
             })
-            that.reloadTable();
-            that.eliPartDTSelected = [];
+            that.DTSelected = []
             that.updateButton();
           });
+          // that._periodService.deleteP(that.currentCourse.id, {"userID": that.DTSelected} ).subscribe(response => {
+          //   that.reloadTable({deletedUsers: response.json().data.Added_EligibleUser});
+          //   that.DTSelected = [];
+          //   that.DTUnSelected = []
+          //   that.updateButton();
+          // });
         },
         onDeny: ($element) => {}
       });
     });
 
     //ON DRAW
-    eliPartDT.on( 'draw', () => {
-      if($.inArray(this.eliPartDT.page.info().page, this.eliPartDTPages) == -1) {
+    DT.on( 'draw', () => {
+      if($.inArray(this.DT.page.info().page, this.DTPages) == -1) {
         // page not visited yet
-        this.eliPartDTPages.push(this.eliPartDT.page.info().page);
+        this.DTPages.push(this.DT.page.info().page);
         this.toogleCheckAll();
       } else {
         // page visited
@@ -317,19 +313,16 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
 
   reloadTable(ther = null) {
     if(ther != null) {
-      let updatedPeriod: Period;
-      updatedPeriod = ther.training;
-      updatedPeriod.eligibleList = ther.alleli;
-      this.onUpdatePeriod.emit(updatedPeriod);
+      this.onUpdate.emit({currentCourse: this.currentCourse, currentPeriod: this.currentPeriod, participant: ther.participant});
       this._messageService.setMessage({
         icon: 'checkmark',
         headerMain: 'Successfully Added Eligible Participants',
-        headerSub: ther.addedUsers.length + ' employee successfully added',
+        headerSub: ther.participant.length + ' employee successfully added',
         type: 'top tiny positive container'
       })
     }
-    this.eliPartDT.ajax.reload(null, false);
-    this.eliPartDT.draw();
+    this.DT.ajax.reload(null, false);
+    this.DT.draw();
   }
 
   updateButton() {
@@ -337,17 +330,17 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
     let selected: Number;
     let unselected: Number;
 
-    if(this.eliPartDTSelected.length < 1) {
+    if(this.DTSelected.length < 1) {
       selected = 0
-      unselected = this.eliPartDT.page.info().recordsTotal
+      unselected = this.DT.page.info().recordsTotal
     }
-    else if(this.eliPartDTSelected.length > 0) {
+    else if(this.DTSelected.length > 0) {
       // if($('.checkallrow').checkbox('is checked') == 'true,false' && this.eliPartDTPages.length != this.eliPartDT.page.info().pages){
       //   selected = this.eliPartDT.page.info().recordsTotal - this.eliPartDTUnSelected.length
       //   unselected = this.eliPartDTUnSelected.length
       // } else {
-        selected = this.eliPartDTSelected.length
-        unselected = this.eliPartDT.page.info().recordsTotal - this.eliPartDTSelected.length
+        selected = this.DTSelected.length
+        unselected = this.DT.page.info().recordsTotal - this.DTSelected.length
       // }
     }
     if(selected == 0) {
@@ -355,37 +348,32 @@ export class PeriodEligibleComponent implements OnInit, OnDestroy {
     } else {
       $('.gs-info').removeClass('disabled')
     }
-    $('.ul-selected').html('Selected <b>'+ selected + ' rows</b> of ' + this.eliPartDT.page.info().recordsTotal + ' entries');
+    $('.ul-selected').html('Selected <b>'+ selected + ' rows</b> of ' + this.DT.page.info().recordsTotal + ' entries');
     $('.gs-info .label').html(selected)
   }
 
   drawChecked(): void {
-    this.eliPartDT.rows( ( idx, data, node ) => {
-      if($.inArray(data.id, this.eliPartDTSelected) !== -1)
+    this.DT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.DTSelected) !== -1)
         return true;
     }).select();
 
-    this.eliPartDT.rows( ( idx, data, node ) => {
-      if($.inArray(data.id, this.eliPartDTUnSelected) !== -1)
+    this.DT.rows( ( idx, data, node ) => {
+      if($.inArray(data.id, this.DTUnSelected) !== -1)
         return true;
     }).deselect();
   }
 
   toogleCheckAll(): void {
     if($('.checkallrow').checkbox('is checked') == 'true,false'){
-      this.eliPartDT.rows( ( idx, data, node ) => {
+      this.DT.rows( ( idx, data, node ) => {
           return true;
       }).select();
     } else {
-      this.eliPartDT.rows( ( idx, data, node ) => {
+      this.DT.rows( ( idx, data, node ) => {
         return true;
       }).deselect();
     }
   }
 
-  ngOnInit() {
-    this.initTopMenu();
-    this.initTable();
-    this.updateButton();
-  }
 }

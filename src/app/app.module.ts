@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { enableProdMode } from '@angular/core';
+import { DatePipe } from '@angular/common';
 enableProdMode();
 
 import { AppRoutingModule } from './app.routing';
@@ -49,6 +50,10 @@ import { PeriodEligibleComponent } from './components/period/period-detail/perio
 import { PeriodEligibleNotinComponent } from './components/period/period-detail/period-eligible-notin/period-eligible-notin.component';
 import { PeriodCourseComponent } from './components/period/period-course/period-course.component';
 import { PeriodCoursesComponent } from './components/period/period-detail/period-courses/period-courses.component';
+import { PeriodCoursesAddComponent } from './components/period/period-detail/period-courses/period-courses-add/period-courses-add.component';
+import { PeriodCourseEditComponent } from './components/period/period-course/period-course-edit/period-course-edit.component';
+import { PeriodCourseParticipantComponent } from './components/period/period-course/period-course-participant/period-course-participant.component';
+import { PeriodCourseParticipantaddComponent } from './components/period/period-course/period-course-participantadd/period-course-participantadd.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +85,10 @@ import { PeriodCoursesComponent } from './components/period/period-detail/period
     PeriodEligibleNotinComponent,
     PeriodCourseComponent,
     PeriodCoursesComponent,
+    PeriodCoursesAddComponent,
+    PeriodCourseEditComponent,
+    PeriodCourseParticipantComponent,
+    PeriodCourseParticipantaddComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +99,7 @@ import { PeriodCoursesComponent } from './components/period/period-detail/period
     AppRoutingModule
   ],
   providers: [
+    DatePipe,
     AuthenticationService,
     SidebarService,
     AssetService,

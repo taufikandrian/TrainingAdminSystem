@@ -1,0 +1,64 @@
+<form id="periodcoursescreate" class="ui form periodcoursescreate" [ngClass]="{'loading': isLoading}">
+  <div class="ui segment no-margin">
+      <div class="ui top attached label">Course Data</div>
+      <div class="equal width fields">
+        <div class="field">
+          <label>Course Description (optional)</label>
+          <textarea rows="2" name="trainingCourseDescription" placeholder="Course Description ...">{{ currentCourse?.trainingCourseDescription }}</textarea>
+        </div>
+      </div>
+      <div class="equal width fields">
+          <div class="required field">
+              <label>Status</label>
+              <select name="status" class="ui dropdown search statusdropdown">
+                <option value="">Select Status ... </option>
+                <option value="Active" [attr.checked]="currentCourse?.status == 'Active'">Active</option>
+                <option value="Inactive" [attr.checked]="currentCourse?.status == 'Inactive'">Inactive</option>
+              </select>
+          </div>
+          <div class="required three wide field">
+              <label>Course Capacity</label>
+              <input type="text" value="{{ currentCourse?.trainingCourseCapacity }}" name="trainingCourseCapacity" placeholder="Course Capacity ...">
+          </div>
+      </div>
+      <div class="equal width fields">
+          <div class="required four wide field ui calendar" id="start-date-add-period">
+              <label>Start Date</label>
+              <div class="ui input left icon">
+                  <i class="calendar icon"></i>
+                  <input type="text" name="trainingCourseStartDate" placeholder="Start Date ..." />
+              </div>
+          </div>
+          <div class="required four wide field ui calendar" id="end-date-add-period">
+              <label>End Date</label>
+              <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="trainingCourseEndDate" placeholder="End Date ...">
+              </div>
+          </div>
+
+          <div class="required three wide field ui calendar" id="start-time-add-period">
+              <label>Start Time</label>
+              <div class="ui input left icon">
+                <i class="time icon"></i>
+                <input type="text" name="trainingCourseStartTime" placeholder="Start Time ...">
+              </div>
+          </div>
+          <div class="required three wide field ui calendar" id="end-time-add-period">
+              <label>End Time</label>
+              <div class="ui input left icon">
+                <i class="time icon"></i>
+                <input type="text" name="trainingCourseEndTime" placeholder="End Time ...">
+              </div>
+          </div>
+      </div>
+  </div>
+</form>
+<div class="ui divider"></div>
+<button class="ui violet button" form="periodcoursescreate">
+<i class="icon save"></i>
+Submit
+</button>
+<button class="ui button" [routerLink]="['/periods/detail', currentPeriod?.id, 'courses']">
+Back
+</button>

@@ -1,38 +1,48 @@
 <div class="ui center aligned large icon header">
     <!-- <i class="users icon"></i> -->
     <div class="content">
-        <span class="upppercase">Eligible Participants</span>
-      <div class="sub header">Manage "Eligible Participants" for {{ currentPeriod?.trainingName }}</div>
+        <span class="upppercase">Schedule List</span>
+      <div class="sub header">Manage "Schedule" for {{ currentPeriod?.trainingName }}</div>
     </div>
   </div>
-  <button class="ui violet button btn-eligibleperiod" [routerLink]="['/periods/detail', currentPeriod?.id, 'eligibleadd']">
+  <button class="ui violet button btn-eligibleperiod" [routerLink]="['/periods/detail', currentPeriod?.id, 'courses', 'create']">
     <i class="icon add user" ></i>
-    Add more Eligible Participants
+    Add new Schedule
   </button>
   <div class="ui divider"></div>
   <div class="dimmable">
       <div class="ui inverted dimmer">
           <div class="ui loader"></div>
       </div>
-      <table class="ui celled table table-eliparttable">
+      <table class="ui celled table table-dt">
           <thead>
               <tr>
                   <th class="one wide">
-                      <div class="ui fitted checkbox checkallrow">
+                      <div class="ui fitted checkbox checkallrow-dt">
                           <input type="checkbox" (change)="toogleCheckAll()" />
                           <label></label>
                       </div>
                   </th>
-                  <th class="ten wide" style="text-align: center">Employee Name</th>
-                  <th class="three wide" style="text-align: center">Stream</th>
+                  <th class="four wide" style="text-align: center">Course Name</th>
+                  <th class="three wide" style="text-align: center">Trainer</th>
+                  <th class="three wide" style="text-align: center">Classroom</th>
+                  <th class="three wide" style="text-align: center">Date</th>
+                  <th class="three wide" style="text-align: center">Time</th>
+                  <th class="three wide" style="text-align: center">Created</th>
+                  <th class="three wide" style="text-align: center">Updated</th>
                   <th class="one wide" style="text-align: center">Action</th>
               </tr>
           </thead>
           <tfoot>
               <tr>
                   <th class="disabled one wide"></th>
-                  <th class="ten wide" style="text-align: center">Employee Name</th>
-                  <th class="three wide" style="text-align: center">Stream</th>
+                  <th class="four wide" style="text-align: center">Course Name</th>
+                  <th class="three wide" style="text-align: center">Trainer</th>
+                  <th class="three wide" style="text-align: center">Classroom</th>
+                  <th class="three wide" style="text-align: center">Date</th>
+                  <th class="three wide" style="text-align: center">Time</th>
+                  <th class="three wide" style="text-align: center">Created</th>
+                  <th class="three wide" style="text-align: center">Updated</th>
                   <th class="one wide disabled" style="text-align: center">Action</th>
               </tr>
           </tfoot>

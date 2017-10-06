@@ -36,7 +36,6 @@ export class PeriodDetailComponent implements OnInit {
     }
 
   isActiveRoute(routeURL) {
-    // alert(routeURL == this.activeRoute)
     return routeURL == this.activeRoute;
   }
 

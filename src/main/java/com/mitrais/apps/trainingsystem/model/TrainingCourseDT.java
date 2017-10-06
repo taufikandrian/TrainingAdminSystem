@@ -207,4 +207,20 @@ public class TrainingCourseDT extends Auditable<String> implements Serializable 
 	public Set<User> getTrainingCourseTrainer() {
 		return this.trainingCourseTrainer;
 	}
+	
+//	@ManyToMany(fetch=FetchType.LAZY)
+//    @JoinTable(name="user_course_tb",
+//            joinColumns=
+//            @JoinColumn(name="training_course_id", referencedColumnName="training_course_id"),
+//      inverseJoinColumns=
+//            @JoinColumn(name="user_id", referencedColumnName="user_id")
+//    )
+//	private Set<User> participants;
+//    public void setParticipants(Set<User> participants) {
+//		this.participants = participants;
+//	}
+//
+//	public Set<User> getParticipants() {
+//		return this.participants;
+//	}
 }

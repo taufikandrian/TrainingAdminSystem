@@ -139,10 +139,15 @@ export class UserListComponent implements OnInit {
           orderable : false,
           searchable : false,
           render : (data, type, row) => {
+            let newRow = {
+              id : row.id,
+              fullName: row.fullName,
+              accountName: row.accountName
+            }
             return `<div class="ui icon mini buttons">\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui purple button ul-editbtn"><i class="edit icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-infobtn"><i class="info icon"></i></button>\
-                      <button data-usrobj='${JSON.stringify(row)}' class="ui button ul-trashbtn"><i class="trash icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(newRow)}' class="ui purple button ul-editbtn"><i class="edit icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(newRow)}' class="ui button ul-infobtn"><i class="info icon"></i></button>\
+                      <button data-usrobj='${JSON.stringify(newRow)}' class="ui button ul-trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
         },],

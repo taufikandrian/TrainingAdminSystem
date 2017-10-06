@@ -1,0 +1,114 @@
+<form id="periodcoursescreate" class="ui form periodcoursescreate" [ngClass]="{'loading': isLoading}">
+    <div class="ui segment no-margin">
+        <div class="ui top attached label">Course Data</div>
+        <div class="equal width fields">
+            <div class="required eight wide field">
+                <label>Courses</label>
+                <select name="courseType_id" class="ui dropdown search coursesdropdown">
+                  <option value="">Select Courses ... </option>
+                  <option *ngFor="let item of coursesdropdown" value="{{item.id}}">{{item.courseTypeName}} <span style="font-size: .8em; color: rgba(0, 0, 0 ,.5)">{{item.courseTypeGroup}}</span></option>
+                </select>
+            </div>
+            <div class="required field">
+                <label>Course Name</label>
+                <input type="text" name="trainingCourseName" placeholder="Course Name ...">
+            </div>
+            <div class="required three wide field">
+                <label>Course Type</label>
+                <select name="trainingType" class="ui dropdown typedropdown">
+                    <option value="">Course Type ...</option>
+                    <option value="Fixed">Fixed</option>
+                    <option value="Periodically">Periodically</option>
+                </select>
+            </div>
+        </div>
+        <div class="equal width fields">
+          <div class="field">
+            <label>Course Description (optional)</label>
+            <textarea rows="2" name="trainingCourseDescription" placeholder="Course Description ..."></textarea>
+          </div>
+        </div>
+        <div class="equal width fields">
+            <div class="required five wide field ui calendar" id="start-date-add-period">
+                <label>Start Date</label>
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" name="trainingCourseStartDate" placeholder="Start Date ..." />
+                </div>
+            </div>
+            <div class="five wide field ui calendar" id="end-date-add-period">
+                <label>End Date</label>
+                <div class="ui input left icon">
+                  <i class="calendar icon"></i>
+                  <input type="text" name="trainingCourseEndDate" placeholder="End Date ...">
+                </div>
+            </div>
+
+            <div class="required three wide field ui calendar" id="start-time-add-period">
+                <label>Start Time</label>
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="trainingCourseStartTime" placeholder="Start Time ...">
+                </div>
+            </div>
+            <div class="required three wide field ui calendar" id="end-time-add-period">
+                <label>End Time</label>
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="trainingCourseEndTime" placeholder="End Time ...">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="equal width fields">
+          <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="isOpen">
+                <label>Set this Period/Training <strong>"Open"</strong> for all staf</label>
+              </div>
+          </div>
+        </div> -->
+    </div>
+    <div class="ui segment">
+        <div class="ui top attached label">Trainer Data</div>
+        <div class="equal width fields">
+            <div class="required eight wide field">
+                <label>Main Trainer</label>
+                <select name="trainerFirst_id" class="ui dropdown search trainerdropdown">
+                  <option value="">Select Trainer ... </option>
+                  <option *ngFor="let item of trainerdropdown" value="{{item.id}}">{{item.fullName}} <span style="font-size: .8em; color: rgba(0, 0, 0 ,.5)">({{item.division.jobFamily.familyCode}} - {{item.division.divisionCode}}, {{item.grade.gradeName}})</span></option>
+                </select>
+            </div>
+            <div class="required eight wide field">
+                <label>Backup Trainer</label>
+                <select name="trainerSecond_id" class="ui dropdown search trainerdropdown">
+                  <option value="">Select Trainer ... </option>
+                  <option *ngFor="let item of trainerdropdown" value="{{item.id}}">{{item.fullName}} <span style="font-size: .8em; color: rgba(0, 0, 0 ,.5)">({{item.division.jobFamily.familyCode}} - {{item.division.divisionCode}}, {{item.grade.gradeName}})</span></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui top attached label">Room Data</div>
+        <div class="equal width fields">
+            <div class="required eight wide field">
+                <label>Classroom</label>
+                <select name="classroom_id" class="ui dropdown search roomdropdown">
+                  <option value="">Select Room ... </option>
+                  <option *ngFor="let item of roomdropdown" value="{{item.id}}">{{item.courseClassroomName}} <span style="font-size: .8em; color: rgba(0, 0, 0 ,.5)">({{item.courseClassroomCapacity}}, {{item.courseClassroomLocation}})</span></option>
+                </select>
+            </div>
+            <div class="required field">
+                <label>Course Capacity</label>
+                <input type="text" name="trainingCourseCapacity" placeholder="Course Capacity ...">
+            </div>
+        </div>
+    </div>
+</form>
+<div class="ui divider"></div>
+<button class="ui violet button" form="periodcoursescreate">
+  <i class="icon save"></i>
+  Submit
+</button>
+<button class="ui button" [routerLink]="['/periods/detail', currentPeriod?.id, 'courses']">
+  Back
+</button>

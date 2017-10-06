@@ -177,13 +177,13 @@ export class PeriodEligibleNotinComponent implements OnInit {
           position: 'center',
           fluid: true,
           fluidNumber: 'two',
-          ok : {display: true,text: 'Yes! please',color: 'red'},
+          ok : {display: true,text: 'Yes! please',color: 'green'},
           deny : {display : true,text: 'Cancel',color: ''}
         },
         onApprove : ($element) => {
           //ADD ONE USER
           that._periodService.addEP(that.currentPeriod.id, {"userID": [obj.id]} ).subscribe(response => {
-            that.reloadTable({addedUsers: response.json().data.Added_EligibleUser, training: response.json().data.Get_Training, alleli: response.json().data.Get_Training_EligibleParticipants});
+            that.reloadTable({addedUsers: response.json().data.Added_EligibleUser});
             that.DTSelected = []
             that.updateButton();
           });
@@ -274,16 +274,13 @@ export class PeriodEligibleNotinComponent implements OnInit {
           position: 'center',
           fluid: true,
           fluidNumber: 'two',
-          ok : {display: true,text: 'Yes! please',color: 'red'},
+          ok : {display: true,text: 'Yes! please',color: 'green'},
           deny : {display : true,text: 'Cancel',color: ''}
         },
         onApprove : ($element) => {
           that._periodService.addEP(that.currentPeriod.id, {"userID": that.DTSelected} ).subscribe(response => {
-            that.reloadTable({addedUsers: response.json().data.Added_EligibleUser, training: response.json().data.Get_Training, alleli: response.json().data.Get_Training_EligibleParticipants});
-            let updatedPeriod: Period;
-            updatedPeriod = response.json().data.Get_Training;
-            updatedPeriod.eligibleList = response.json().data.Get_Training_EligibleParticipants;
-            that.onUpdatePeriod.emit(updatedPeriod);
+            // console.log(response.json().data.Added_EligibleUser)
+            that.reloadTable({addedUsers: response.json().data.Added_EligibleUser});
             that.DTSelected = [];
             that.DTUnSelected = []
             that.updateButton();
@@ -309,10 +306,10 @@ export class PeriodEligibleNotinComponent implements OnInit {
 
   reloadTable(ther = null) {
     if(ther != null) {
-      let updatedPeriod: Period;
-      updatedPeriod = ther.training;
-      updatedPeriod.eligibleList = ther.alleli;
-      this.onUpdatePeriod.emit(updatedPeriod);
+      ther.addedUsers.forEach(element => {
+        this.currentPeriod.eligibleList.push(element)
+      });
+      this.onUpdatePeriod.emit(this.currentPeriod);
       this._messageService.setMessage({
         icon: 'checkmark',
         headerMain: 'Successfully Added Eligible Participants',

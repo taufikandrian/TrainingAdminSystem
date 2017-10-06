@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router }            from '@angular/router';
 import { DatatableService } from '../../../services/datatable.service';
 
@@ -27,6 +27,7 @@ export class PeriodListComponent implements OnInit {
   private periodDTUnSelected = [];
   private periodDTPages = [];
   constructor(private router: Router,
+              private elementRef:ElementRef,
               private _alertService: AlertService,
               private _userService: UserService,
               private _periodService: PeriodService,
@@ -177,6 +178,8 @@ export class PeriodListComponent implements OnInit {
             delete row.trainingDescription
             return `<div class="ui icon mini buttons">\
                       <button data-obj='${JSON.stringify(row)}' class="ui purple button pr-editbtn"><i class="edit icon"></i></button>\
+                      <button data-obj='${JSON.stringify(row)}' class="ui button pr-elibtn"><i class="users icon"></i></button>\
+                      <button data-obj='${JSON.stringify(row)}' class="ui button pr-schbtn"><i class="bookmark icon"></i></button>\
                       <button data-obj='${JSON.stringify(row)}' class="ui button pr-trashbtn"><i class="trash icon"></i></button>\
                     </div>`;
                   }
@@ -197,6 +200,18 @@ export class PeriodListComponent implements OnInit {
     $(document).on('click', '.pr-editbtn', function() {
       let periodObj = $(this).data('obj');
       that.router.navigate(['/periods/detail', periodObj.id]);
+    });
+
+    //Eligibles
+    $(document).on('click', '.pr-elibtn', function() {
+      let periodObj = $(this).data('obj');
+      that.router.navigate(['/periods/detail', periodObj.id, 'eligible']);
+    });
+
+    //Schedules
+    $(document).on('click', '.pr-schbtn', function() {
+      let periodObj = $(this).data('obj');
+      that.router.navigate(['/periods/detail', periodObj.id, 'courses']);
     });
 
     //Delete
